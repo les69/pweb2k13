@@ -6,12 +6,19 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Hello dear, take a login</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
     </head>
     <body>
-        <img src="compra.jpg" alt="logo" />
-        <div>TODO write content</div>
+        <h1>Login page</h1>
+        <div>
+            <form action="LoginServlet" method="post">
+                Username: <input type="text" name="username"/><br/>
+                Password: <input type="password" name="password" /><br/>
+                <input type="submit" value="Login" />
+            </form>
+        </div>
     </body>
 </html>
+

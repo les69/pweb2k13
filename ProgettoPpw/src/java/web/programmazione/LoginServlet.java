@@ -13,12 +13,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import database.DbHelper;
+
 /**
  *
- * @author Lorenzo
+ * @author Lorenzo(Mr Blék)
  */
 public class LoginServlet extends HttpServlet {
 
+    private DbHelper helper;
+    @Override
+    public void init() throws ServletException 
+    {
+        this.helper =(DbHelper)super.getServletContext().getAttribute("dbmanager");
+    }
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -31,6 +39,8 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
+        
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
