@@ -13,25 +13,25 @@ import java.util.Date;
  * @author Lorenzo
  */
 public class Post {
-    private int _id;
+    private Integer _id;
     private boolean _visible;
     private Date _datePost;
     private String _message;
     private String _fileString;
-    private int _idGroup;
-    private int _idUser;
+    private Integer _idGroup;
+    private Integer _idUser;
 
     /**
      * @return the _id
      */
-    public int getId() {
+    public Integer getId() {
         return _id;
     }
 
     /**
      * @param _id the _id to set
      */
-    public void setId(int _id) {
+    public void setId(Integer _id) {
         this._id = _id;
     }
 
@@ -78,44 +78,45 @@ public class Post {
     }
 
     /**
-     * @return the file_string
+     * @return the _fileString
      */
-    public String getFile_string() {
+    public String getFileString() {
         return _fileString;
     }
 
     /**
-     * @param file_string the file_string to set
+     * @param _fileString the _fileString to set
      */
-    public void setFile_string(String file_string) {
-        this._fileString = file_string;
+    public void setFileString(String _fileString) {
+        this._fileString = _fileString;
     }
 
     /**
-     * @return the id_group
+     * @return the _idGroup
      */
-    public int getId_group() {
+    public Integer getIdGroup() {
         return _idGroup;
     }
 
     /**
-     * @param id_group the id_group to set
+     * @param _idGroup the _idGroup to set
      */
-    public void setId_group(int id_group) {
-        this._idGroup = id_group;
+    public void setIdGroup(Integer _idGroup) {
+        this._idGroup = _idGroup;
     }
 
     /**
-     * @return the id_user
+     * @return the _idUser
      */
-    public int getId_user() {
+    public Integer getIdUser() {
         return _idUser;
     }
 
     /**
-     * @param id_user the id_user to set
+     * @param _idUser the _idUser to set
      */
-    public void setId_user(int id_user) {
-        this._idUser = id_user;
+    public void setIdUser(Integer _idUser) {
+        this._idUser = _idUser;
     }
-}
+
+   }
