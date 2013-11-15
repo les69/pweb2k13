@@ -9,3 +9,9 @@ java.runtime.version=1.7.0_45-b18
 user.dir=/Applications/NetBeans/glassfish-4.0/javadb
 derby.system.home=/Users/les/Projects/pweb2k13/ProgettoPpw/database
 Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Thu Nov 14 14:24:17 CET 2013: Shutting down Derby engine
+----------------------------------------------------------------
+Thu Nov 14 14:24:17 CET 2013:
+Shutting down instance a816c00e-0142-5642-1d4c-00000790a07d on database directory /Users/les/Projects/pweb2k13/ProgettoPpw/database/pweb2k13 with class loader sun.misc.Launcher$AppClassLoader@23137792 
+----------------------------------------------------------------

@@ -13,6 +13,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import database.Group;
+import database.User;
 /**
  *
  * @author les
@@ -45,5 +47,46 @@ public class DbHelper implements Serializable {
         } catch (SQLException ex) 
         {}
     }
-    
+    public User authenticate(String username, String password)
+            throws SQLException, Exception
+    {
+        PreparedStatement stm = null;
+        User usr = null;
+        try
+        { 
+            if(_connection == null || _connection.isClosed())
+                throw new RuntimeException("Connection must be estabilished before a statement");
+            stm = _connection.prepareStatement("select * from Users where username=? and password=?");
+            stm.setString(1, username);
+            stm.setString(2, password);
+            ResultSet rs = null;
+            
+            try
+            {
+                rs = stm.executeQuery();
+                if(rs.next())
+                {
+                    usr = new User();
+                    usr.setUsername(username);
+                    usr.setPassword(password);
+                }
+            }
+            catch (SQLException sqlex)
+            {}
+            finally
+            {
+                if(rs != null)
+                    rs.close();
+            }
+        }
+        catch (Exception ex)
+        {}
+        finally
+        {
+            if(stm != null)
+                stm.close();
+        }
+        
+        return usr;
+    }
 }
