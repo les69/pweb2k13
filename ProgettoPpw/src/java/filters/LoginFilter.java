@@ -16,6 +16,8 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -32,13 +34,25 @@ public class LoginFilter implements Filter {
     
     public LoginFilter() {
     }    
-    
+    /*
+       This function checks whenever the user is logged by simply checking if there exist 
+       a cookie "username". It's pointless to say that this is not the best and safe way to do it but
+       we assume that our users aren't so bad to change cookies.
+    */
+    private boolean isUserLogged(Cookie[] cookies)
+    {
+        for (int i = 0; i < cookies.length; i++) {
+            Cookie cookie = cookies[i];
+            if(cookie.getName().equals("username"))
+                return true;
+            
+        }
+        return false;
+    }
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
-        if (debug) {
-            log("LoginFilter:DoBeforeProcessing");
-        }
-
+        
+            
 	// Write code here to process the request and/or response before
         // the rest of the filter chain is invoked.
 	// For example, a logging filter might log items on the request object,
@@ -107,6 +121,9 @@ public class LoginFilter implements Filter {
         
         Throwable problem = null;
         try {
+            
+            if(!isUserLogged(((HttpServletRequest) request).getCookies()))
+                request.getRequestDispatcher("LoginServlet").forward(request, response);
             chain.doFilter(request, response);
         } catch (Throwable t) {
 	    // If an exception is thrown somewhere down the filter chain,
