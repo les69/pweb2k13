@@ -18,6 +18,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -41,12 +42,11 @@ public class LoginFilter implements Filter {
     */
     private boolean isUserLogged(Cookie[] cookies)
     {
-        for (int i = 0; i < cookies.length; i++) {
-            Cookie cookie = cookies[i];
-            if(cookie.getName().equals("username"))
-                return true;
-            
-        }
+        if(cookies != null)
+            for (Cookie cookie : cookies) {
+                if(cookie.getName().equals("username"))
+                    return true;
+            }
         return false;
     }
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
@@ -119,11 +119,14 @@ public class LoginFilter implements Filter {
         
         doBeforeProcessing(request, response);
         
+        
         Throwable problem = null;
         try {
             
             if(!isUserLogged(((HttpServletRequest) request).getCookies()))
+            {
                 request.getRequestDispatcher("LoginServlet").forward(request, response);
+            }
             chain.doFilter(request, response);
         } catch (Throwable t) {
 	    // If an exception is thrown somewhere down the filter chain,
