@@ -20,7 +20,7 @@ import javax.servlet.http.Cookie;
 
 /**
  *
- * @author Lorenzo(Mr Blék)
+ * @author Lorenzo(Mr Blék) und Mirko(Mr. Les)
  */
 public class LoginServlet extends HttpServlet {
 

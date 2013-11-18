@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author les
+ * @author Lorenzo(Mr Blék) und Mirko(Mr. Les)
  */
 public class HomeServlet extends HttpServlet {
 
