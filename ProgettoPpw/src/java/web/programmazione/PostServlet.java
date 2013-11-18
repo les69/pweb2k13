@@ -7,23 +7,24 @@
 package web.programmazione;
 
 import database.DbHelper;
-import database.User;
 import database.Group;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.rmi.ServerException;
-import java.util.List;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import database.PostToShow;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
- * @author les
+ * @author lorenzo
  */
-public class GroupServlet extends HttpServlet {
+public class PostServlet extends HttpServlet {
 
     private DbHelper helper;
     @Override
@@ -32,17 +33,23 @@ public class GroupServlet extends HttpServlet {
         this.helper =(DbHelper)super.getServletContext().getAttribute("dbmanager");
     }
     
-    private String getUsername(Cookie[] cookies)
+    public void printPost(PostToShow pts, PrintWriter out)
     {
-        for (int i = 0; i < cookies.length; i++) {
-            Cookie cookie = cookies[i];
-            if(cookie.getName().equals("username"))
-                return cookie.getValue();
-            
-        }
-        return null;
+        out.println("<tr>");
+        out.println("<td>");
+        out.println(pts.getUsername());        
+        out.println("</td>");
+        out.println("<td>");
+        out.println(pts.getMessage());
+        out.println("</td>");
+        out.println("</tr>");
+        out.println("<tr><td colspan=\"2\">");
+        out.println(pts.getDatePost());
+        out.println("</td>");
+        out.println("</tr>");
     }
-        /**
+    
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
@@ -54,36 +61,33 @@ public class GroupServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try 
-        {
-            PrintWriter out = response.getWriter();
-            String username = getUsername(request.getCookies());
+        try {
+            int p = Integer.parseInt(request.getParameter("g"));
             
-            if(username ==  null)
-                throw new ServerException("Bad Error: Username is not defined when it MUST be");
-            if(this.helper == null)
-                throw new ServerException("Bad Error: dbHelper is not defined when it MUST be");
+            List<PostToShow> ptss ;
+            ptss = helper.getPostFromGroup(p);
+            try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+                printHead(out);
+                
+            Group gr = null;
+            gr = helper.getGroup(p);
+                
+            out.println("<h1>Posts for group " + gr.getName() + "</h1>");
+            out.println("<table border=1>");
             
-            User usr = helper.getUser(username);
-            List<Group> groups = helper.getGroupsByOwner(usr);
-            out.println("This are the groups that you are following");
-            out.println("<table border=\"1\">");
-            out.println("<tr><td><b>Group name</b></td><td><b>Group founder</b></td><td><b>Link to group</b></td></tr>");
-            for (int i = 0; i < groups.size(); i++) {
-                Group g = groups.get(i);
-                out.println("<tr>");
-                out.println("<td>"+g.getName()+"</td>");
-                out.println("<td>"+helper.getUser(g.getOwner()).getUsername()+"</td>");
-                //MISSING COLUMN DATA
-                out.println("<td><a href=\"\\ProgettoPpw\\Group\\PostServlet?g=" + g.getId()+  "\">See Posts</a>");
-                out.println("</tr>");
+            for(PostToShow pts: ptss)
+            {
+                printPost(pts, out);
             }
-            out.println("</table>");
-            
-            
+                printFoot(out);
         }
-        catch (Exception ex)
-        {}
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(PostServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
     }
     private void printHead(PrintWriter out)
             throws IOException
@@ -91,7 +95,7 @@ public class GroupServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HomeServlet</title>");            
+            out.println("<title>Servlet PostServlet</title>");            
             out.println("</head>");
             out.println("<body>");
     }
