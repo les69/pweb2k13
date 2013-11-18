@@ -24,6 +24,10 @@
         <servlet-name>HomeServlet</servlet-name>
         <servlet-class>web.programmazione.HomeServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GroupServlet</servlet-name>
+        <servlet-class>web.programmazione.GroupServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/HomeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GroupServlet</servlet-name>
+        <url-pattern>/User/GroupServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

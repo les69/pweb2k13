@@ -89,7 +89,7 @@ public class DbHelper implements Serializable {
         
         return usr;
     }
-    public List<Group> getProductsByOwner(int owner_id)
+    public List<Group> getGroupsByOwner(int owner_id)
             throws SQLException
     {
         PreparedStatement stm = null;
@@ -131,10 +131,10 @@ public class DbHelper implements Serializable {
         
         return groupList;
     }
-    public List<Group> getProductsByOwner(User owner)
+    public List<Group> getGroupsByOwner(User owner)
             throws SQLException
     {
-        return getProductsByOwner(owner.getId());
+        return getGroupsByOwner(owner.getId());
     }
     public List<Post> getPostFromGroup(int id_group)
             throws SQLException
@@ -207,6 +207,48 @@ public class DbHelper implements Serializable {
                 {
                     usr = new User();
                     usr.setId(id_user);
+                    usr.setPassword(rs.getString("password"));
+                    usr.setUsername(rs.getString("username"));
+                }
+            }
+            catch (SQLException sqlex)
+            {}
+            finally
+            {
+                if(rs != null)
+                    rs.close();
+            }
+        }
+        catch (Exception ex)
+        {}
+        finally
+        {
+            if(stm != null)
+                stm.close();
+        }
+        
+        return usr;
+    }
+    public User getUser(String username)
+            throws SQLException
+    {
+        PreparedStatement stm = null;
+        User usr = null;
+        try
+        { 
+            if(_connection == null || _connection.isClosed())
+                throw new RuntimeException("Connection must be estabilished before a statement");
+            stm = _connection.prepareStatement("select * from Users where username=?");
+            stm.setString(1, username);
+            ResultSet rs = null;
+            
+            try
+            {
+                rs = stm.executeQuery();
+                while(rs.next())
+                {
+                    usr = new User();
+                    usr.setId(rs.getInt("id_user"));
                     usr.setPassword(rs.getString("password"));
                     usr.setUsername(rs.getString("username"));
                 }

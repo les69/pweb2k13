@@ -7,12 +7,12 @@
 package web.programmazione;
 
 import database.DbHelper;
+import database.User;
+import database.Group;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.rmi.ServerException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -21,31 +21,15 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Lorenzo(Mr Blék) und Mirko(Mr. Les)
+ * @author les
  */
-public class HomeServlet extends HttpServlet {
-   
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            String username = getUsername(request.getCookies());    
-            printHead(out);
-            out.println("<h3>Welcome " + username + ". This is your Home!</h3>");
-            printLastLogin(request.getCookies(), out, response);
-            printFoot(out);
-            
-        }
+public class GroupServlet extends HttpServlet {
+
+    private DbHelper helper;
+    @Override
+    public void init() throws ServletException 
+    {
+        this.helper =(DbHelper)super.getServletContext().getAttribute("dbmanager");
     }
     private String getUsername(Cookie[] cookies)
     {
@@ -57,29 +41,47 @@ public class HomeServlet extends HttpServlet {
         }
         return null;
     }
-    private void printLastLogin(Cookie[] cookies, PrintWriter out, HttpServletResponse response)
-    {
-        boolean found = false;
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-        Date date = new Date();
-        
-        for (int i = 0; i < cookies.length; i++) {
-            Cookie cookie = cookies[i];
-            if(cookie.getName().equals("last-login"))
-            {
-                out.println("<h6 style=\"font-style:italic\">Last login at "+ cookie.getValue()+"</h6>");
-                cookie.setValue(dateFormat.format(date));
-                response.addCookie(cookie);
-                found = true;
-            }
-        }
-        if(!found)
+        /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try 
         {
-            Cookie loginCookie = new Cookie("last-login","");
-            loginCookie.setValue(dateFormat.format(date));
-            response.addCookie(loginCookie);
+            PrintWriter out = response.getWriter();
+            String username = getUsername(request.getCookies());
+            
+            if(username ==  null)
+                throw new ServerException("Bad Error: Username is not defined when it MUST be");
+            if(this.helper == null)
+                throw new ServerException("Bad Error: dbHelper is not defined when it MUST be");
+            
+            User usr = helper.getUser(username);
+            List<Group> groups = helper.getGroupsByOwner(usr);
+            out.println("This are the groups that you are following");
+            out.println("<table>");
+            for (int i = 0; i < groups.size(); i++) {
+                Group g = groups.get(i);
+                out.println("<tr>");
+                out.println("<td>"+g.getName()+"</td>");
+                out.println("<td>"+helper.getUser(g.getOwner()).getUsername()+"</td>");
+                //MISSING COLUMN DATA
+                out.println("<td>href=\"\\ProgettoPpw\\Group\\PostServlet\">See Posts</a>");
+                out.println("</tr>");
+            }
+            out.println("</table>");
+            
+            
         }
-
+        catch (Exception ex)
+        {}
     }
     private void printHead(PrintWriter out)
             throws IOException
@@ -97,6 +99,7 @@ public class HomeServlet extends HttpServlet {
             out.println("</body>");
             out.println("</html>");
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
