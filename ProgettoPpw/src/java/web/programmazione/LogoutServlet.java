@@ -9,6 +9,7 @@ package web.programmazione;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,10 +29,33 @@ public class LogoutServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
+    private Cookie getLoginCookie(Cookie[] cookies)
+    {
+        if (cookies != null)
+            for (Cookie cookie : cookies) {
+                if(cookie.getName().equals("username"))
+                    return cookie;
+            }
+        return null;
+    }
+    
+    private void executeLogout(Cookie[] cookies)
+    {
+        Cookie toLogout = getLoginCookie(cookies);
+    }
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            Cookie toLogout = getLoginCookie(request.getCookies());
+            if (toLogout != null)
+            {
+                toLogout.setValue("/");
+                toLogout.setMaxAge(0);
+                response.addCookie(toLogout);
+            }
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
