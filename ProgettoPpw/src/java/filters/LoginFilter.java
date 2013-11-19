@@ -123,9 +123,7 @@ public class LoginFilter implements Filter {
         try {
             
             if(!isUserLogged(((HttpServletRequest) request).getCookies()))
-            {
                 request.getRequestDispatcher("LoginServlet").forward(request, response);
-            }
             chain.doFilter(request, response);
         } catch (Throwable t) {
 	    // If an exception is thrown somewhere down the filter chain,

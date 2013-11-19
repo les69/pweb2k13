@@ -9,6 +9,7 @@ package web.programmazione;
 import database.DbHelper;
 import database.User;
 import database.Group;
+import helpers.ServletHelperClass;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.rmi.ServerException;
@@ -18,6 +19,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 
 /**
  *
@@ -32,16 +34,7 @@ public class GroupServlet extends HttpServlet {
         this.helper =(DbHelper)super.getServletContext().getAttribute("dbmanager");
     }
     
-    private String getUsername(Cookie[] cookies)
-    {
-        for (int i = 0; i < cookies.length; i++) {
-            Cookie cookie = cookies[i];
-            if(cookie.getName().equals("username"))
-                return cookie.getValue();
-            
-        }
-        return null;
-    }
+
         /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -57,7 +50,7 @@ public class GroupServlet extends HttpServlet {
         try 
         {
             PrintWriter out = response.getWriter();
-            String username = getUsername(request.getCookies());
+            String username =ServletHelperClass.getUsername(request.getCookies());
             
             if(username ==  null)
                 throw new ServerException("Bad Error: Username is not defined when it MUST be");
@@ -66,9 +59,10 @@ public class GroupServlet extends HttpServlet {
             
             User usr = helper.getUser(username);
             List<Group> groups = helper.getGroupsByOwner(usr);
+            ServletHelperClass.printHead(out);
             out.println("This are the groups that you are following");
             out.println("<table border=\"1\">");
-            out.println("<tr><td><b>Group name</b></td><td><b>Group founder</b></td><td><b>Link to group</b></td></tr>");
+            out.println("<tr><th><b>Group name</b></th><th><b>Group founder</b></th><th><b>Link to group</b></th></tr>");
             for (int i = 0; i < groups.size(); i++) {
                 Group g = groups.get(i);
                 out.println("<tr>");
@@ -80,27 +74,14 @@ public class GroupServlet extends HttpServlet {
             }
             out.println("</table>");
             
+            ServletHelperClass.printFoot(out);
+            
             
         }
         catch (Exception ex)
         {}
     }
-    private void printHead(PrintWriter out)
-            throws IOException
-    {
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet HomeServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-    }
-    private void printFoot(PrintWriter out)
-            throws IOException
-    {
-            out.println("</body>");
-            out.println("</html>");
-    }
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
