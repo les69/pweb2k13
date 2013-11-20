@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package web.programmazione;
 
 import database.DbHelper;
@@ -20,7 +19,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 /**
  *
  * @author les
@@ -28,14 +26,13 @@ import javax.servlet.http.HttpServletResponse;
 public class GroupServlet extends HttpServlet {
 
     private DbHelper helper;
-    @Override
-    public void init() throws ServletException 
-    {
-        this.helper =(DbHelper)super.getServletContext().getAttribute("dbmanager");
-    }
-    
 
-        /**
+    @Override
+    public void init() throws ServletException {
+        this.helper = (DbHelper) super.getServletContext().getAttribute("dbmanager");
+    }
+
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
@@ -47,16 +44,17 @@ public class GroupServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try 
-        {
+        try {
             PrintWriter out = response.getWriter();
-            String username =ServletHelperClass.getUsername(request.getCookies());
-            
-            if(username ==  null)
+            String username = ServletHelperClass.getUsername(request.getCookies());
+
+            if (username == null) {
                 throw new ServerException("Bad Error: Username is not defined when it MUST be");
-            if(this.helper == null)
+            }
+            if (this.helper == null) {
                 throw new ServerException("Bad Error: dbHelper is not defined when it MUST be");
-            
+            }
+
             User usr = helper.getUser(username);
             List<Group> groups = helper.getGroupsByOwner(usr);
             ServletHelperClass.printHead(out);
@@ -66,22 +64,26 @@ public class GroupServlet extends HttpServlet {
             for (int i = 0; i < groups.size(); i++) {
                 Group g = groups.get(i);
                 out.println("<tr>");
+<<<<<<< HEAD
                 out.println("<td>"+g.getName()+"</td>");
                 out.println("<td>"+g.getDateCreation()+"</td>");
                 out.println("<td>"+helper.getUser(g.getOwner()).getUsername()+"</td>");
                 out.println("<td><a href=\"\\ProgettoPpw\\Group\\PostServlet?g=" + g.getId()+  "\">See Posts</a>");
+=======
+                out.println("<td>" + g.getName() + "</td>");
+                out.println("<td>" + helper.getUser(g.getOwner()).getUsername() + "</td>");
+                //MISSING COLUMN DATA
+                out.println("<td><a href=\"\\ProgettoPpw\\Group\\PostServlet?g=" + g.getId() + "\">See Posts</a>");
+>>>>>>> d319f278a2a05031c930638a1964355d636d0088
                 out.println("</tr>");
             }
             out.println("</table>");
-            
-            ServletHelperClass.printFoot(out);
-            
-            
-        }
-        catch (Exception ex)
-        {}
-    }
 
+            ServletHelperClass.printFoot(out);
+
+        } catch (Exception ex) {
+        }
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

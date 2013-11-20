@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package web.programmazione;
 
 import java.io.IOException;
@@ -29,29 +28,27 @@ public class LogoutServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
-    private Cookie getLoginCookie(Cookie[] cookies)
-    {
-        if (cookies != null)
+    private Cookie getLoginCookie(Cookie[] cookies) {
+        if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if(cookie.getName().equals("username"))
+                if (cookie.getName().equals("username")) {
                     return cookie;
+                }
             }
+        }
         return null;
     }
-    
-    private void executeLogout(Cookie[] cookies)
-    {
+
+    private void executeLogout(Cookie[] cookies) {
         Cookie toLogout = getLoginCookie(cookies);
     }
-    
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             Cookie toLogout = getLoginCookie(request.getCookies());
-            if (toLogout != null)
-            {
+            if (toLogout != null) {
                 toLogout.setValue("/");
                 toLogout.setMaxAge(0);
                 response.addCookie(toLogout);
@@ -60,7 +57,7 @@ public class LogoutServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LogoutServlet</title>");            
+            out.println("<title>Servlet LogoutServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet LogoutServlet at " + request.getContextPath() + "</h1>");

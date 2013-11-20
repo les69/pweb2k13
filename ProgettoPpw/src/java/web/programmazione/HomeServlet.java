@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package web.programmazione;
 
 import database.DbHelper;
@@ -25,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Lorenzo(Mr Blék) und Mirko(Mr. Les)
  */
 public class HomeServlet extends HttpServlet {
-   
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,7 +39,7 @@ public class HomeServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String username = ServletHelperClass.getUsername(request.getCookies());    
+            String username = ServletHelperClass.getUsername(request.getCookies());
             ServletHelperClass.printHead(out);
             out.println("<h3>Welcome " + username + ". This is your Home!</h3>");
             printLastLogin(request.getCookies(), out, response);
@@ -50,29 +49,27 @@ public class HomeServlet extends HttpServlet {
             out.println("<a href=\"\\ProgettoPpw\\User\\InviteServlet\">Pending invites</a><br/>");
             out.println("<a href=\"\\ProgettoPpw\\LogoutServlet\">Log out</a><br/>");
             ServletHelperClass.printFoot(out);
-            
+
         }
     }
-    private void printLastLogin(Cookie[] cookies, PrintWriter out, HttpServletResponse response)
-    {
+
+    private void printLastLogin(Cookie[] cookies, PrintWriter out, HttpServletResponse response) {
         boolean found = false;
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
-        if(cookies != null)
-        {
+        if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if(cookie.getName().equals("last-login"))
-                {
-                    out.println("<h6 style=\"font-style:italic\">Last login at "+ cookie.getValue()+"</h6>");
+                if (cookie.getName().equals("last-login")) {
+                    out.println("<h6 style=\"font-style:italic\">Last login at " + cookie.getValue() + "</h6>");
                     cookie.setValue(dateFormat.format(date));
                     response.addCookie(cookie);
                     found = true;
+                    break;  //[LOTTO] added because multiple cookies, maybe bug only in my browser
                 }
             }
         }
-        if(!found)
-        {
-            Cookie loginCookie = new Cookie("last-login","");
+        if (!found) {
+            Cookie loginCookie = new Cookie("last-login", "");
             loginCookie.setValue(dateFormat.format(date));
             response.addCookie(loginCookie);
         }

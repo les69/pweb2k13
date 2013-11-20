@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package web.programmazione;
 
 import database.DbHelper;
@@ -27,17 +26,16 @@ import java.util.logging.Logger;
 public class PostServlet extends HttpServlet {
 
     private DbHelper helper;
+
     @Override
-    public void init() throws ServletException 
-    {
-        this.helper =(DbHelper)super.getServletContext().getAttribute("dbmanager");
+    public void init() throws ServletException {
+        this.helper = (DbHelper) super.getServletContext().getAttribute("dbmanager");
     }
-    
-    public void printPost(PostToShow pts, PrintWriter out)
-    {
+
+    public void printPost(PostToShow pts, PrintWriter out) {
         out.println("<tr>");
         out.println("<td>");
-        out.println(pts.getUsername());        
+        out.println(pts.getUsername());
         out.println("</td>");
         out.println("<td>");
         out.println(pts.getMessage());
@@ -48,7 +46,7 @@ public class PostServlet extends HttpServlet {
         out.println("</td>");
         out.println("</tr>");
     }
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -63,47 +61,45 @@ public class PostServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try {
             int p = Integer.parseInt(request.getParameter("g"));
-            
-            List<PostToShow> ptss ;
+
+            List<PostToShow> ptss;
             ptss = helper.getPostFromGroup(p);
             try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+                /* TODO output your page here. You may use following sample code. */
                 printHead(out);
-                
-            Group gr = null;
-            gr = helper.getGroup(p);
-                
-            out.println("<h1>Posts for group " + gr.getName() + "</h1>");
-            out.println("<table border=1>");
-            
-            for(PostToShow pts: ptss)
-            {
-                printPost(pts, out);
-            }
+
+                Group gr = null;
+                gr = helper.getGroup(p);
+
+                out.println("<h1>Posts for group " + gr.getName() + "</h1>");
+                out.println("<table border=1>");
+
+                for (PostToShow pts : ptss) {
+                    printPost(pts, out);
+                }
                 printFoot(out);
-        }
-            
+            }
+
         } catch (SQLException ex) {
             Logger.getLogger(PostServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+
     }
+
     private void printHead(PrintWriter out)
-            throws IOException
-    {
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet PostServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
+            throws IOException {
+        out.println("<!DOCTYPE html>");
+        out.println("<html>");
+        out.println("<head>");
+        out.println("<title>Servlet PostServlet</title>");
+        out.println("</head>");
+        out.println("<body>");
     }
+
     private void printFoot(PrintWriter out)
-            throws IOException
-    {
-            out.println("</body>");
-            out.println("</html>");
+            throws IOException {
+        out.println("</body>");
+        out.println("</html>");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

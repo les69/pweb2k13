@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import database.Group;
 import database.User;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -98,10 +100,10 @@ public class DbHelper implements Serializable {
                 while (rs.next()) {
                     Group g = new Group();
                     //TODO potrebbe non essere una cosa cattiva farlo dal costruttore
-                    
+
                     //PER BLèKMIRKO, imposta tutti i valori e non solo il nome o si rompe tutto
                     g.setId(rs.getInt("id_group"));
-                    g.setName(rs.getString("name"));                    
+                    g.setName(rs.getString("name"));
                     g.setOwner(rs.getInt("id_owner"));
                     g.setDateCreation(rs.getDate("date_creation"));
                     groupList.add(g);
@@ -122,9 +124,13 @@ public class DbHelper implements Serializable {
         return groupList;
     }
 
-    public List<Group> getGroupsByOwner(User owner)
-            throws SQLException {
-        return getGroupsByOwner(owner.getId());
+    public List<Group> getGroupsByOwner(User owner) {
+        try {
+            return getGroupsByOwner(owner.getId());
+        } catch (SQLException ex) {
+            Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     public List<PostToShow> getPostFromGroup(int id_group)
@@ -142,14 +148,14 @@ public class DbHelper implements Serializable {
             try {
                 rs = stm.executeQuery();
                 while (rs.next()) {
-                   /* Post p = new Post();
-                    p.setMessage(rs.getString("message"));
-                    p.setDatePost(rs.getDate("date_post"));
-                    p.setFileString(rs.getString("file_string"));
-                    p.setIdUser((Integer) rs.getInt("id_user"));
-                    p.setIdGroup((Integer) rs.getInt("id_group"));
-                    p.setId(rs.getInt("id_post"));*/
-                    PostToShow pts = new PostToShow(rs.getString("DATE_POST"), 
+                    /* Post p = new Post();
+                     p.setMessage(rs.getString("message"));
+                     p.setDatePost(rs.getDate("date_post"));
+                     p.setFileString(rs.getString("file_string"));
+                     p.setIdUser((Integer) rs.getInt("id_user"));
+                     p.setIdGroup((Integer) rs.getInt("id_group"));
+                     p.setId(rs.getInt("id_post"));*/
+                    PostToShow pts = new PostToShow(rs.getString("DATE_POST"),
                             rs.getString("message"), rs.getString("username"));
                     postList.add(pts);
                 }
@@ -187,7 +193,7 @@ public class DbHelper implements Serializable {
             ResultSet rs = null;
 
             try {
-                rs = stm. executeQuery();
+                rs = stm.executeQuery();
                 while (rs.next()) {
                     usr = new User();
                     usr.setId(id_user);
@@ -245,7 +251,7 @@ public class DbHelper implements Serializable {
 
         return usr;
     }
-    
+
     public Group getGroup(int idGroup)
             throws SQLException {
         PreparedStatement stm = null;
