@@ -58,12 +58,12 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>MyGroupServlet</servlet-name>
-        <url-pattern>/MyGroupServlet</url-pattern>
+        <url-pattern>/User/MyGroupServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/HomeServlet</url-pattern>
-        <url-pattern>/</url-pattern>
+        
     </servlet-mapping>
     <session-config>
         <session-timeout>
