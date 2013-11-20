@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package web.programmazione;
 
 import java.io.IOException;
@@ -25,11 +24,12 @@ import javax.servlet.http.Cookie;
 public class LoginServlet extends HttpServlet {
 
     private DbHelper helper;
+
     @Override
-    public void init() throws ServletException 
-    {
-        this.helper =(DbHelper)super.getServletContext().getAttribute("dbmanager");
+    public void init() throws ServletException {
+        this.helper = (DbHelper) super.getServletContext().getAttribute("dbmanager");
     }
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,44 +42,38 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        String username = (String)request.getParameter("username");
-        String password = (String)request.getParameter("password");
-        
-        
-        
-        try
-        {
-           
+
+        String username = (String) request.getParameter("username");
+        String password = (String) request.getParameter("password");
+
+        try {
+
             PrintWriter out = response.getWriter();
-            if(username == null || password == null)
+            if (username == null || password == null) {
                 printErrorPage(out, "You have to log in");
-            else
-            {
+            } else {
                 User user = this.helper.authenticate(username, password);
 
-                if(user == null)
+                if (user == null) {
                     printErrorPage(out, "Your credentials are wrong!");
-                else
-                {
-                    Cookie usernameCookie = new Cookie("username",user.getUsername());
+                } else {
+                    Cookie usernameCookie = new Cookie("username", user.getUsername());
                     response.addCookie(usernameCookie);
-                    request.getRequestDispatcher("HomeServlet").forward(request, response);    
+                    request.getRequestDispatcher("HomeServlet").forward(request, response);
                 }
             }
-            
+
+        } catch (Exception ex) {
         }
-        catch (Exception ex)
-        {}
     }
+
     private void printErrorPage(PrintWriter out, String message)
-            throws IOException
-    {
+            throws IOException {
         //Questa è la easy soluzione, ristampo la pagina di login(tanto è poco codice comunque)
         // se più avanti avremo idee migliori fixeremo
         out.println("<!DOCTYPE html>");
         out.println("<html><head><title>Hello dear, take a login</title><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width>");
-        out.println("</head><body><h1>Login page</h1><div><h3 style=\"color:red;\">"+message+"</h3>");
+        out.println("</head><body><h1>Login page</h1><div><h3 style=\"color:red;\">" + message + "</h3>");
         out.println("<form action=\"LoginServlet\" method=\"post\">Username: <input type=\"text\" name=\"username\"/><br/>Password: <input type=\"password\" name=\"password\" /><br/><input type=\"submit\" value=\"Login\" /></form>");
         out.println("</div></body></html>");
     }
