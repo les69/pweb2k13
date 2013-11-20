@@ -62,13 +62,13 @@ public class GroupServlet extends HttpServlet {
             ServletHelperClass.printHead(out);
             out.println("This are the groups that you are following");
             out.println("<table border=\"1\">");
-            out.println("<tr><th><b>Group name</b></th><th><b>Group founder</b></th><th><b>Link to group</b></th></tr>");
+            out.println("<tr><th><b>Group name</b></th><th><b>Date Creation</b></th><th><b>Group founder</b></th><th><b>Link to group</b></th></tr>");
             for (int i = 0; i < groups.size(); i++) {
                 Group g = groups.get(i);
                 out.println("<tr>");
                 out.println("<td>"+g.getName()+"</td>");
+                out.println("<td>"+g.getDateCreation()+"</td>");
                 out.println("<td>"+helper.getUser(g.getOwner()).getUsername()+"</td>");
-                //MISSING COLUMN DATA
                 out.println("<td><a href=\"\\ProgettoPpw\\Group\\PostServlet?g=" + g.getId()+  "\">See Posts</a>");
                 out.println("</tr>");
             }

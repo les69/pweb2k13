@@ -103,6 +103,7 @@ public class DbHelper implements Serializable {
                     g.setId(rs.getInt("id_group"));
                     g.setName(rs.getString("name"));                    
                     g.setOwner(rs.getInt("id_owner"));
+                    g.setDateCreation(rs.getDate("date_creation"));
                     groupList.add(g);
                 }
             } catch (SQLException sqlex) {
