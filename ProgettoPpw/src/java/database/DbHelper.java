@@ -288,4 +288,146 @@ public class DbHelper implements Serializable {
 
         return grp;
     }
+    public Group getGroup(String groupName)
+            throws SQLException {
+        PreparedStatement stm = null;
+        Group grp = null;
+        try {
+            if (_connection == null || _connection.isClosed()) {
+                throw new RuntimeException("Connection must be estabilished before a statement");
+            }
+            stm = _connection.prepareStatement("select * from GROUPS where name=?");
+            stm.setString(1, groupName);
+            ResultSet rs = null;
+
+            try {
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    grp = new Group();
+                    grp.setId(rs.getInt("ID_GROUP"));
+                    grp.setName(groupName);
+                    grp.setActive(rs.getBoolean("ACTIVE"));
+                    grp.setOwner(rs.getInt("ID_OWNER"));
+                }
+            } catch (SQLException sqlex) {
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+            }
+        } catch (Exception ex) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+        }
+
+        return grp;
+    }
+    public List<Invite> getUserInvites(Integer id_user)
+            throws SQLException
+    {
+        PreparedStatement stm = null;
+        List<Invite> invites = new ArrayList<Invite>();
+        try {
+            if (_connection == null || _connection.isClosed()) {
+                throw new RuntimeException("Connection must be estabilished before a statement");
+            }
+            stm = _connection.prepareStatement("select * from Invite where id_user=?");
+            stm.setInt(1, id_user);
+            ResultSet rs = null;
+
+            try {
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    Invite inv = new Invite();
+                    inv.setIdUser(id_user);
+                    inv.setIdGroup(rs.getInt("id_group"));
+                    inv.setInviteDate(rs.getDate("invite_date"));
+                    invites.add(inv);
+                }
+            } catch (SQLException sqlex) {
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+            }
+        } catch (Exception ex) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+        }
+
+        return invites;
+    }
+    public List<Invite> getUserInvites(User usr)
+            throws SQLException
+    {
+        return getUserInvites(usr.getId());
+    }
+    public void acceptInvite(Group g, User usr)
+            throws SQLException
+    {
+        try {
+            
+            this.removeInvite(g, usr);
+            this.addUserToGroup(g, usr);
+          
+        } 
+        catch (Exception ex) {
+        } 
+  
+    }
+    public void removeInvite(Group g, User usr)
+            throws SQLException
+    {
+            
+        PreparedStatement stm = null;
+        try {
+            if (_connection == null || _connection.isClosed()) {
+                throw new RuntimeException("Connection must be estabilished before a statement");
+            }
+            stm = _connection.prepareStatement("delete from Invite where id_user=? and id_group=?");
+            stm.setInt(1, usr.getId());
+            stm.setInt(2, g.getId());
+
+            int res = stm.executeUpdate();          
+        } 
+        catch (Exception ex) {
+        } 
+        finally {
+            if (stm.isClosed() || stm != null) 
+                stm.close();
+    
+        }
+    
+    }
+    public void addUserToGroup(Group g, User usr)
+            throws SQLException
+    {
+        PreparedStatement stm = null;
+        try {
+            if (_connection == null || _connection.isClosed()) {
+                throw new RuntimeException("Connection must be estabilished before a statement");
+            }
+            
+            stm = _connection.prepareStatement("INSERT INTO GROUPUSER (ID_GROUP, ID_USER, ACTIVE) VALUES (?, ?, true)");
+            stm.setInt(1, g.getId());
+            stm.setInt(2, usr.getId());
+            
+            int res = stm.executeUpdate();
+            
+          
+        } 
+        catch (Exception ex) {
+        } 
+        finally {
+            if (stm.isClosed() || stm != null) 
+                stm.close();
+
+            
+            
+        }
+    }
 }

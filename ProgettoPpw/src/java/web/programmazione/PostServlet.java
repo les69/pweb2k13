@@ -7,6 +7,7 @@ package web.programmazione;
 
 import database.DbHelper;
 import database.Group;
+import helpers.ServletHelperClass;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -73,7 +74,7 @@ public class PostServlet extends HttpServlet {
 
                 out.println("<h1>Posts for group " + gr.getName() + "</h1>");
                 out.println("<table border=1>");
-
+                ServletHelperClass.printTableHead(out, "User", "Message");
                 for (PostToShow pts : ptss) {
                     printPost(pts, out);
                 }

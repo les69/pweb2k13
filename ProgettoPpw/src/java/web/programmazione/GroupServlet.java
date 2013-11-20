@@ -64,17 +64,11 @@ public class GroupServlet extends HttpServlet {
             for (int i = 0; i < groups.size(); i++) {
                 Group g = groups.get(i);
                 out.println("<tr>");
-<<<<<<< HEAD
                 out.println("<td>"+g.getName()+"</td>");
                 out.println("<td>"+g.getDateCreation()+"</td>");
                 out.println("<td>"+helper.getUser(g.getOwner()).getUsername()+"</td>");
                 out.println("<td><a href=\"\\ProgettoPpw\\Group\\PostServlet?g=" + g.getId()+  "\">See Posts</a>");
-=======
-                out.println("<td>" + g.getName() + "</td>");
-                out.println("<td>" + helper.getUser(g.getOwner()).getUsername() + "</td>");
-                //MISSING COLUMN DATA
-                out.println("<td><a href=\"\\ProgettoPpw\\Group\\PostServlet?g=" + g.getId() + "\">See Posts</a>");
->>>>>>> d319f278a2a05031c930638a1964355d636d0088
+
                 out.println("</tr>");
             }
             out.println("</table>");

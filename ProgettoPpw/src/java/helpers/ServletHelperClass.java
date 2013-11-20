@@ -59,7 +59,7 @@ public class ServletHelperClass {
         }
         out.println("<tr>");
         for (String col : tableCols) {
-            out.println("<td><b>" + col + "</b></td>");
+            out.println("<th><b>" + col + "</b></th>");
         }
         out.println("</tr>");
     }

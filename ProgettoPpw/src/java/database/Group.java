@@ -13,7 +13,7 @@ import java.util.Date;
  * @author les
  */
 public class Group {
-    private int _id;
+    private Integer _id;
     private String _name;
     private boolean _active;
     private int _owner;
@@ -71,7 +71,7 @@ public class Group {
     /**
      * @param _owner the _owner to set
      */
-    public void setOwner(int _owner) {
+    public void setOwner(Integer _owner) {
         this._owner = _owner;
     }
 
