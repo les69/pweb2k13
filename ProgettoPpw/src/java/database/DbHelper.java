@@ -3,6 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
+
+//TODO[Lotto] implement logging in the right way
+
 package database;
 
 import java.io.Serializable;
@@ -27,20 +31,19 @@ public class DbHelper implements Serializable {
     private transient Connection _connection;
 
     public DbHelper(String url)
-            throws SQLException {
+    {
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver", true,
                     getClass().getClassLoader());
-        } catch (Exception e) {
+            Connection con = DriverManager.getConnection(url);
+            _connection = con;
+        } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e.toString(), e);
         }
-        Connection con = DriverManager.getConnection(url);
-        _connection = con;
-
     }
 
     public static void close()
-            throws SQLException {
+    {
         try {
             DriverManager.getConnection("jdbc:derby:;shutdown=true");
         } catch (SQLException ex) {
@@ -48,7 +51,7 @@ public class DbHelper implements Serializable {
     }
 
     public User authenticate(String username, String password)
-            throws SQLException, Exception {
+    {
         PreparedStatement stm = null;
         User usr = null;
         try {
@@ -73,10 +76,14 @@ public class DbHelper implements Serializable {
                     rs.close();
                 }
             }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
         } finally {
             if (stm != null) {
-                stm.close();
+                try{
+                    stm.close();
+                }
+                catch (SQLException sex){}
             }
         }
 
@@ -84,7 +91,7 @@ public class DbHelper implements Serializable {
     }
 
     public List<Group> getGroupsByOwner(int owner_id)
-            throws SQLException {
+             {
         PreparedStatement stm = null;
         List<Group> groupList = new ArrayList<Group>();
         try {
@@ -117,7 +124,9 @@ public class DbHelper implements Serializable {
         } catch (Exception ex) {
         } finally {
             if (stm != null) {
+                try{
                 stm.close();
+                }catch (SQLException sex){}
             }
         }
 
@@ -125,16 +134,15 @@ public class DbHelper implements Serializable {
     }
 
     public List<Group> getGroupsByOwner(User owner) {
-        try {
+        
             return getGroupsByOwner(owner.getId());
-        } catch (SQLException ex) {
-            Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
+        
+        //    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, null, ex);
+        
     }
 
     public List<PostToShow> getPostFromGroup(int id_group)
-            throws SQLException {
+    {
         PreparedStatement stm = null;
         List<PostToShow> postList = new ArrayList<PostToShow>();
         try {
@@ -148,13 +156,6 @@ public class DbHelper implements Serializable {
             try {
                 rs = stm.executeQuery();
                 while (rs.next()) {
-                    /* Post p = new Post();
-                     p.setMessage(rs.getString("message"));
-                     p.setDatePost(rs.getDate("date_post"));
-                     p.setFileString(rs.getString("file_string"));
-                     p.setIdUser((Integer) rs.getInt("id_user"));
-                     p.setIdGroup((Integer) rs.getInt("id_group"));
-                     p.setId(rs.getInt("id_post"));*/
                     PostToShow pts = new PostToShow(rs.getString("DATE_POST"),
                             rs.getString("message"), rs.getString("username"));
                     postList.add(pts);
@@ -168,7 +169,11 @@ public class DbHelper implements Serializable {
         } catch (Exception ex) {
         } finally {
             if (stm != null) {
-                stm.close();
+                try
+                {
+                    stm.close();
+                }
+                catch (SQLException sex){}
             }
         }
 
@@ -176,12 +181,12 @@ public class DbHelper implements Serializable {
     }
 
     public List<PostToShow> getPostFromGroup(Group g)
-            throws SQLException {
+    {
         return getPostFromGroup(g.getId());
     }
 
     public User getUser(int id_user)
-            throws SQLException {
+    {
         PreparedStatement stm = null;
         User usr = null;
         try {
@@ -209,7 +214,10 @@ public class DbHelper implements Serializable {
         } catch (Exception ex) {
         } finally {
             if (stm != null) {
-                stm.close();
+                try{     
+                    stm.close();
+                }
+                catch(SQLException sex){}
             }
         }
 
@@ -217,7 +225,7 @@ public class DbHelper implements Serializable {
     }
 
     public User getUser(String username)
-            throws SQLException {
+    {
         PreparedStatement stm = null;
         User usr = null;
         try {
@@ -245,7 +253,11 @@ public class DbHelper implements Serializable {
         } catch (Exception ex) {
         } finally {
             if (stm != null) {
-                stm.close();
+                try
+                {
+                    stm.close();
+                }
+                catch (SQLException sex){}
             }
         }
 
@@ -253,7 +265,7 @@ public class DbHelper implements Serializable {
     }
 
     public Group getGroup(int idGroup)
-            throws SQLException {
+    {
         PreparedStatement stm = null;
         Group grp = null;
         try {
@@ -282,14 +294,17 @@ public class DbHelper implements Serializable {
         } catch (Exception ex) {
         } finally {
             if (stm != null) {
+                try{
                 stm.close();
+                }
+                catch(SQLException sex){}
             }
         }
 
         return grp;
     }
     public Group getGroup(String groupName)
-            throws SQLException {
+    {
         PreparedStatement stm = null;
         Group grp = null;
         try {
@@ -318,14 +333,16 @@ public class DbHelper implements Serializable {
         } catch (Exception ex) {
         } finally {
             if (stm != null) {
+                    try{
                 stm.close();
+                }
+                catch(SQLException sex){}
             }
         }
 
         return grp;
     }
     public List<Invite> getUserInvites(Integer id_user)
-            throws SQLException
     {
         PreparedStatement stm = null;
         List<Invite> invites = new ArrayList<Invite>();
@@ -355,19 +372,21 @@ public class DbHelper implements Serializable {
         } catch (Exception ex) {
         } finally {
             if (stm != null) {
+                    try{
                 stm.close();
+                }
+                catch(SQLException sex){}
             }
         }
 
         return invites;
     }
     public List<Invite> getUserInvites(User usr)
-            throws SQLException
     {
         return getUserInvites(usr.getId());
     }
+    
     public void acceptInvite(Group g, User usr)
-            throws SQLException
     {
         try {
             
@@ -380,7 +399,6 @@ public class DbHelper implements Serializable {
   
     }
     public void removeInvite(Group g, User usr)
-            throws SQLException
     {
             
         PreparedStatement stm = null;
@@ -397,14 +415,17 @@ public class DbHelper implements Serializable {
         catch (Exception ex) {
         } 
         finally {
-            if (stm.isClosed() || stm != null) 
+            if (stm != null) {
+                    try{
                 stm.close();
+                }
+                catch(SQLException sex){}
+            }
     
         }
     
     }
     public void addUserToGroup(Group g, User usr)
-            throws SQLException
     {
         PreparedStatement stm = null;
         try {
@@ -423,11 +444,11 @@ public class DbHelper implements Serializable {
         catch (Exception ex) {
         } 
         finally {
-            if (stm.isClosed() || stm != null) 
+            if (stm != null) 
+                    try{
                 stm.close();
-
-            
-            
+                }
+                catch(SQLException sex){}
         }
     }
 }
