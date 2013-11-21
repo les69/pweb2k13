@@ -61,11 +61,9 @@ public class MyGroupServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         List<Group> groups = null;
-        try {
+       
             groups = helper.getGroupsByOwner(helper.getUser(ServletHelperClass.getUsername(request.getCookies())));
-        } catch (SQLException ex) {
-            Logger.getLogger(MyGroupServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
         try (PrintWriter out = response.getWriter()) {
             ServletHelperClass.printHead(out);
 

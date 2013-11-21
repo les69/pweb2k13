@@ -35,7 +35,7 @@ public class WebContextListener implements ServletContextListener {
             DbHelper manager = new DbHelper(dburl);
             sce.getServletContext().setAttribute("dbmanager",manager);
         } 
-        catch (SQLException ex) 
+        catch (Exception ex) 
         {
             Logger.getLogger(getClass().getName()).severe(ex.toString());
             throw new RuntimeException(ex);
@@ -49,8 +49,9 @@ public class WebContextListener implements ServletContextListener {
         {
             DbHelper.close();
         }
-        catch (SQLException ex)
-        {}
+        catch(Exception ex)
+        { }
     }
+    
 
 }

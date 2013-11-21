@@ -32,7 +32,7 @@ public class ServletHelperClass {
     }
 
     public static void printHead(PrintWriter out)
-            throws IOException {
+    {
         out.println("<!DOCTYPE html>");
         out.println("<html>");
         out.println("<head>");
@@ -42,7 +42,7 @@ public class ServletHelperClass {
     }
 
     public static void printFoot(PrintWriter out)
-            throws IOException {
+    {
         out.println("</body>");
         out.println("</html>");
     }

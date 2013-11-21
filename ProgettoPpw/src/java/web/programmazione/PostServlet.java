@@ -7,7 +7,7 @@ package web.programmazione;
 
 import database.DbHelper;
 import database.Group;
-import helpers.ServletHelperClass;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -15,10 +15,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import database.PostToShow;
-import java.sql.SQLException;
+import helpers.ServletHelperClass;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -60,14 +58,13 @@ public class PostServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try {
             int p = Integer.parseInt(request.getParameter("g"));
 
             List<PostToShow> ptss;
             ptss = helper.getPostFromGroup(p);
             try (PrintWriter out = response.getWriter()) {
                 /* TODO output your page here. You may use following sample code. */
-                printHead(out);
+                ServletHelperClass.printHead(out);
 
                 Group gr = null;
                 gr = helper.getGroup(p);
@@ -78,30 +75,13 @@ public class PostServlet extends HttpServlet {
                 for (PostToShow pts : ptss) {
                     printPost(pts, out);
                 }
-                printFoot(out);
+                ServletHelperClass.printFoot(out);
             }
+            catch(Exception ex){}
 
-        } catch (SQLException ex) {
-            Logger.getLogger(PostServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } 
 
-    }
-
-    private void printHead(PrintWriter out)
-            throws IOException {
-        out.println("<!DOCTYPE html>");
-        out.println("<html>");
-        out.println("<head>");
-        out.println("<title>Servlet PostServlet</title>");
-        out.println("</head>");
-        out.println("<body>");
-    }
-
-    private void printFoot(PrintWriter out)
-            throws IOException {
-        out.println("</body>");
-        out.println("</html>");
-    }
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
