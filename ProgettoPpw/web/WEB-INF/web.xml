@@ -47,6 +47,7 @@
     <servlet>
         <servlet-name>NewPostServlet</servlet-name>
         <servlet-class>web.programmazione.NewPostServlet</servlet-class>
+ 
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
