@@ -520,7 +520,7 @@ public class DbHelper implements Serializable {
                 catch(SQLException sex){}
         }
     }
-    public boolean isAUserFile(User usr, String original_name)
+    public boolean isAGroupFile(Group g, String original_name)
     {
         PreparedStatement stm = null;
         
@@ -528,9 +528,9 @@ public class DbHelper implements Serializable {
             if (_connection == null || _connection.isClosed()) {
                 throw new RuntimeException("Connection must be estabilished before a statement");
             }
-            stm = _connection.prepareStatement("select * from FileDB where original_name=? and id_user=?");
+            stm = _connection.prepareStatement("select * from FileDB where original_name=? and id_group=?");
             stm.setString(1, original_name);
-            stm.setInt(2, usr.getId());
+            stm.setInt(2, g.getId());
             ResultSet rs = null;
 
             try {
@@ -583,7 +583,7 @@ public class DbHelper implements Serializable {
                 catch(SQLException sex){}
         }
     }
-    public FileDB getFile(User usr, String hash)
+    public FileDB getFile(Group g, String hash)
     {
         PreparedStatement stm = null;
         FileDB file = null;
@@ -591,9 +591,9 @@ public class DbHelper implements Serializable {
             if (_connection == null || _connection.isClosed()) {
                 throw new RuntimeException("Connection must be estabilished before a statement");
             }
-            stm = _connection.prepareStatement("select * from FileDB where hashed_name=? and id_user=?");
+            stm = _connection.prepareStatement("select * from FileDB where hashed_name=? and id_group=?");
             stm.setString(1, hash);
-            stm.setInt(2, usr.getId());
+            stm.setInt(2, g.getId());
             ResultSet rs = null;
 
             try {

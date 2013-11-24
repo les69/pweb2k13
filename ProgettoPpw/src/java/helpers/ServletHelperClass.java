@@ -6,6 +6,7 @@
 package helpers;
 
 import database.DbHelper;
+import database.Group;
 import database.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -76,7 +77,7 @@ public class ServletHelperClass {
         out.println("</table>");
 
     }
-    public static String parseText(User usr, String text, DbHelper helper)
+    public static String parseText(Group grp, String text, DbHelper helper)
     {
         List<List<String>> listsOfMatch = getMatches(text);
         
@@ -86,7 +87,7 @@ public class ServletHelperClass {
         List<String> matchedStrings = listsOfMatch.get(0);
         List<String> filesToLink = listsOfMatch.get(1);
         
-        List<String> linkedFiles = convertMatchedStrings(filesToLink, usr, helper);
+        List<String> linkedFiles = convertMatchedStrings(filesToLink, grp, helper);
         String parsedText = replaceStringsInText(text, matchedStrings, linkedFiles);
         
         return parsedText;
@@ -138,7 +139,7 @@ public class ServletHelperClass {
             
         
     }
-    public static List<String> convertMatchedStrings(List<String> matches, User usr, DbHelper helper)
+    public static List<String> convertMatchedStrings(List<String> matches, Group g, DbHelper helper)
     {
         List<String> parsedStrings = new ArrayList<>();
         if(matches == null)
@@ -146,7 +147,7 @@ public class ServletHelperClass {
         for (int i = 0; i < matches.size(); i++) {
             String m = matches.get(i);
             String parsed ="";
-            if(!helper.isAUserFile(usr, m)) //fix this function
+            if(!helper.isAGroupFile(g, m)) //fix this function
             {
                 if(isAnUrl(m))
                     parsed = "<a href=\""+m+"\">"+m+"</a>";
@@ -155,8 +156,8 @@ public class ServletHelperClass {
             }
             else
             {
-                String hash = encryptPassword(m+usr.getUsername());
-                parsed = "<a href=\"DownloadServlet?file="+hash+"\">"+m+"</a>";
+                String hash = encryptPassword(m+g.getName());
+                parsed = "<a href=\"DownloadServlet?file="+hash+"&group="+g.getId()+"\">"+m+"</a>";
                 
             }
             parsedStrings.add(parsed);

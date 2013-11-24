@@ -103,24 +103,26 @@ public class NewPostServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            
+            
             User usr = helper.getUser(ServletHelperClass.getUsername(request.getCookies()));
             String relativeWebPath = "/WEB-INF/uploads";
-            String absoluteFilePath = getServletContext().getRealPath(relativeWebPath)+"/"+usr.getUsername();
+            String absoluteFilePath = getServletContext().getRealPath(relativeWebPath)+File.separator;
             
-            File dir = new File(absoluteFilePath);
-            if(!dir.exists())
-                dir.mkdir();
-                
-            out.println(absoluteFilePath);
+            //Use temporary multi to retrieve group name
             MultipartRequest multi = new MultipartRequest(request, absoluteFilePath,10*1024*1024,"utf-8");
-            
-            
-                      
+                  
             String group = (String) multi.getParameter("group");
+             
 
             Group g = helper.getGroup(Integer.parseInt(group));
             if(g == null)
                 throw new ServerException("Bad Error: group is null");
+            absoluteFilePath+=g.getName();
+            File dir = new File(absoluteFilePath);
+            if(!dir.exists())
+                dir.mkdir();
+
             Enumeration file_list = multi.getFileNames();
 
             while(file_list.hasMoreElements())
@@ -130,9 +132,13 @@ public class NewPostServlet extends HttpServlet {
                 String originalname=multi.getOriginalFileName(name);
                 String type=multi.getContentType(name);
                 File f= multi.getFile(name);
-                String hash = ServletHelperClass.encryptPassword(originalname+usr.getUsername());
+                
+                if(f == null)
+                    continue;
+                String hash = ServletHelperClass.encryptPassword(originalname+g.getName());
                 File renameFile = new File(absoluteFilePath+"/"+hash);
-                f.renameTo(renameFile);
+                if(!renameFile.exists())
+                    f.renameTo(renameFile);
                 database.FileDB file = new database.FileDB();
                 file.setHashed_name(hash);
                 file.setType(type);
@@ -148,14 +154,14 @@ public class NewPostServlet extends HttpServlet {
                 
              //file linking needed
             
-            String message = ServletHelperClass.parseText(usr, text, helper);
+            String message = ServletHelperClass.parseText(g, text, helper);
             Post p = new Post();
             p.setIdGroup(g.getId());
             p.setIdUser(usr.getId());
             p.setMessage(message);
             helper.addPost(p);
  
-                
+            response.sendRedirect("PostServlet?g="+g.getId());
             
 
 

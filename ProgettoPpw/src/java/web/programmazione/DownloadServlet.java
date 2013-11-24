@@ -8,6 +8,7 @@ package web.programmazione;
 
 import database.DbHelper;
 import database.FileDB;
+import database.Group;
 import database.User;
 import helpers.ServletHelperClass;
 import java.io.DataInputStream;
@@ -15,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
@@ -63,11 +65,13 @@ public class DownloadServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        User usr = helper.getUser(ServletHelperClass.getUsername(request.getCookies()));
         String relativeWebPath = "/WEB-INF/uploads";
         
         String file_hash = request.getParameter("file");
-        filePath = getServletContext().getRealPath(relativeWebPath)+File.separator+usr.getUsername()+File.separator;
+        String group_id =request.getParameter("group");
+        Enumeration vals =request.getParameterNames();
+        Group g = helper.getGroup(Integer.parseInt(group_id));
+        filePath = getServletContext().getRealPath(relativeWebPath)+File.separator+g.getName()+File.separator;
         
         try{
             PrintWriter out = response.getWriter();
@@ -76,7 +80,7 @@ public class DownloadServlet extends HttpServlet {
             if(!tmpFile.exists())
                 out.println("The request file was not found!");
             
-            FileDB file = helper.getFile(usr, file_hash);
+            FileDB file = helper.getFile(g, file_hash);
             
             response.setContentType(file.getType());
             response.setContentLength((int)tmpFile.length());
