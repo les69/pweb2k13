@@ -11,6 +11,7 @@ package database;
 
 import java.io.Serializable;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -513,6 +514,33 @@ public class DbHelper implements Serializable {
         }
 
         return false;
+    }
+    public void addPost(Post p)
+    {
+        PreparedStatement stm = null;
+        try {
+            if (_connection == null || _connection.isClosed()) {
+                throw new RuntimeException("Connection must be estabilished before a statement");
+            }
+            
+            stm = _connection.prepareStatement("INSERT INTO PWEB.POST (VISIBLE, DATE_POST, MESSAGE, ID_GROUP, ID_USER) VALUES (DEFAULT, CURRENT_TIMESTAMP, ?,?, ?)");
+            stm.setString(1, p.getMessage());
+            stm.setInt(2, p.getIdGroup());
+            stm.setInt(3, p.getIdUser());
+            
+            int res = stm.executeUpdate();
+            
+          
+        } 
+        catch (Exception ex) {
+        } 
+        finally {
+            if (stm != null) 
+                    try{
+                stm.close();
+                }
+                catch(SQLException sex){}
+        }
     }
 }
 

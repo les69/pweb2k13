@@ -17,7 +17,6 @@ public class Post {
     private boolean _visible;
     private Date _datePost;
     private String _message;
-    private String _fileString;
     private Integer _idGroup;
     private Integer _idUser;
 
@@ -75,20 +74,6 @@ public class Post {
      */
     public void setMessage(String _message) {
         this._message = _message;
-    }
-
-    /**
-     * @return the _fileString
-     */
-    public String getFileString() {
-        return _fileString;
-    }
-
-    /**
-     * @param _fileString the _fileString to set
-     */
-    public void setFileString(String _fileString) {
-        this._fileString = _fileString;
     }
 
     /**

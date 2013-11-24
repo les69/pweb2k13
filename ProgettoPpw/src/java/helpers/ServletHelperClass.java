@@ -146,7 +146,7 @@ public class ServletHelperClass {
         for (int i = 0; i < matches.size(); i++) {
             String m = matches.get(i);
             String parsed ="";
-            if(!helper.isAUserFile(usr, m))
+            if(!helper.isAUserFile(usr, m)) //fix this function
             {
                 if(isAnUrl(m))
                     parsed = "<a href=\""+m+"\">"+m+"</a>";

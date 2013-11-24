@@ -21,10 +21,14 @@ import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import com.oreilly.servlet.multipart.FileRenamePolicy;
 import database.Group;
+import database.Post;
 import java.io.File;
 
 import java.rmi.ServerException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 
 
@@ -134,13 +138,18 @@ public class NewPostServlet extends HttpServlet {
             }
             
             Enumeration params = multi.getParameterNames();
-            List<String> linkedFiles = null;
 
-             String text = (String) multi.getParameter("text");
+            String text = (String) multi.getParameter("text");
                 
              //file linking needed
-           
+            
             String message = ServletHelperClass.parseText(usr, text, helper);
+            Post p = new Post();
+            p.setIdGroup(g.getId());
+            p.setIdUser(usr.getId());
+            p.setMessage(message);
+            helper.addPost(p);
+ 
                 
             
 
