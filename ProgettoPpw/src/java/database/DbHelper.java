@@ -449,4 +449,69 @@ public class DbHelper implements Serializable {
                 catch(SQLException sex){}
         }
     }
+    public void addFile(FileDB file)
+    {
+        PreparedStatement stm = null;
+        try {
+            if (_connection == null || _connection.isClosed()) {
+                throw new RuntimeException("Connection must be estabilished before a statement");
+            }
+            
+            stm = _connection.prepareStatement("INSERT INTO FILEDB (ID_GROUP, ID_USER, HASHED_NAME,ORIGINAL_NAME,TYPE) VALUES (?, ?, ?, ?, ?)");
+            stm.setInt(1, file.getId_group());
+            stm.setInt(2, file.getId_user());
+            stm.setString(3, file.getHashed_name());
+            stm.setString(4, file.getOriginal_name());
+            stm.setString(5, file.getType());
+            
+            int res = stm.executeUpdate();
+            
+          
+        } 
+        catch (Exception ex) {
+        } 
+        finally {
+            if (stm != null) 
+                    try{
+                stm.close();
+                }
+                catch(SQLException sex){}
+        }
+    }
+    public boolean isAUserFile(User usr, String filehash)
+    {
+        PreparedStatement stm = null;
+        
+        try {
+            if (_connection == null || _connection.isClosed()) {
+                throw new RuntimeException("Connection must be estabilished before a statement");
+            }
+            stm = _connection.prepareStatement("select * from FileDB where original_name=? and id_user=?");
+            stm.setString(1, filehash);
+            stm.setInt(2, usr.getId());
+            ResultSet rs = null;
+
+            try {
+                if(rs.next())
+                    return true;
+            } catch (SQLException sqlex) {
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+            }
+        } catch (Exception ex) {
+        } finally {
+            if (stm != null) {
+                try
+                {
+                    stm.close();
+                }
+                catch (SQLException sex){}
+            }
+        }
+
+        return false;
+    }
 }
+

@@ -20,7 +20,11 @@ import java.util.List;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import com.oreilly.servlet.multipart.FileRenamePolicy;
+import database.Group;
 import java.io.File;
+
+import java.rmi.ServerException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 
 
@@ -74,6 +78,7 @@ public class NewPostServlet extends HttpServlet {
             out.println("<form action=\"NewPostServlet\" enctype=\"multipart/form-data\" method=\"post\">");
             out.println("Message text<br/>");
             out.println("<input type=\"text\" style=\"width:300px;height:300px;\" name=\"text\" /><br/>");
+            out.println("<input type=\"hidden\" name=\"group\" value=\""+request.getParameter("group")+"\" />");
             out.println("<input type=\"file\" name=\"file\" />");
             out.println("<input type=\"submit\" value=\"Submit\" />");
             
@@ -100,21 +105,15 @@ public class NewPostServlet extends HttpServlet {
             out.println(absoluteFilePath);
             MultipartRequest multi = new MultipartRequest(request, absoluteFilePath,10*1024*1024,"utf-8");
             
-            Enumeration params = multi.getParameterNames();
-            List<String> files = null;
-            while(params.hasMoreElements())
-            {
-                String name=(String)params.nextElement();
-                String value = (String) multi.getParameter(name);
-                
-                if(name.equals("text"))
-                    files = ServletHelperClass.getMatches(value);
-            }
-                         
-
-    
-            Enumeration file_list = multi.getFileNames();
             
+                      
+            String group = (String) multi.getParameter("group");
+
+            Group g = helper.getGroup(Integer.parseInt(group));
+            if(g == null)
+                throw new ServerException("Bad Error: group is null");
+            Enumeration file_list = multi.getFileNames();
+
             while(file_list.hasMoreElements())
             {
                 String name =(String) file_list.nextElement();
@@ -122,12 +121,32 @@ public class NewPostServlet extends HttpServlet {
                 String originalname=multi.getOriginalFileName(name);
                 String type=multi.getContentType(name);
                 File f= multi.getFile(name);
-                String path = absoluteFilePath+"/"+(ServletHelperClass.encryptPassword(originalname+usr.getUsername()));
-                File renameFile = new File(path);
-                int x = 0;
+                String hash = ServletHelperClass.encryptPassword(originalname+usr.getUsername());
+                File renameFile = new File(absoluteFilePath+"/"+hash);
                 f.renameTo(renameFile);
-                //Files.move(f, renameFile);
+                database.FileDB file = new database.FileDB();
+                file.setHashed_name(hash);
+                file.setType(type);
+                file.setOriginal_name(originalname);
+                file.setId_user(usr.getId());
+                file.setId_group(g.getId());
+                helper.addFile(file);
             }
+            
+            Enumeration params = multi.getParameterNames();
+            List<String> linkedFiles = null;
+
+             String text = (String) multi.getParameter("text");
+                
+                //file linking needed
+           
+            ServletHelperClass.parseText(usr, text, helper);
+                
+            
+
+
+            
+            
         }
     }
 

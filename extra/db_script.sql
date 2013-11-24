@@ -11,7 +11,17 @@ create table Groups (
     id_owner int not null,
     foreign key(id_owner) references Users(id_user)
 );
+create table FileDB (
+    hashed_name varchar(255) not null,
+    id_group int not null,
+    id_user int not null,
+    original_name varchar(255) not null,
+    type varchar(255) not null,
+    primary key(hashed_name, id_group, id_user),
+    foreign key(id_group) references Groups(id_group),
+    foreign key(id_user) references Users(id_user)
 
+);
 create table GroupUser (
     id_group int not null,
     id_user int not null,
@@ -26,7 +36,6 @@ create table Post (
     visible boolean default true,
     date_post timestamp,
     message long varchar,
-    file_string varchar(255),
     id_group int not null,
     id_user int not null,
     foreign key(id_group) references Groups(id_group),

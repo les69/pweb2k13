@@ -75,7 +75,7 @@ public class PostServlet extends HttpServlet {
                 for (PostToShow pts : ptss) {
                     printPost(pts, out);
                 }
-                out.println("<a href=\"NewPostServlet\">New Post</a>");
+                out.println("<a href=\"NewPostServlet?group="+gr.getId()+"\">New Post</a>");
                 ServletHelperClass.printFoot(out);
             }
             catch(Exception ex){}

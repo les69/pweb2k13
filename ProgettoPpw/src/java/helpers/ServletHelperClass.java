@@ -5,6 +5,8 @@
  */
 package helpers;
 
+import database.DbHelper;
+import database.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -74,20 +76,90 @@ public class ServletHelperClass {
         out.println("</table>");
 
     }
-
-    public static List<String> getMatches(String text) {
+    public static void parseText(User usr, String text, DbHelper helper)
+    {
+        List<List<String>> listsOfMatch = getMatches(text);
+        
+        //Significa che non ci sono link
+        if(listsOfMatch.isEmpty())
+            return;
+        List<String> matchedStrings = listsOfMatch.get(0);
+        List<String> filesToLink = listsOfMatch.get(1);
+        
+        List<String> linkedFiles = convertMatchedStrings(filesToLink, usr, helper);
+    }
+    public static List<List<String>> getMatches(String text) {
         List<String> matchedStrings = new ArrayList<>();
+        List<String> stringsToReplace = new ArrayList<>();
+        
+        List<List<String>> toRet = new ArrayList<>();
 
         Pattern pattern = Pattern.compile("\\$\\$(\\w+)\\$\\$");
         try {
             Matcher matcher = pattern.matcher(text);
             while (matcher.find()) {
+                stringsToReplace.add(matcher.group());
                 matchedStrings.add(matcher.group(1));
             }
         } catch (Exception ex) {
         }
-        return matchedStrings;
+        
+        toRet.add(stringsToReplace);
+        toRet.add(matchedStrings);
+        return toRet;
     }
+    public static boolean isAnUrl(String url)
+    {
+        Pattern pattern = Pattern.compile("((mailto\\:|(news|(ht|f)tp(s?))\\://){1}\\S+)");
+        boolean matched = false;
+        try
+        {
+            Matcher matcher = pattern.matcher(url);
+            matched = matcher.matches();
+        }
+        catch (Exception ex)
+        {}
+        return matched;
+            
+    }   
+    public static void replaceStringsInText(String text,List<String> toReplace, List<String> replacements)
+    {
+        if(toReplace.size() != replacements.size())
+            throw new RuntimeException("Error: Different size between original strings and replacements");
+        
+        for (int i = 0; i < toReplace.size(); i++) 
+            text = text.replace(toReplace.get(i), replacements.get(i));
+        
+            
+        
+    }
+    public static List<String> convertMatchedStrings(List<String> matches, User usr, DbHelper helper)
+    {
+        List<String> parsedStrings = new ArrayList<>();
+        if(matches != null)
+            return null;
+        for (int i = 0; i < matches.size(); i++) {
+            String m = matches.get(i);
+            String parsed ="";
+            if(!helper.isAUserFile(usr, m))
+            {
+                if(isAnUrl(m))
+                    parsed = "<a href=\""+m+"\">"+m+"</a>";
+                else // Se è un file che non esiste e nemmeno uno URL copio il nome e basta, come se non fosse stato linkato
+                    parsed = m;
+            }
+            else
+            {
+                String hash = encryptPassword(m+usr.getUsername());
+                parsed = "<a href=\"DownloadServlet?file="+hash+"\">"+m+"</a>";
+                
+            }
+            parsedStrings.add(parsed);
+            
+        }
+        return parsedStrings;
+    }
+
 
     public static String encryptPassword(String password) {
         String sha1 = "";
