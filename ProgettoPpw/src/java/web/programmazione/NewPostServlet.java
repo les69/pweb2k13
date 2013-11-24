@@ -106,6 +106,11 @@ public class NewPostServlet extends HttpServlet {
             User usr = helper.getUser(ServletHelperClass.getUsername(request.getCookies()));
             String relativeWebPath = "/WEB-INF/uploads";
             String absoluteFilePath = getServletContext().getRealPath(relativeWebPath)+"/"+usr.getUsername();
+            
+            File dir = new File(absoluteFilePath);
+            if(!dir.exists())
+                dir.mkdir();
+                
             out.println(absoluteFilePath);
             MultipartRequest multi = new MultipartRequest(request, absoluteFilePath,10*1024*1024,"utf-8");
             

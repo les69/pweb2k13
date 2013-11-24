@@ -88,7 +88,48 @@ public class DbHelper implements Serializable {
 
         return usr;
     }
+    public List<Group> getUserGroups(User usr)
+    {
+        return getUserGroups(usr.getId());
+    }
 
+    public List<Group> getUserGroups(int id_user)
+             {
+        PreparedStatement stm = null;
+        List<Group> groupList = new ArrayList<Group>();
+        try {
+            if (_connection == null || _connection.isClosed()) {
+                throw new RuntimeException("Connection must be estabilished before a statement");
+            }
+            stm = _connection.prepareStatement("select * from GroupUser where id_user=?");
+            stm.setInt(1, id_user);
+            ResultSet rs = null;
+
+            try {
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    Integer id_group = rs.getInt("id_group");
+                    
+                    Group g = getGroup(id_group);
+                    groupList.add(g);
+                }
+            } catch (SQLException sqlex) {
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+            }
+        } catch (Exception ex) {
+        } finally {
+            if (stm != null) {
+                try{
+                stm.close();
+                }catch (SQLException sex){}
+            }
+        }
+
+        return groupList;
+    }
     public List<Group> getGroupsByOwner(int owner_id)
              {
         PreparedStatement stm = null;
@@ -479,7 +520,7 @@ public class DbHelper implements Serializable {
                 catch(SQLException sex){}
         }
     }
-    public boolean isAUserFile(User usr, String filehash)
+    public boolean isAUserFile(User usr, String original_name)
     {
         PreparedStatement stm = null;
         
@@ -488,7 +529,7 @@ public class DbHelper implements Serializable {
                 throw new RuntimeException("Connection must be estabilished before a statement");
             }
             stm = _connection.prepareStatement("select * from FileDB where original_name=? and id_user=?");
-            stm.setString(1, filehash);
+            stm.setString(1, original_name);
             stm.setInt(2, usr.getId());
             ResultSet rs = null;
 
@@ -541,6 +582,49 @@ public class DbHelper implements Serializable {
                 }
                 catch(SQLException sex){}
         }
+    }
+    public FileDB getFile(User usr, String hash)
+    {
+        PreparedStatement stm = null;
+        FileDB file = null;
+        try {
+            if (_connection == null || _connection.isClosed()) {
+                throw new RuntimeException("Connection must be estabilished before a statement");
+            }
+            stm = _connection.prepareStatement("select * from FileDB where hashed_name=? and id_user=?");
+            stm.setString(1, hash);
+            stm.setInt(2, usr.getId());
+            ResultSet rs = null;
+
+            try {
+                rs = stm.executeQuery();
+                if(rs.next())
+                {
+                    file = new FileDB();
+                    file.setId_group(rs.getInt("id_group"));
+                    file.setId_user(rs.getInt("id_user"));
+                    file.setHashed_name(hash);
+                    file.setOriginal_name(rs.getString("original_name"));
+                    file.setType(rs.getString("type"));
+                }
+            } catch (SQLException sqlex) {
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+            }
+        } catch (Exception ex) {
+        } finally {
+            if (stm != null) {
+                try
+                {
+                    stm.close();
+                }
+                catch (SQLException sex){}
+            }
+        }
+
+        return file;
     }
 }
 

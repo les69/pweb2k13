@@ -3,18 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package web.programmazione;
 
 import database.DbHelper;
+import database.FileDB;
 import database.User;
-import database.Group;
 import helpers.ServletHelperClass;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.rmi.ServerException;
-import java.util.List;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,15 +25,17 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author les
  */
-public class GroupServlet extends HttpServlet {
-
+public class DownloadServlet extends HttpServlet {
+    static final long serialVersionUID = 1L;
+    private static final int BUFSIZE = 4096;
+    private String filePath;
+    
     private DbHelper helper;
 
     @Override
     public void init() throws ServletException {
         this.helper = (DbHelper) super.getServletContext().getAttribute("dbmanager");
     }
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,40 +47,7 @@ public class GroupServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try {
-            PrintWriter out = response.getWriter();
-            String username = ServletHelperClass.getUsername(request.getCookies());
-
-            if (username == null) {
-                throw new ServerException("Bad Error: Username is not defined when it MUST be");
-            }
-            if (this.helper == null) {
-                throw new ServerException("Bad Error: dbHelper is not defined when it MUST be");
-            }
-
-            User usr = helper.getUser(username);
-            List<Group> groups = helper.getUserGroups(usr);
-            ServletHelperClass.printHead(out);
-            out.println("This are the groups that you are following");
-            out.println("<table border=\"1\">");
-            out.println("<tr><th><b>Group name</b></th><th><b>Date Creation</b></th><th><b>Group founder</b></th><th><b>Link to group</b></th></tr>");
-            for (int i = 0; i < groups.size(); i++) {
-                Group g = groups.get(i);
-                out.println("<tr>");
-                out.println("<td>"+g.getName()+"</td>");
-                out.println("<td>"+g.getDateCreation()+"</td>");
-                out.println("<td>"+helper.getUser(g.getOwner()).getUsername()+"</td>");
-                out.println("<td><a href=\"\\ProgettoPpw\\Group\\PostServlet?g=" + g.getId()+  "\">See Posts</a>");
-
-                out.println("</tr>");
-            }
-            out.println("</table>");
-
-            ServletHelperClass.printFoot(out);
-
-        } catch (Exception ex) {
-        }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -91,7 +62,43 @@ public class GroupServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        User usr = helper.getUser(ServletHelperClass.getUsername(request.getCookies()));
+        String relativeWebPath = "/WEB-INF/uploads";
+        
+        String file_hash = request.getParameter("file");
+        filePath = getServletContext().getRealPath(relativeWebPath)+File.separator+usr.getUsername()+File.separator;
+        
+        try{
+            PrintWriter out = response.getWriter();
+            ServletHelperClass.printHead(out);
+            File tmpFile = new File(filePath+file_hash);
+            if(!tmpFile.exists())
+                out.println("The request file was not found!");
+            
+            FileDB file = helper.getFile(usr, file_hash);
+            
+            response.setContentType(file.getType());
+            response.setContentLength((int)tmpFile.length());
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + file.getOriginal_name() + "\"");
+            byte[] byteBuffer = new byte[BUFSIZE];
+            DataInputStream in = new DataInputStream(new FileInputStream(tmpFile));
+            ServletOutputStream outStream = response.getOutputStream();
+
+            // reads the file's bytes and writes them to the response stream
+            int length = 0;
+            while ((in != null) && ((length = in.read(byteBuffer)) != -1))
+            {
+                outStream.write(byteBuffer,0,length);
+            }
+
+            in.close();
+            outStream.close();
+            
+        }
+        catch(Exception ex)
+        {}
+
     }
 
     /**

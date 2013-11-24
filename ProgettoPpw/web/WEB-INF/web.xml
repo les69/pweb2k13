@@ -47,7 +47,10 @@
     <servlet>
         <servlet-name>NewPostServlet</servlet-name>
         <servlet-class>web.programmazione.NewPostServlet</servlet-class>
- 
+    </servlet>
+    <servlet>
+        <servlet-name>DownloadServlet</servlet-name>
+        <servlet-class>web.programmazione.DownloadServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -84,6 +87,10 @@
     <servlet-mapping>
         <servlet-name>NewPostServlet</servlet-name>
         <url-pattern>/Group/NewPostServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DownloadServlet</servlet-name>
+        <url-pattern>/Group/DownloadServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
