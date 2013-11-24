@@ -492,6 +492,7 @@ public class DbHelper implements Serializable {
             ResultSet rs = null;
 
             try {
+                rs = stm.executeQuery();
                 if(rs.next())
                     return true;
             } catch (SQLException sqlex) {

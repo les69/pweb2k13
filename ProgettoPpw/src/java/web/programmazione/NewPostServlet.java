@@ -138,9 +138,9 @@ public class NewPostServlet extends HttpServlet {
 
              String text = (String) multi.getParameter("text");
                 
-                //file linking needed
+             //file linking needed
            
-            ServletHelperClass.parseText(usr, text, helper);
+            String message = ServletHelperClass.parseText(usr, text, helper);
                 
             
 

@@ -76,17 +76,21 @@ public class ServletHelperClass {
         out.println("</table>");
 
     }
-    public static void parseText(User usr, String text, DbHelper helper)
+    public static String parseText(User usr, String text, DbHelper helper)
     {
         List<List<String>> listsOfMatch = getMatches(text);
         
         //Significa che non ci sono link
         if(listsOfMatch.isEmpty())
-            return;
+            return text;
         List<String> matchedStrings = listsOfMatch.get(0);
         List<String> filesToLink = listsOfMatch.get(1);
         
         List<String> linkedFiles = convertMatchedStrings(filesToLink, usr, helper);
+        String parsedText = replaceStringsInText(text, matchedStrings, linkedFiles);
+        
+        return parsedText;
+        
     }
     public static List<List<String>> getMatches(String text) {
         List<String> matchedStrings = new ArrayList<>();
@@ -94,18 +98,19 @@ public class ServletHelperClass {
         
         List<List<String>> toRet = new ArrayList<>();
 
-        Pattern pattern = Pattern.compile("\\$\\$(\\w+)\\$\\$");
+        Pattern pattern = Pattern.compile("\\$\\$(\\S+)\\$\\$");
         try {
             Matcher matcher = pattern.matcher(text);
             while (matcher.find()) {
                 stringsToReplace.add(matcher.group());
                 matchedStrings.add(matcher.group(1));
             }
+                    
+            toRet.add(stringsToReplace);
+            toRet.add(matchedStrings);
         } catch (Exception ex) {
         }
-        
-        toRet.add(stringsToReplace);
-        toRet.add(matchedStrings);
+
         return toRet;
     }
     public static boolean isAnUrl(String url)
@@ -122,21 +127,21 @@ public class ServletHelperClass {
         return matched;
             
     }   
-    public static void replaceStringsInText(String text,List<String> toReplace, List<String> replacements)
+    public static String replaceStringsInText(String text,List<String> toReplace, List<String> replacements)
     {
         if(toReplace.size() != replacements.size())
             throw new RuntimeException("Error: Different size between original strings and replacements");
         
         for (int i = 0; i < toReplace.size(); i++) 
             text = text.replace(toReplace.get(i), replacements.get(i));
-        
+        return text;
             
         
     }
     public static List<String> convertMatchedStrings(List<String> matches, User usr, DbHelper helper)
     {
         List<String> parsedStrings = new ArrayList<>();
-        if(matches != null)
+        if(matches == null)
             return null;
         for (int i = 0; i < matches.size(); i++) {
             String m = matches.get(i);
