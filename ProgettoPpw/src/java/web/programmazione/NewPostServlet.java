@@ -19,7 +19,6 @@ import helpers.ServletHelperClass;
 import java.util.List;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
-import com.oreilly.servlet.multipart.FileRenamePolicy;
 import database.Group;
 import database.Post;
 import java.io.File;
@@ -110,7 +109,7 @@ public class NewPostServlet extends HttpServlet {
             String absoluteFilePath = getServletContext().getRealPath(relativeWebPath)+File.separator;
             
             //Use temporary multi to retrieve group name
-            MultipartRequest multi = new MultipartRequest(request, absoluteFilePath,10*1024*1024,"utf-8");
+            MultipartRequest multi = new MultipartRequest(request, absoluteFilePath,10*1024*1024,"utf-8", new DefaultFileRenamePolicy());
                   
             String group = (String) multi.getParameter("group");
              
@@ -161,7 +160,9 @@ public class NewPostServlet extends HttpServlet {
             p.setMessage(message);
             helper.addPost(p);
  
-            response.sendRedirect("PostServlet?g="+g.getId());
+            //response.sendRedirect("PostServlet?g="+g.getId());
+            request.getRequestDispatcher("/Group/PostServlet?group="+g.getId()).forward(request, response);
+            
             
 
 

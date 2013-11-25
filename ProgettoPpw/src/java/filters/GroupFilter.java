@@ -116,11 +116,21 @@ public class GroupFilter implements Filter {
         try {
             helper = (DbHelper) getFilterConfig().getServletContext().getAttribute("dbmanager");
         
-            Integer group_id = Integer.parseInt(request.getParameter("group"));
-      
-            if(!helper.doesUserBelongsToGroup(helper.getUser(ServletHelperClass.getUsername((HttpServletRequest)request, false)),group_id))
-                request.getRequestDispatcher("/HomeServlet").forward(request, response);
+
+            if(!(((HttpServletRequest)request).getRequestURI().contains("NewPostServlet") && ((HttpServletRequest)request).getMethod().toLowerCase().equals("post")))
+            {
+                Integer group_id;
+
+                if(request.getParameter("group") == null)
+                    throw new RuntimeException("Bad Error: Group not set in request");
+                 group_id = Integer.parseInt(request.getParameter("group"));
+                
+                if(!helper.doesUserBelongsToGroup(helper.getUser(ServletHelperClass.getUsername((HttpServletRequest)request, false)),group_id))
+                    request.getRequestDispatcher("/HomeServlet").forward(request, response);
+                //chain.doFilter(request, response);
+            }
             chain.doFilter(request, response);
+            
         } catch (Throwable t) {
 	    // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then
