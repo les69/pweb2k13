@@ -55,7 +55,7 @@ public class InviteServlet extends HttpServlet {
             
             User usr = helper.getUser(username);
             out.println("<h1>Hello "+ usr.getUsername() + ". These are your pending invites!</h1>");
-            ServletHelperClass.printTableHead(out, "From", "Group","Accept");
+            ServletHelperClass.printTableHead(out, "From", "Group","Accept", "Decline");
             List<Invite> invites = helper.getUserInvites(usr);
             out.println("<form action=\"AcceptInvite\" method=\"post\">");
             printTable(invites, out);
@@ -77,7 +77,7 @@ public class InviteServlet extends HttpServlet {
             out.println("<td>"+(helper.getUser(g.getOwner())).getUsername() +"</td>");
             out.println("<td>"+ g.getName()+"</td>");
             out.println("<td><input type=\"checkbox\" name="+g.getId()+" /></td>");           
-            out.println("<td><a href=\"\\ProgettoPpw\\User\\DeclineInvite?group=\""+g.getId()+" /></td>");
+            out.println("<td><a href=\"\\ProgettoPpw\\User\\DeclineInvite?group="+g.getId()+"\" >Decline</a></td>");
             out.println("</tr>");
         }
     }
