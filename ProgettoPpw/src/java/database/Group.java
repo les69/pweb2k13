@@ -6,7 +6,6 @@
 
 package database;
 
-import java.util.Date;
 
 /**
  *
@@ -17,7 +16,6 @@ public class Group {
     private String _name;
     private boolean _active;
     private int _owner;
-    private Date _dateCreation;
 
     /**
      * @return the _id
@@ -75,18 +73,7 @@ public class Group {
         this._owner = _owner;
     }
 
-    /**
-     * @return the _dateCreation
-     */
-    public Date getDateCreation() {
-        return _dateCreation;
-    }
+    
 
-    /**
-     * @param _dateCreation the _dateCreation to set
-     */
-    public void setDateCreation(Date _dateCreation) {
-        this._dateCreation = _dateCreation;
-    }
     
 }
