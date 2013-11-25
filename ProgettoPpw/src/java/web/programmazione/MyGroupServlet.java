@@ -73,7 +73,7 @@ public class MyGroupServlet extends HttpServlet {
                     printGroupTable(out, group);
                 }
             }
-            out.println("<tr><td colspan=\"4\"><a href=\"\\ProgettoPpw\\Group\\GroupActionServlet?action=new\" align=\"right\">New group</a></td></tr>");
+            out.println("<tr><td colspan=\"4\"><a href=\"\\ProgettoPpw\\User\\NewGroupServlet\" >New group</a></td></tr>");
             ServletHelperClass.printTableClose(out);
             /* TODO output your page here. You may use following sample code. */
 

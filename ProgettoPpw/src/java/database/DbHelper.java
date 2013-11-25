@@ -152,7 +152,6 @@ public class DbHelper implements Serializable {
                     g.setId(rs.getInt("id_group"));
                     g.setName(rs.getString("name"));
                     g.setOwner(rs.getInt("id_owner"));
-                    g.setDateCreation(rs.getDate("date_creation"));
                     groupList.add(g);
                 }
             } catch (SQLException sqlex) {
@@ -664,6 +663,29 @@ public class DbHelper implements Serializable {
 
         return false;
     }
+    
+    public void addGroup(Group grp)
+    {
+        PreparedStatement stm = null;
+        try {
+            if (_connection == null || _connection.isClosed()) {
+                throw new RuntimeException("Connection must be estabilished before a statement");
+            }
+            stm = _connection.prepareStatement("INSERT INTO PWEB.GROUPS(NAME,ACTIVE,ID_OWNER) VALUES (?, ?, ?)");
+            stm.setString(1, grp.getName());
+            stm.setBoolean(2, true);
+            stm.setInt(3, grp.getOwner());
+            int res = stm.executeUpdate();
+        } catch (Exception ex) {
+        } finally {
+            if (stm != null) {
+                try{
+                stm.close();
+                }
+                catch(SQLException sex){}
+            }
+        }
+     }
     
 }
 

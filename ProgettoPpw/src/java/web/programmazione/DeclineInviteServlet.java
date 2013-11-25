@@ -8,13 +8,10 @@ package web.programmazione;
 
 import database.DbHelper;
 import database.Group;
-import database.Invite;
 import database.User;
 import helpers.ServletHelperClass;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,9 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author les
+ * @author lorenzo
  */
-public class InviteServlet extends HttpServlet {
+public class DeclineInviteServlet extends HttpServlet {
 
     private DbHelper helper;
     
@@ -44,42 +41,17 @@ public class InviteServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try 
-        {
-            PrintWriter out = response.getWriter();
-            String username = ServletHelperClass.getUsername(request, false);
-            
-            if(username ==  null)
-                throw new ServletException("Bad Error: Username not set");
-            ServletHelperClass.printHead(out);
-            
-            User usr = helper.getUser(username);
-            out.println("<h1>Hello "+ usr.getUsername() + ". These are your pending invites!</h1>");
-            ServletHelperClass.printTableHead(out, "From", "Group","Accept");
-            List<Invite> invites = helper.getUserInvites(usr);
-            out.println("<form action=\"AcceptInvite\" method=\"post\">");
-            printTable(invites, out);
-            ServletHelperClass.printTableClose(out);
-            out.println("<input type=\"submit\" value=\"Accept\" />");
-            out.println("</form>");
-            ServletHelperClass.printFoot(out);
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            User usr = helper.getUser(ServletHelperClass.getUsername(request, false));
+            Group grp = helper.getGroup(Integer.parseInt(request.getParameter("group")));
+            DeleteInvite(grp, usr);
         }
-        catch(Exception ex)
-        {}
     }
-    private void printTable(List<Invite> invites, PrintWriter out)
-            throws SQLException
+    
+    private void DeleteInvite(Group grp, User usr)
     {
-        for (int i = 0; i < invites.size(); i++) {
-            Invite inv = invites.get(i);
-            Group g = helper.getGroup(inv.getIdGroup());
-            out.println("<tr>");
-            out.println("<td>"+(helper.getUser(g.getOwner())).getUsername() +"</td>");
-            out.println("<td>"+ g.getName()+"</td>");
-            out.println("<td><input type=\"checkbox\" name="+g.getId()+" /></td>");           
-            out.println("<td><a href=\"\\ProgettoPpw\\User\\DeclineInvite?group=\""+g.getId()+" /></td>");
-            out.println("</tr>");
-        }
+        helper.removeInvite(grp, usr);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
