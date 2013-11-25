@@ -46,6 +46,7 @@ create table Invite (
     id_group int not null,
     id_user int not null,
     invite_date date not null,
+    visible boolean not null,
     primary key(id_group, id_user),
     foreign key(id_group) references Groups(id_group),
     foreign key(id_user) references Users(id_user)

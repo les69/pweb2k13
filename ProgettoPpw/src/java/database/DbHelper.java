@@ -626,5 +626,44 @@ public class DbHelper implements Serializable {
 
         return file;
     }
+    public boolean doesUserBelongsToGroup(User usr, Group grp)
+    {
+        return doesUserBelongsToGroup(usr, grp.getId());
+    }
+    public boolean doesUserBelongsToGroup(User usr, Integer id_group)
+    {
+        PreparedStatement stm = null;
+        try {
+            if (_connection == null || _connection.isClosed()) {
+                throw new RuntimeException("Connection must be estabilished before a statement");
+            }
+            stm = _connection.prepareStatement("select * from GROUPUSER where id_group=? and id_user=? and active=true");
+            stm.setInt(1, id_group);
+            stm.setInt(2, usr.getId());
+            ResultSet rs = null;
+
+            try {
+                rs = stm.executeQuery();
+                if  (rs.next())
+                    return true;
+            } catch (SQLException sqlex) {
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+            }
+        } catch (Exception ex) {
+        } finally {
+            if (stm != null) {
+                try{
+                stm.close();
+                }
+                catch(SQLException sex){}
+            }
+        }
+
+        return false;
+    }
+    
 }
 

@@ -62,7 +62,7 @@ public class MyGroupServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         List<Group> groups = null;
        
-            groups = helper.getGroupsByOwner(helper.getUser(ServletHelperClass.getUsername(request.getCookies())));
+            groups = helper.getGroupsByOwner(helper.getUser(ServletHelperClass.getUsername(request, false)));
        
         try (PrintWriter out = response.getWriter()) {
             ServletHelperClass.printHead(out);

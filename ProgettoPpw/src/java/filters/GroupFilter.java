@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package filters;
 
+import database.DbHelper;
+import helpers.ServletHelperClass;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -15,44 +18,36 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Lorenzo(Mr Blék) und Mirko(Mr. Les)
+ * @author les
  */
-public class LoginFilter implements Filter {
-
+public class GroupFilter implements Filter {
+    
     private static final boolean debug = true;
+    private DbHelper helper;
+    
 
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
     // configured. 
     private FilterConfig filterConfig = null;
-
-    public LoginFilter() {
-    }
-    /*
-     This function checks whenever the user is logged by simply checking if there exist 
-     a cookie "username". It's pointless to say that this is not the best and safe way to do it but
-     we assume that our users aren't so bad to change cookies.
-     */
-
-    private boolean isUserLogged(HttpServletRequest request) {
-        
-         
-        if(request.getSession().getAttribute("username") == null)
-            return false;
-        return true;
-    }
-
+    
+    public GroupFilter() {
+    }    
+    
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
+        if (debug) {
+            log("GroupFilter:DoBeforeProcessing");
+        }
 
 	// Write code here to process the request and/or response before
         // the rest of the filter chain is invoked.
-        // For example, a logging filter might log items on the request object,
+	// For example, a logging filter might log items on the request object,
         // such as the parameters.
 	/*
          for (Enumeration en = request.getParameterNames(); en.hasMoreElements(); ) {
@@ -70,17 +65,17 @@ public class LoginFilter implements Filter {
          log(buf.toString());
          }
          */
-    }
-
+    }    
+    
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("LoginFilter:DoAfterProcessing");
+            log("GroupFilter:DoAfterProcessing");
         }
 
 	// Write code here to process the request and/or response after
         // the rest of the filter chain is invoked.
-        // For example, a logging filter might log the attributes on the
+	// For example, a logging filter might log the attributes on the
         // request object after the request has been processed. 
 	/*
          for (Enumeration en = request.getAttributeNames(); en.hasMoreElements(); ) {
@@ -90,7 +85,7 @@ public class LoginFilter implements Filter {
 
          }
          */
-        // For example, a filter might append something to the response.
+	// For example, a filter might append something to the response.
 	/*
          PrintWriter respOut = new PrintWriter(response.getWriter());
          respOut.println("<P><B>This has been appended by an intrusive filter.</B>");
@@ -109,34 +104,34 @@ public class LoginFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-
+        
         if (debug) {
-            log("LoginFilter:doFilter()");
+            log("GroupFilter:doFilter()");
         }
-
+        
+            
         doBeforeProcessing(request, response);
-
+        
         Throwable problem = null;
         try {
-
-            if (!isUserLogged(((HttpServletRequest) request))) {
-                request.getRequestDispatcher("LoginServlet").forward(request, response);
-            }
-            
-            if(((HttpServletRequest)request).getRequestURI().contains("LoginServlet"))
-                request.getRequestDispatcher("HomeServlet").forward(request, response);
+            helper = (DbHelper) getFilterConfig().getServletContext().getAttribute("dbmanager");
+        
+            Integer group_id = Integer.parseInt(request.getParameter("group"));
+      
+            if(!helper.doesUserBelongsToGroup(helper.getUser(ServletHelperClass.getUsername((HttpServletRequest)request, false)),group_id))
+                request.getRequestDispatcher("/HomeServlet").forward(request, response);
             chain.doFilter(request, response);
         } catch (Throwable t) {
-            // If an exception is thrown somewhere down the filter chain,
+	    // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then
             // rethrow the problem after that.
             problem = t;
             t.printStackTrace();
         }
-
+        
         doAfterProcessing(request, response);
 
-        // If there was a problem, we want to rethrow it if it is
+	// If there was a problem, we want to rethrow it if it is
         // a known type, otherwise log it.
         if (problem != null) {
             if (problem instanceof ServletException) {
@@ -168,17 +163,17 @@ public class LoginFilter implements Filter {
     /**
      * Destroy method for this filter
      */
-    public void destroy() {
+    public void destroy() {        
     }
 
     /**
      * Init method for this filter
      */
-    public void init(FilterConfig filterConfig) {
+    public void init(FilterConfig filterConfig) {        
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
-            if (debug) {
-                log("LoginFilter:Initializing filter");
+            if (debug) {                
+                log("GroupFilter:Initializing filter");
             }
         }
     }
@@ -189,27 +184,27 @@ public class LoginFilter implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("LoginFilter()");
+            return ("GroupFilter()");
         }
-        StringBuffer sb = new StringBuffer("LoginFilter(");
+        StringBuffer sb = new StringBuffer("GroupFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());
     }
-
+    
     private void sendProcessingError(Throwable t, ServletResponse response) {
-        String stackTrace = getStackTrace(t);
-
+        String stackTrace = getStackTrace(t);        
+        
         if (stackTrace != null && !stackTrace.equals("")) {
             try {
                 response.setContentType("text/html");
                 PrintStream ps = new PrintStream(response.getOutputStream());
-                PrintWriter pw = new PrintWriter(ps);
+                PrintWriter pw = new PrintWriter(ps);                
                 pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
 
                 // PENDING! Localize this for next official release
-                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");
-                pw.print(stackTrace);
+                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");                
+                pw.print(stackTrace);                
                 pw.print("</pre></body>\n</html>"); //NOI18N
                 pw.close();
                 ps.close();
@@ -226,7 +221,7 @@ public class LoginFilter implements Filter {
             }
         }
     }
-
+    
     public static String getStackTrace(Throwable t) {
         String stackTrace = null;
         try {
@@ -240,9 +235,9 @@ public class LoginFilter implements Filter {
         }
         return stackTrace;
     }
-
+    
     public void log(String msg) {
-        filterConfig.getServletContext().log(msg);
+        filterConfig.getServletContext().log(msg);        
     }
-
+    
 }

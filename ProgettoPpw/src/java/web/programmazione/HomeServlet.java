@@ -39,7 +39,7 @@ public class HomeServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String username = ServletHelperClass.getUsername(request.getCookies());
+            String username = ServletHelperClass.getUsername(request, false);
             ServletHelperClass.printHead(out);
             out.println("<h3>Welcome " + username + ". This is your Home!</h3>");
             printLastLogin(request.getCookies(), out, response);

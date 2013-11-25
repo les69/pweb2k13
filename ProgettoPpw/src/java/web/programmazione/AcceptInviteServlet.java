@@ -6,6 +6,7 @@
 package web.programmazione;
 
 import database.DbHelper;
+import database.User;
 import helpers.ServletHelperClass;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -43,12 +44,12 @@ public class AcceptInviteServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-
-            acceptInvites(request.getParameterMap(), request.getCookies());
+            User usr = helper.getUser(ServletHelperClass.getUsername(request, false));
+            acceptInvites(request.getParameterMap(), usr);
             
         }
     }
-    private void acceptInvites(Map params, Cookie[] cookies)
+    private void acceptInvites(Map params, User usr)
     {
         Iterator i = params.keySet().iterator();
         try{
@@ -56,7 +57,7 @@ public class AcceptInviteServlet extends HttpServlet {
 
                 String key = (String) i.next();
                 String value = ((String[]) params.get(key))[ 0];
-                helper.acceptInvite(helper.getGroup(Integer.parseInt(key)), helper.getUser(ServletHelperClass.getUsername(cookies)));
+                helper.acceptInvite(helper.getGroup(Integer.parseInt(key)),usr );
 
             }
         }

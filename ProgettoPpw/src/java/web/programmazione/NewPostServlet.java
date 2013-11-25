@@ -105,7 +105,7 @@ public class NewPostServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             
-            User usr = helper.getUser(ServletHelperClass.getUsername(request.getCookies()));
+            User usr = helper.getUser(ServletHelperClass.getUsername(request,false));
             String relativeWebPath = "/WEB-INF/uploads";
             String absoluteFilePath = getServletContext().getRealPath(relativeWebPath)+File.separator;
             

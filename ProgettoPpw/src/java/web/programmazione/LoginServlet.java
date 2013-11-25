@@ -58,6 +58,7 @@ public class LoginServlet extends HttpServlet {
                     printErrorPage(out, "Your credentials are wrong!");
                 } else {
                     Cookie usernameCookie = new Cookie("username", user.getUsername());
+                    request.getSession().setAttribute("username", username);
                     response.addCookie(usernameCookie);
                     request.getRequestDispatcher("HomeServlet").forward(request, response);
                 }

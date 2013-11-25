@@ -47,7 +47,7 @@ public class InviteServlet extends HttpServlet {
         try 
         {
             PrintWriter out = response.getWriter();
-            String username = ServletHelperClass.getUsername(request.getCookies());
+            String username = ServletHelperClass.getUsername(request, false);
             
             if(username ==  null)
                 throw new ServletException("Bad Error: Username not set");

@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -29,7 +31,7 @@ public class ServletHelperClass {
     private ServletHelperClass() {
     }
 
-    public static String getUsername(Cookie[] cookies) {
+    public static String getUsernameFromCookies(Cookie[] cookies) {
         if (cookies == null) {
             return null;
         }
@@ -40,6 +42,21 @@ public class ServletHelperClass {
             }
         }
         return null;
+    }
+
+    public static String getUsername(HttpServletRequest request, boolean useCookies) {
+        
+        if(request == null)
+            return null;
+        if(useCookies)
+            return getUsernameFromCookies(request.getCookies());
+        else
+            return getUsernameFromSession(request.getSession());
+            
+    }
+    public static String getUsernameFromSession(HttpSession session)
+    {
+        return (String)session.getAttribute("username");
     }
 
     public static void printHead(PrintWriter out) {
@@ -77,26 +94,28 @@ public class ServletHelperClass {
         out.println("</table>");
 
     }
-    public static String parseText(Group grp, String text, DbHelper helper)
-    {
+
+    public static String parseText(Group grp, String text, DbHelper helper) {
         List<List<String>> listsOfMatch = getMatches(text);
-        
+
         //Significa che non ci sono link
-        if(listsOfMatch.isEmpty())
+        if (listsOfMatch.isEmpty()) {
             return text;
+        }
         List<String> matchedStrings = listsOfMatch.get(0);
         List<String> filesToLink = listsOfMatch.get(1);
-        
+
         List<String> linkedFiles = convertMatchedStrings(filesToLink, grp, helper);
         String parsedText = replaceStringsInText(text, matchedStrings, linkedFiles);
-        
+
         return parsedText;
-        
+
     }
+
     public static List<List<String>> getMatches(String text) {
         List<String> matchedStrings = new ArrayList<>();
         List<String> stringsToReplace = new ArrayList<>();
-        
+
         List<List<String>> toRet = new ArrayList<>();
 
         Pattern pattern = Pattern.compile("\\$\\$(\\S+)\\$\\$");
@@ -106,7 +125,7 @@ public class ServletHelperClass {
                 stringsToReplace.add(matcher.group());
                 matchedStrings.add(matcher.group(1));
             }
-                    
+
             toRet.add(stringsToReplace);
             toRet.add(matchedStrings);
         } catch (Exception ex) {
@@ -114,58 +133,57 @@ public class ServletHelperClass {
 
         return toRet;
     }
-    public static boolean isAnUrl(String url)
-    {
+
+    public static boolean isAnUrl(String url) {
         Pattern pattern = Pattern.compile("((mailto\\:|(news|(ht|f)tp(s?))\\://){1}\\S+)");
         boolean matched = false;
-        try
-        {
+        try {
             Matcher matcher = pattern.matcher(url);
             matched = matcher.matches();
+        } catch (Exception ex) {
         }
-        catch (Exception ex)
-        {}
         return matched;
-            
-    }   
-    public static String replaceStringsInText(String text,List<String> toReplace, List<String> replacements)
-    {
-        if(toReplace.size() != replacements.size())
-            throw new RuntimeException("Error: Different size between original strings and replacements");
-        
-        for (int i = 0; i < toReplace.size(); i++) 
-            text = text.replace(toReplace.get(i), replacements.get(i));
-        return text;
-            
-        
+
     }
-    public static List<String> convertMatchedStrings(List<String> matches, Group g, DbHelper helper)
-    {
+
+    public static String replaceStringsInText(String text, List<String> toReplace, List<String> replacements) {
+        if (toReplace.size() != replacements.size()) {
+            throw new RuntimeException("Error: Different size between original strings and replacements");
+        }
+
+        for (int i = 0; i < toReplace.size(); i++) {
+            text = text.replace(toReplace.get(i), replacements.get(i));
+        }
+        return text;
+
+    }
+
+    public static List<String> convertMatchedStrings(List<String> matches, Group g, DbHelper helper) {
         List<String> parsedStrings = new ArrayList<>();
-        if(matches == null)
+        if (matches == null) {
             return null;
+        }
         for (int i = 0; i < matches.size(); i++) {
             String m = matches.get(i);
-            String parsed ="";
-            if(!helper.isAGroupFile(g, m)) //fix this function
+            String parsed = "";
+            if (!helper.isAGroupFile(g, m)) //fix this function
             {
-                if(isAnUrl(m))
-                    parsed = "<a href=\""+m+"\">"+m+"</a>";
-                else // Se è un file che non esiste e nemmeno uno URL copio il nome e basta, come se non fosse stato linkato
+                if (isAnUrl(m)) {
+                    parsed = "<a href=\"" + m + "\">" + m + "</a>";
+                } else // Se è un file che non esiste e nemmeno uno URL copio il nome e basta, come se non fosse stato linkato
+                {
                     parsed = m;
-            }
-            else
-            {
-                String hash = encryptPassword(m+g.getName());
-                parsed = "<a href=\"DownloadServlet?file="+hash+"&group="+g.getId()+"\">"+m+"</a>";
-                
+                }
+            } else {
+                String hash = encryptPassword(m + g.getName());
+                parsed = "<a href=\"DownloadServlet?file=" + hash + "&group=" + g.getId() + "\">" + m + "</a>";
+
             }
             parsedStrings.add(parsed);
-            
+
         }
         return parsedStrings;
     }
-
 
     public static String encryptPassword(String password) {
         String sha1 = "";

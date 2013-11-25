@@ -46,7 +46,7 @@ public class GroupServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try {
             PrintWriter out = response.getWriter();
-            String username = ServletHelperClass.getUsername(request.getCookies());
+            String username = ServletHelperClass.getUsername(request, false);
 
             if (username == null) {
                 throw new ServerException("Bad Error: Username is not defined when it MUST be");
@@ -67,7 +67,7 @@ public class GroupServlet extends HttpServlet {
                 out.println("<td>"+g.getName()+"</td>");
                 out.println("<td>"+g.getDateCreation()+"</td>");
                 out.println("<td>"+helper.getUser(g.getOwner()).getUsername()+"</td>");
-                out.println("<td><a href=\"\\ProgettoPpw\\Group\\PostServlet?g=" + g.getId()+  "\">See Posts</a>");
+                out.println("<td><a href=\"\\ProgettoPpw\\Group\\PostServlet?group=" + g.getId()+  "\">See Posts</a>");
 
                 out.println("</tr>");
             }
