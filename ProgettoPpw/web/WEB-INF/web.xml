@@ -25,8 +25,8 @@
         <servlet-class>web.programmazione.HomeServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>GroupServlet</servlet-name>
-        <servlet-class>web.programmazione.GroupServlet</servlet-class>
+        <servlet-name>GroupListServlet</servlet-name>
+        <servlet-class>web.programmazione.GroupListServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>PostServlet</servlet-name>
@@ -73,16 +73,8 @@
         <url-pattern>/LogoutServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>GroupServlet</servlet-name>
-        <url-pattern>/User/GroupServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>PostServlet</servlet-name>
         <url-pattern>/Group/PostServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>MyGroupServlet</servlet-name>
-        <url-pattern>/User/MyGroupServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>InviteServlet</servlet-name>
@@ -115,6 +107,14 @@
     <servlet-mapping>
         <servlet-name>ReportServlet</servlet-name>
         <url-pattern>/User/ReportServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GroupListServlet</servlet-name>
+        <url-pattern>/Group/GroupServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MyGroupServlet</servlet-name>
+        <url-pattern>/Group/MyGroupServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

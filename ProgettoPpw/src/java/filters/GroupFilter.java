@@ -43,7 +43,7 @@ public class GroupFilter implements Filter {
     
     public GroupFilter() {
         //Add exceptions here
-        exclusions = new ArrayList<>(Arrays.asList("MyGroup"));
+        exclusions = new ArrayList<>(Arrays.asList("GroupListServlet","MyGroupServlet"));
     }    
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)

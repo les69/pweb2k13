@@ -42,10 +42,10 @@ public class HomeServlet extends HttpServlet {
             String username = ServletHelperClass.getUsername(request, false);
             ServletHelperClass.printHead(out);
             out.println("<h3>Welcome " + username + ". This is your Home!</h3>");
-            printLastLogin(request.getCookies(), out, response);
+            printLastLogin(request.getCookies(), out, response, username);
             out.println("<br/>");
-            out.println("<a href=\"\\ProgettoPpw\\User\\MyGroupServlet\">My Groups</a><br/>");
-            out.println("<a href=\"\\ProgettoPpw\\User\\GroupServlet\">Groups</a><br/>");
+            out.println("<a href=\"\\ProgettoPpw\\Group\\MyGroupServlet\">My Groups</a><br/>");
+            out.println("<a href=\"\\ProgettoPpw\\Group\\GroupServlet\">Groups</a><br/>");
             out.println("<a href=\"\\ProgettoPpw\\User\\InviteServlet\">Pending invites</a><br/>");
             out.println("<a href=\"\\ProgettoPpw\\LogoutServlet\">Log out</a><br/>");
             ServletHelperClass.printFoot(out);
@@ -53,13 +53,13 @@ public class HomeServlet extends HttpServlet {
         }
     }
 
-    private void printLastLogin(Cookie[] cookies, PrintWriter out, HttpServletResponse response) {
+    private void printLastLogin(Cookie[] cookies, PrintWriter out, HttpServletResponse response, String username) {
         boolean found = false;
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("last-login")) {
+                if (cookie.getName().equals(username)) {
                     out.println("<h6 style=\"font-style:italic\">Last login at " + cookie.getValue() + "</h6>");
                     cookie.setValue(dateFormat.format(date));
                     response.addCookie(cookie);
@@ -69,7 +69,7 @@ public class HomeServlet extends HttpServlet {
             }
         }
         if (!found) {
-            Cookie loginCookie = new Cookie("last-login", "");
+            Cookie loginCookie = new Cookie(username, "");
             loginCookie.setValue(dateFormat.format(date));
             response.addCookie(loginCookie);
         }

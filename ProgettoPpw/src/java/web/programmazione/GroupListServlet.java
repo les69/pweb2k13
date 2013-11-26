@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author les
  */
-public class GroupServlet extends HttpServlet {
+public class GroupListServlet extends HttpServlet {
 
     private DbHelper helper;
 

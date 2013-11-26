@@ -28,6 +28,7 @@ public class LogoutServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    //DEPRECATED
     private Cookie getLoginCookie(Cookie[] cookies) {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -39,30 +40,15 @@ public class LogoutServlet extends HttpServlet {
         return null;
     }
 
-    private void executeLogout(Cookie[] cookies) {
-        Cookie toLogout = getLoginCookie(cookies);
-    }
+
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            Cookie toLogout = getLoginCookie(request.getCookies());
-            if (toLogout != null) {
-                toLogout.setValue("/");
-                toLogout.setMaxAge(0);
-                response.addCookie(toLogout);
-            }
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet LogoutServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet LogoutServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            
+            request.getSession().invalidate();
+            request.getRequestDispatcher("LoginServlet").forward(request, response);
         }
     }
 
