@@ -3,10 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 //TODO[Lotto] implement logging in the right way
-
 package database;
 
 import java.io.Serializable;
@@ -29,8 +26,7 @@ public class DbHelper implements Serializable {
 
     private transient Connection _connection;
 
-    public DbHelper(String url)
-    {
+    public DbHelper(String url) {
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver", true,
                     getClass().getClassLoader());
@@ -41,16 +37,14 @@ public class DbHelper implements Serializable {
         }
     }
 
-    public static void close()
-    {
+    public static void close() {
         try {
             DriverManager.getConnection("jdbc:derby:;shutdown=true");
         } catch (SQLException ex) {
         }
     }
 
-    public User authenticate(String username, String password)
-    {
+    public User authenticate(String username, String password) {
         PreparedStatement stm = null;
         User usr = null;
         try {
@@ -75,26 +69,24 @@ public class DbHelper implements Serializable {
                     rs.close();
                 }
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
         } finally {
             if (stm != null) {
-                try{
+                try {
                     stm.close();
+                } catch (SQLException sex) {
                 }
-                catch (SQLException sex){}
             }
         }
 
         return usr;
     }
-    public List<Group> getUserGroups(User usr)
-    {
+
+    public List<Group> getUserGroups(User usr) {
         return getUserGroups(usr.getId());
     }
 
-    public List<Group> getUserGroups(int id_user)
-             {
+    public List<Group> getUserGroups(int id_user) {
         PreparedStatement stm = null;
         List<Group> groupList = new ArrayList<Group>();
         try {
@@ -109,7 +101,7 @@ public class DbHelper implements Serializable {
                 rs = stm.executeQuery();
                 while (rs.next()) {
                     Integer id_group = rs.getInt("id_group");
-                    
+
                     Group g = getGroup(id_group);
                     groupList.add(g);
                 }
@@ -122,16 +114,17 @@ public class DbHelper implements Serializable {
         } catch (Exception ex) {
         } finally {
             if (stm != null) {
-                try{
-                stm.close();
-                }catch (SQLException sex){}
+                try {
+                    stm.close();
+                } catch (SQLException sex) {
+                }
             }
         }
 
         return groupList;
     }
-    public List<Group> getGroupsByOwner(int owner_id)
-             {
+
+    public List<Group> getGroupsByOwner(int owner_id) {
         PreparedStatement stm = null;
         List<Group> groupList = new ArrayList<Group>();
         try {
@@ -163,9 +156,10 @@ public class DbHelper implements Serializable {
         } catch (Exception ex) {
         } finally {
             if (stm != null) {
-                try{
-                stm.close();
-                }catch (SQLException sex){}
+                try {
+                    stm.close();
+                } catch (SQLException sex) {
+                }
             }
         }
 
@@ -173,15 +167,13 @@ public class DbHelper implements Serializable {
     }
 
     public List<Group> getGroupsByOwner(User owner) {
-        
-            return getGroupsByOwner(owner.getId());
-        
+
+        return getGroupsByOwner(owner.getId());
+
         //    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, null, ex);
-        
     }
 
-    public List<PostToShow> getPostFromGroup(int id_group)
-    {
+    public List<PostToShow> getPostFromGroup(int id_group) {
         PreparedStatement stm = null;
         List<PostToShow> postList = new ArrayList<PostToShow>();
         try {
@@ -208,24 +200,21 @@ public class DbHelper implements Serializable {
         } catch (Exception ex) {
         } finally {
             if (stm != null) {
-                try
-                {
+                try {
                     stm.close();
+                } catch (SQLException sex) {
                 }
-                catch (SQLException sex){}
             }
         }
 
         return postList;
     }
 
-    public List<PostToShow> getPostFromGroup(Group g)
-    {
+    public List<PostToShow> getPostFromGroup(Group g) {
         return getPostFromGroup(g.getId());
     }
 
-    public User getUser(int id_user)
-    {
+    public User getUser(int id_user) {
         PreparedStatement stm = null;
         User usr = null;
         try {
@@ -253,18 +242,17 @@ public class DbHelper implements Serializable {
         } catch (Exception ex) {
         } finally {
             if (stm != null) {
-                try{     
+                try {
                     stm.close();
+                } catch (SQLException sex) {
                 }
-                catch(SQLException sex){}
             }
         }
 
         return usr;
     }
 
-    public User getUser(String username)
-    {
+    public User getUser(String username) {
         PreparedStatement stm = null;
         User usr = null;
         try {
@@ -292,19 +280,17 @@ public class DbHelper implements Serializable {
         } catch (Exception ex) {
         } finally {
             if (stm != null) {
-                try
-                {
+                try {
                     stm.close();
+                } catch (SQLException sex) {
                 }
-                catch (SQLException sex){}
             }
         }
 
         return usr;
     }
 
-    public Group getGroup(int idGroup)
-    {
+    public Group getGroup(int idGroup) {
         PreparedStatement stm = null;
         Group grp = null;
         try {
@@ -333,17 +319,17 @@ public class DbHelper implements Serializable {
         } catch (Exception ex) {
         } finally {
             if (stm != null) {
-                try{
-                stm.close();
+                try {
+                    stm.close();
+                } catch (SQLException sex) {
                 }
-                catch(SQLException sex){}
             }
         }
 
         return grp;
     }
-    public Group getGroup(String groupName)
-    {
+
+    public Group getGroup(String groupName) {
         PreparedStatement stm = null;
         Group grp = null;
         try {
@@ -372,17 +358,17 @@ public class DbHelper implements Serializable {
         } catch (Exception ex) {
         } finally {
             if (stm != null) {
-                    try{
-                stm.close();
+                try {
+                    stm.close();
+                } catch (SQLException sex) {
                 }
-                catch(SQLException sex){}
             }
         }
 
         return grp;
     }
-    public List<Invite> getUserInvites(Integer id_user)
-    {
+
+    public List<Invite> getUserInvites(Integer id_user) {
         PreparedStatement stm = null;
         List<Invite> invites = new ArrayList<Invite>();
         try {
@@ -411,35 +397,33 @@ public class DbHelper implements Serializable {
         } catch (Exception ex) {
         } finally {
             if (stm != null) {
-                    try{
-                stm.close();
+                try {
+                    stm.close();
+                } catch (SQLException sex) {
                 }
-                catch(SQLException sex){}
             }
         }
 
         return invites;
     }
-    public List<Invite> getUserInvites(User usr)
-    {
+
+    public List<Invite> getUserInvites(User usr) {
         return getUserInvites(usr.getId());
     }
-    
-    public void acceptInvite(Group g, User usr)
-    {
+
+    public void acceptInvite(Group g, User usr) {
         try {
-            
+
             this.removeInvite(g, usr);
             this.addUserToGroup(g, usr);
-          
-        } 
-        catch (Exception ex) {
-        } 
-  
+
+        } catch (Exception ex) {
+        }
+
     }
-    public void removeInvite(Group g, User usr)
-    {
-            
+
+    public void removeInvite(Group g, User usr) {
+
         PreparedStatement stm = null;
         try {
             if (_connection == null || _connection.isClosed()) {
@@ -449,80 +433,74 @@ public class DbHelper implements Serializable {
             stm.setInt(1, usr.getId());
             stm.setInt(2, g.getId());
 
-            int res = stm.executeUpdate();          
-        } 
-        catch (Exception ex) {
-        } 
-        finally {
+            int res = stm.executeUpdate();
+        } catch (Exception ex) {
+        } finally {
             if (stm != null) {
-                    try{
-                stm.close();
+                try {
+                    stm.close();
+                } catch (SQLException sex) {
                 }
-                catch(SQLException sex){}
             }
-    
+
         }
-    
+
     }
-    public void addUserToGroup(Group g, User usr)
-    {
+
+    public void addUserToGroup(Group g, User usr) {
         PreparedStatement stm = null;
         try {
             if (_connection == null || _connection.isClosed()) {
                 throw new RuntimeException("Connection must be estabilished before a statement");
             }
-            
+
             stm = _connection.prepareStatement("INSERT INTO GROUPUSER (ID_GROUP, ID_USER, ACTIVE) VALUES (?, ?, true)");
             stm.setInt(1, g.getId());
             stm.setInt(2, usr.getId());
-            
+
             int res = stm.executeUpdate();
-            
-          
-        } 
-        catch (Exception ex) {
-        } 
-        finally {
-            if (stm != null) 
-                    try{
-                stm.close();
+
+        } catch (Exception ex) {
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException sex) {
                 }
-                catch(SQLException sex){}
+            }
         }
     }
-    public void addFile(FileDB file)
-    {
+
+    public void addFile(FileDB file) {
         PreparedStatement stm = null;
         try {
             if (_connection == null || _connection.isClosed()) {
                 throw new RuntimeException("Connection must be estabilished before a statement");
             }
-            
+
             stm = _connection.prepareStatement("INSERT INTO FILEDB (ID_GROUP, ID_USER, HASHED_NAME,ORIGINAL_NAME,TYPE) VALUES (?, ?, ?, ?, ?)");
             stm.setInt(1, file.getId_group());
             stm.setInt(2, file.getId_user());
             stm.setString(3, file.getHashed_name());
             stm.setString(4, file.getOriginal_name());
             stm.setString(5, file.getType());
-            
+
             int res = stm.executeUpdate();
-            
-          
-        } 
-        catch (Exception ex) {
-        } 
-        finally {
-            if (stm != null) 
-                    try{
-                stm.close();
+
+        } catch (Exception ex) {
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException sex) {
                 }
-                catch(SQLException sex){}
+            }
         }
     }
-    public boolean isAGroupFile(Group g, String original_name)
-    {
+
+    public boolean isAGroupFile(Group g, String original_name) {
         PreparedStatement stm = null;
-        
+
         try {
             if (_connection == null || _connection.isClosed()) {
                 throw new RuntimeException("Connection must be estabilished before a statement");
@@ -534,8 +512,9 @@ public class DbHelper implements Serializable {
 
             try {
                 rs = stm.executeQuery();
-                if(rs.next())
+                if (rs.next()) {
                     return true;
+                }
             } catch (SQLException sqlex) {
             } finally {
                 if (rs != null) {
@@ -545,45 +524,42 @@ public class DbHelper implements Serializable {
         } catch (Exception ex) {
         } finally {
             if (stm != null) {
-                try
-                {
+                try {
                     stm.close();
+                } catch (SQLException sex) {
                 }
-                catch (SQLException sex){}
             }
         }
 
         return false;
     }
-    public void addPost(Post p)
-    {
+
+    public void addPost(Post p) {
         PreparedStatement stm = null;
         try {
             if (_connection == null || _connection.isClosed()) {
                 throw new RuntimeException("Connection must be estabilished before a statement");
             }
-            
+
             stm = _connection.prepareStatement("INSERT INTO PWEB.POST (VISIBLE, DATE_POST, MESSAGE, ID_GROUP, ID_USER) VALUES (DEFAULT, CURRENT_TIMESTAMP, ?,?, ?)");
             stm.setString(1, p.getMessage());
             stm.setInt(2, p.getIdGroup());
             stm.setInt(3, p.getIdUser());
-            
+
             int res = stm.executeUpdate();
-            
-          
-        } 
-        catch (Exception ex) {
-        } 
-        finally {
-            if (stm != null) 
-                    try{
-                stm.close();
+
+        } catch (Exception ex) {
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException sex) {
                 }
-                catch(SQLException sex){}
+            }
         }
     }
-    public FileDB getFile(Group g, String hash)
-    {
+
+    public FileDB getFile(Group g, String hash) {
         PreparedStatement stm = null;
         FileDB file = null;
         try {
@@ -597,8 +573,7 @@ public class DbHelper implements Serializable {
 
             try {
                 rs = stm.executeQuery();
-                if(rs.next())
-                {
+                if (rs.next()) {
                     file = new FileDB();
                     file.setId_group(rs.getInt("id_group"));
                     file.setId_user(rs.getInt("id_user"));
@@ -615,22 +590,21 @@ public class DbHelper implements Serializable {
         } catch (Exception ex) {
         } finally {
             if (stm != null) {
-                try
-                {
+                try {
                     stm.close();
+                } catch (SQLException sex) {
                 }
-                catch (SQLException sex){}
             }
         }
 
         return file;
     }
-    public boolean doesUserBelongsToGroup(User usr, Group grp)
-    {
+
+    public boolean doesUserBelongsToGroup(User usr, Group grp) {
         return doesUserBelongsToGroup(usr, grp.getId());
     }
-    public boolean doesUserBelongsToGroup(User usr, Integer id_group)
-    {
+
+    public boolean doesUserBelongsToGroup(User usr, Integer id_group) {
         PreparedStatement stm = null;
         try {
             if (_connection == null || _connection.isClosed()) {
@@ -643,8 +617,9 @@ public class DbHelper implements Serializable {
 
             try {
                 rs = stm.executeQuery();
-                if  (rs.next())
+                if (rs.next()) {
                     return true;
+                }
             } catch (SQLException sqlex) {
             } finally {
                 if (rs != null) {
@@ -654,18 +629,17 @@ public class DbHelper implements Serializable {
         } catch (Exception ex) {
         } finally {
             if (stm != null) {
-                try{
-                stm.close();
+                try {
+                    stm.close();
+                } catch (SQLException sex) {
                 }
-                catch(SQLException sex){}
             }
         }
 
         return false;
     }
-    
-    public void addGroup(Group grp)
-    {
+
+    public void addGroup(Group grp) {
         PreparedStatement stm = null;
         try {
             if (_connection == null || _connection.isClosed()) {
@@ -679,13 +653,92 @@ public class DbHelper implements Serializable {
         } catch (Exception ex) {
         } finally {
             if (stm != null) {
-                try{
-                stm.close();
+                try {
+                    stm.close();
+                } catch (SQLException sex) {
                 }
-                catch(SQLException sex){}
             }
         }
-     }
+    }
     
-}
+    private Date getLastPostForUserInGroup(int idUser, int idGroup)
+    {
+        PreparedStatement stm = null;
+        Date d = null;
+        try {
+            if (_connection == null || _connection.isClosed()) {
+                throw new RuntimeException("Connection must be estabilished before a statement");
+            }
+            stm = _connection.prepareStatement("select * from ( select ID_USER, DATE_POST, ROW_NUMBER() OVER() as rownum from POST WHERE ID_USER = ? AND ID_GROUP = ? order by DATE_POST DESC ) as tmp where rownum = 1");
+            stm.setInt(1, idUser);
+            stm.setInt(2, idGroup);
+            ResultSet rs = null;
 
+            try {
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    d = rs.getDate("DATE_POST");
+                }
+            } catch (SQLException sqlex) {
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+            }
+        } catch (Exception ex) {
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException sex) {
+                }
+            }
+        }
+        return d;
+    }
+
+    public List<UserReport> getGroupReport(int idGroup) {
+        PreparedStatement stm = null;
+        ArrayList<UserReport> userList = new ArrayList<>();
+        try {
+            if (_connection == null || _connection.isClosed()) {
+                throw new RuntimeException("Connection must be estabilished before a statement");
+            }
+            stm = _connection.prepareStatement("SELECT username, PWEB.POST.ID_USER, COUNT(PWEB.POST.ID_POST) as PostNumber "
+                                             + "FROM PWEB.POST INNER JOIN PWEB.USERS ON PWEB.POST.ID_USER = PWEB.USERS.ID_USER "
+                                             + "WHERE ID_GROUP = ? GROUP BY username, PWEB.POST.ID_USER");
+            stm.setInt(1, idGroup);
+            ResultSet rs = null;
+
+            try {
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    UserReport up = new UserReport(rs.getString("username"), rs.getInt("ID_USER"), null, rs.getInt("PostNumber"));
+                    userList.add(up);
+                }
+            } catch (SQLException sqlex) {
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+            }
+        } catch (Exception ex) {
+            String s = ex.getMessage();
+            s.charAt(6);
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException sex) {
+                }
+            }
+        }
+        for (int i = 0; i < userList.size(); i++) {
+            UserReport ur = userList.get(i);
+            ur.setLastPost(getLastPostForUserInGroup(ur.getIdUser(), idGroup));
+            userList.set(i, ur);
+        }
+        return userList;
+    }
+
+}

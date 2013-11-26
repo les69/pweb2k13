@@ -6,51 +6,42 @@
 
 package web.programmazione;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import com.sun.xml.rpc.encoding.GenericObjectSerializer;
 import database.DbHelper;
-import database.Group;
-import helpers.ServletHelperClass;
+import database.UserReport;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
-public class MyGroupServlet extends HttpServlet {
-
+/**
+ *
+ * @author Lorenzo
+ */
+public class ReportServlet extends HttpServlet {
     private DbHelper helper;
 
     @Override
     public void init() throws ServletException {
         this.helper = (DbHelper) super.getServletContext().getAttribute("dbmanager");
     }
-
-    public void printGroupTable(PrintWriter out, Group group) {
+    
+    public void printPost(UserReport ur, PrintWriter out) {
         out.println("<tr>");
         out.println("<td>");
-        out.println(group.getId());
+        out.println(ur.getUsername());
         out.println("</td>");
         out.println("<td>");
-        out.println(group.getName());
+        out.println(ur.getLastPost());
         out.println("</td>");
         out.println("<td>");
-        out.println(group.isActive());
+        out.println(ur.getPostNumber());
         out.println("</td>");
-        out.println("<td>");
-        out.println("<a href=\"\\ProgettoPpw\\Group\\GroupActionServlet?action=delete&group=" + group.getId() + "\">Delete group</a>");
-        out.println("</td>");
-        out.println("<td>");
-        out.println("<a href=\"\\ProgettoPpw\\User\\ReportServlet?group=" + group.getId() + "\">Generate report</a>");
-        out.println("</td>");
+        out.println("</tr>");
     }
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -63,24 +54,23 @@ public class MyGroupServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        List<Group> groups = null;
-       
-            groups = helper.getGroupsByOwner(helper.getUser(ServletHelperClass.getUsername(request, false)));
-       
         try (PrintWriter out = response.getWriter()) {
-            ServletHelperClass.printHead(out);
-
-            ServletHelperClass.printTableHead(out, "Group ID", "Group name", "Is active", "Edit", "Report");
-            if (groups != null) {
-                for (Group group : groups) {
-                    printGroupTable(out, group);
-                }
-            }
-            out.println("<tr><td colspan=\"4\"><a href=\"\\ProgettoPpw\\User\\NewGroupServlet\" >New group</a></td></tr>");
-            ServletHelperClass.printTableClose(out);
             /* TODO output your page here. You may use following sample code. */
+            
+            int idGroup = Integer.parseInt(request.getParameter("group"));
+            
+            List<UserReport> lur = helper.getGroupReport(idGroup);
+            
+            helpers.ServletHelperClass.printHead(out);
+            helpers.ServletHelperClass.printTableHead(out, "Username", "Last post", "PostNumber");
+            
+            for(UserReport ur : lur)
+            {
+                printPost(ur, out);
+            }
+            
+            helpers.ServletHelperClass.printFoot(out);
 
-            ServletHelperClass.printFoot(out);
         }
     }
 
