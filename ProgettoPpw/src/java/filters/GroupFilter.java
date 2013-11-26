@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -29,6 +32,8 @@ public class GroupFilter implements Filter {
     
     private static final boolean debug = true;
     private DbHelper helper;
+    private List<String> exclusions;
+
     
 
     // The filter configuration object we are associated with.  If
@@ -37,6 +42,8 @@ public class GroupFilter implements Filter {
     private FilterConfig filterConfig = null;
     
     public GroupFilter() {
+        //Add exceptions here
+        exclusions = new ArrayList<>(Arrays.asList("MyGroup"));
     }    
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
@@ -115,9 +122,9 @@ public class GroupFilter implements Filter {
         Throwable problem = null;
         try {
             helper = (DbHelper) getFilterConfig().getServletContext().getAttribute("dbmanager");
-        
+            String uri = ((HttpServletRequest)request).getRequestURI();
 
-            if(!(((HttpServletRequest)request).getRequestURI().contains("NewPostServlet") && ((HttpServletRequest)request).getMethod().toLowerCase().equals("post")))
+            if(!(!(isPathExcluded(uri) && uri.contains("NewPostServlet") && ((HttpServletRequest)request).getMethod().toLowerCase().equals("post"))))
             {
                 Integer group_id;
 
@@ -159,6 +166,15 @@ public class GroupFilter implements Filter {
      */
     public FilterConfig getFilterConfig() {
         return (this.filterConfig);
+    }
+    public boolean isPathExcluded(String path)
+    {
+        for (int i = 0; i < exclusions.size(); i++) {
+            if(path.contains(exclusions.get(i)))
+                return true;
+            
+        }
+        return false;
     }
 
     /**
