@@ -5,54 +5,29 @@
  */
 
 package web.programmazione;
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import com.sun.xml.rpc.encoding.GenericObjectSerializer;
 import database.DbHelper;
+
 import database.Group;
+import database.User;
 import helpers.ServletHelperClass;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
-public class MyGroupServlet extends HttpServlet {
+/**
+ *
+ * @author les
+ */
+public class CreateInviteServlet extends HttpServlet {
 
     private DbHelper helper;
 
     @Override
     public void init() throws ServletException {
         this.helper = (DbHelper) super.getServletContext().getAttribute("dbmanager");
-    }
-
-    public void printGroupTable(PrintWriter out, Group group) {
-        out.println("<tr>");
-        out.println("<td>");
-        out.println(group.getId());
-        out.println("</td>");
-        out.println("<td>");
-        out.println(group.getName());
-        out.println("</td>");
-        out.println("<td>");
-        out.println(group.isActive());
-        out.println("</td>");
-        out.println("<td>");
-        out.println("<a href=\"\\ProgettoPpw\\Group\\GroupActionServlet?group=" + group.getId() + "\">Edit group</a>");
-        out.println("</td>");
-        out.println("<td>");
-        out.println("<a href=\"\\ProgettoPpw\\Admin\\InviteServlet?group=" + group.getId() + "\">Invite user</a>");
-        out.println("</td>");
-        out.println("<td>");
-        out.println("<a href=\"\\ProgettoPpw\\User\\ReportServlet?group=" + group.getId() + "\">Generate report</a>");
-        out.println("</td>");
     }
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -66,25 +41,10 @@ public class MyGroupServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        List<Group> groups = null;
-       
-            groups = helper.getGroupsByOwner(helper.getUser(ServletHelperClass.getUsername(request, false)));
-       
-        try (PrintWriter out = response.getWriter()) {
-            ServletHelperClass.printHead(out);
+        
+        
+        
 
-            ServletHelperClass.printTableHead(out, "Group ID", "Group name", "Is active","Edit", "Invite", "Report");
-            if (groups != null) {
-                for (Group group : groups) {
-                    printGroupTable(out, group);
-                }
-            }
-            out.println("<tr><td colspan=\"4\"><a href=\"\\ProgettoPpw\\User\\NewGroupServlet\" >New group</a></td></tr>");
-            ServletHelperClass.printTableClose(out);
-            /* TODO output your page here. You may use following sample code. */
-
-            ServletHelperClass.printFoot(out);
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -99,7 +59,26 @@ public class MyGroupServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        if(request.getParameter("group") == null)
+            throw new ServletException("Bad Error: group parameter must be set");
+        
+        Integer id_group = Integer.parseInt(request.getParameter("group"));
+        Group g = helper.getGroup(id_group);
+        
+        try
+        {
+            PrintWriter out = response.getWriter();
+            ServletHelperClass.printHead(out);
+            
+            out.println("<form action=\"InviteServlet\" method=\"post\">");
+            out.println("Username: <input type=\"text\" name=\"username\" /><br/>");
+            out.println("<input type=\"hidden\" name=\"group\" value=\""+g.getId()+"\"/>");
+            out.println("<input type=\"submit\" value=\"invite\" /></form>");
+            ServletHelperClass.printFoot(out);
+        }
+        catch (Exception ex)
+        {}
     }
 
     /**
@@ -113,7 +92,34 @@ public class MyGroupServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+         if(request.getParameter("username") == null)
+            throw new ServletException("Bad Error: group parameter must be set");
+        
+        Integer id_group = Integer.parseInt(request.getParameter("group"));
+        Group g = helper.getGroup(id_group);
+        User usr = helper.getUser(request.getParameter("username"));
+        
+        
+        
+        
+        
+        try
+        {
+            PrintWriter out = response.getWriter();
+            ServletHelperClass.printHead(out);
+            if (usr == null || usr.getUsername().equals(ServletHelperClass.getUsername(request, false)))
+                out.println("<h1>Invite failed</h1>");
+            else
+            {
+                helper.addInvite(g, usr);
+                out.println("<h1>Your invite has been sent</h1>");
+            }
+            out.println("<br/><a href=\"/Admin/MyGroupServlet\" >Go back to your groups</a>");
+            ServletHelperClass.printFoot(out);
+        }
+        catch(Exception ec)
+        {}
+        
     }
 
     /**

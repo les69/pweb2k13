@@ -740,5 +740,30 @@ public class DbHelper implements Serializable {
         }
         return userList;
     }
+    public void addInvite(Group g, User usr) {
+
+        PreparedStatement stm = null;
+        try {
+            if (_connection == null || _connection.isClosed()) {
+                throw new RuntimeException("Connection must be estabilished before a statement");
+            }
+            stm = _connection.prepareStatement("INSERT INTO PWEB.INVITE (ID_GROUP, ID_USER, INVITE_DATE) VALUES (?, ?, CURRENT_DATE)");
+            stm.setInt(1, g.getId());
+            stm.setInt(2, usr.getId());
+            
+            int res = stm.executeUpdate();
+        } catch (Exception ex) {
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException sex) {
+                }
+            }
+
+        }
+
+
+    }
 
 }

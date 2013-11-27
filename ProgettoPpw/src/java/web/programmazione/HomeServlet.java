@@ -44,7 +44,7 @@ public class HomeServlet extends HttpServlet {
             out.println("<h3>Welcome " + username + ". This is your Home!</h3>");
             printLastLogin(request.getCookies(), out, response, username);
             out.println("<br/>");
-            out.println("<a href=\"\\ProgettoPpw\\Group\\MyGroupServlet\">My Groups</a><br/>");
+            out.println("<a href=\"\\ProgettoPpw\\Admin\\MyGroupServlet\">My Groups</a><br/>");
             out.println("<a href=\"\\ProgettoPpw\\Group\\GroupServlet\">Groups</a><br/>");
             out.println("<a href=\"\\ProgettoPpw\\User\\InviteServlet\">Pending invites</a><br/>");
             out.println("<a href=\"\\ProgettoPpw\\LogoutServlet\">Log out</a><br/>");
