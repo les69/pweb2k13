@@ -101,8 +101,9 @@ public class NewPostServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            
+                    try  {
+                        PrintWriter out = response.getWriter();
+
             
             User usr = helper.getUser(ServletHelperClass.getUsername(request,false));
             String relativeWebPath = "/WEB-INF/uploads";
@@ -169,6 +170,9 @@ public class NewPostServlet extends HttpServlet {
             
             
         }
+                    catch(Exception ex){
+                        String e = ex.getMessage();
+                    }
     }
 
     /**
