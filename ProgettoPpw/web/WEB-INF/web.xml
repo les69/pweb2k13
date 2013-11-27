@@ -68,6 +68,10 @@
         <servlet-name>CreateInviteServlet</servlet-name>
         <servlet-class>web.programmazione.CreateInviteServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EditGroupServlet</servlet-name>
+        <servlet-class>web.programmazione.EditGroupServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -123,6 +127,10 @@
     <servlet-mapping>
         <servlet-name>CreateInviteServlet</servlet-name>
         <url-pattern>/Admin/InviteServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditGroupServlet</servlet-name>
+        <url-pattern>/Group/EditGroupServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

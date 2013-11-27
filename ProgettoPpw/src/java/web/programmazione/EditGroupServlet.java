@@ -7,8 +7,6 @@
 package web.programmazione;
 
 import database.DbHelper;
-import database.Group;
-import database.User;
 import helpers.ServletHelperClass;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,29 +17,15 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author lorenzo
+ * @author Lorenzo
  */
-public class NewGroupServlet extends HttpServlet {
+public class EditGroupServlet extends HttpServlet {
 private DbHelper helper;
 
     @Override
     public void init() throws ServletException {
         this.helper = (DbHelper) super.getServletContext().getAttribute("dbmanager");
     }
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
-    }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -55,17 +39,19 @@ private DbHelper helper;
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        int idGroup = Integer.parseInt(request.getParameter("group"));
         try (PrintWriter out = response.getWriter()) {
-        ServletHelperClass.printHead(out);
+            /* TODO output your page here. You may use following sample code. */
+            ServletHelperClass.printHead(out);
             
-            out.println("<form action=\"NewGroupServlet\" method=\"post\">");
+            out.println("<form action=\"EditGroupServlet\" method=\"post\">");
             out.println("Group name:<br/>");
-            out.println("<input type=\"text\" style=\"width:300px;height:300px;\" name=\"groupname\" /><br/>");
+            out.println("<input type=\"hidden\" name=\"idGroup\" value=\""+idGroup+"\">");
+            out.println("<input type=\"text\" style=\"width:300px;height:300px;\" name=\"groupname\" value=\"" + helper.getGroup(idGroup).getName() + "\" /><br/>");
             out.println("<input type=\"submit\" value=\"Submit\" />");
             
             ServletHelperClass.printFoot(out);
         }
-        processRequest(request, response);
     }
 
     /**
@@ -79,16 +65,10 @@ private DbHelper helper;
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        User usr = helper.getUser(ServletHelperClass.getUsername(request,false));
-        String grpName = request.getParameter("groupname");
-        Group tGrp = new Group();
-        tGrp.setName(grpName);
-        tGrp.setOwner(usr.getId());
-        helper.addGroup(tGrp);
-        
-        helper.addUserToGroup(helper.getGroup(grpName), usr);
+        String groupName = request.getParameter("groupname");
+        String groupId = request.getParameter("idGroup");
+        helper.updateGroup(Integer.parseInt(groupId), groupName);
         response.sendRedirect("/ProgettoPpw/Admin/MyGroupServlet");
-
     }
 
     /**

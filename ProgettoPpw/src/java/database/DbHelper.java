@@ -762,8 +762,31 @@ public class DbHelper implements Serializable {
             }
 
         }
+    }
+        public void updateGroup(int idGroup, String groupName) {
+        PreparedStatement stm = null;
+        try {
+            if (_connection == null || _connection.isClosed()) {
+                throw new RuntimeException("Connection must be estabilished before a statement");
+            }
+            stm = _connection.prepareStatement("Update PWEB.GROUPS SET NAME=? where id_group=?");
+            stm.setString(1, groupName);
+            stm.setInt(2, idGroup);
+            
 
-
+            try {
+                stm.executeUpdate();
+            } catch (SQLException sqlex) {
+            } 
+        } catch (Exception ex) {
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException sex) {
+                }
+            }
+        }
     }
 
 }
