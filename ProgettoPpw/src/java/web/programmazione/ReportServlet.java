@@ -8,6 +8,7 @@ package web.programmazione;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import database.DbHelper;
@@ -53,18 +54,24 @@ public class ReportServlet extends HttpServlet {
 
     private void MakePDF(Document report, List<UserReport> lur, String groupName)
             throws DocumentException {
-        report.add(new Paragraph("Report document for group" + groupName));
-        report.add(new Paragraph("This document has been automatically generated on date" + new Date().toString()));
+        report.add(new Paragraph("Report document for group " + groupName));
+        report.add(new Paragraph());
+        report.add(new Paragraph("This document has been automatically generated on " + new Date().toString()));
+        report.add(new Paragraph(" "));
+
+        report.add(new Paragraph("In the following table, user statistics are given for the group"));
+        report.add(new Paragraph(" "));
 
         PdfPTable myTable = new PdfPTable(3);
+        myTable.setHeaderRows(1);
         myTable.addCell("Username");
-        myTable.addCell("Last activity in group");
         myTable.addCell("Post count");
+        myTable.addCell("Last activity in group");
 
         for (UserReport ur : lur) {
             myTable.addCell(ur.getUsername());
-            myTable.addCell(ur.getLastPost().toString());
             myTable.addCell(String.valueOf(ur.getPostNumber()));
+            myTable.addCell(ur.getLastPost().toString());
         }
 
         report.add(myTable);
