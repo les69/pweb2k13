@@ -28,17 +28,7 @@ public class LogoutServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    //DEPRECATED
-    private Cookie getLoginCookie(Cookie[] cookies) {
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("username")) {
-                    return cookie;
-                }
-            }
-        }
-        return null;
-    }
+
 
 
 

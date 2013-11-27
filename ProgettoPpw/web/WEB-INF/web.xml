@@ -109,12 +109,12 @@
         <url-pattern>/User/ReportServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>GroupListServlet</servlet-name>
-        <url-pattern>/Group/GroupServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>MyGroupServlet</servlet-name>
         <url-pattern>/Group/MyGroupServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GroupListServlet</servlet-name>
+        <url-pattern>/Group/GroupListServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
