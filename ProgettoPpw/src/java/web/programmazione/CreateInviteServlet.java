@@ -114,7 +114,7 @@ public class CreateInviteServlet extends HttpServlet {
                 helper.addInvite(g, usr);
                 out.println("<h1>Your invite has been sent</h1>");
             }
-            out.println("<br/><a href=\"/Admin/MyGroupServlet\" >Go back to your groups</a>");
+            out.println("<br/><a href=\"MyGroupServlet\" >Go back to your groups</a>");
             ServletHelperClass.printFoot(out);
         }
         catch(Exception ec)

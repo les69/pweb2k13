@@ -660,9 +660,8 @@ public class DbHelper implements Serializable {
             }
         }
     }
-    
-    private Date getLastPostForUserInGroup(int idUser, int idGroup)
-    {
+
+    private Date getLastPostForUserInGroup(int idUser, int idGroup) {
         PreparedStatement stm = null;
         Date d = null;
         try {
@@ -705,8 +704,8 @@ public class DbHelper implements Serializable {
                 throw new RuntimeException("Connection must be estabilished before a statement");
             }
             stm = _connection.prepareStatement("SELECT username, PWEB.POST.ID_USER, COUNT(PWEB.POST.ID_POST) as PostNumber "
-                                             + "FROM PWEB.POST INNER JOIN PWEB.USERS ON PWEB.POST.ID_USER = PWEB.USERS.ID_USER "
-                                             + "WHERE ID_GROUP = ? GROUP BY username, PWEB.POST.ID_USER");
+                    + "FROM PWEB.POST INNER JOIN PWEB.USERS ON PWEB.POST.ID_USER = PWEB.USERS.ID_USER "
+                    + "WHERE ID_GROUP = ? GROUP BY username, PWEB.POST.ID_USER");
             stm.setInt(1, idGroup);
             ResultSet rs = null;
 
@@ -740,6 +739,7 @@ public class DbHelper implements Serializable {
         }
         return userList;
     }
+
     public void addInvite(Group g, User usr) {
 
         PreparedStatement stm = null;
@@ -750,7 +750,7 @@ public class DbHelper implements Serializable {
             stm = _connection.prepareStatement("INSERT INTO PWEB.INVITE (ID_GROUP, ID_USER, INVITE_DATE) VALUES (?, ?, CURRENT_DATE)");
             stm.setInt(1, g.getId());
             stm.setInt(2, usr.getId());
-            
+
             int res = stm.executeUpdate();
         } catch (Exception ex) {
         } finally {
@@ -772,12 +772,48 @@ public class DbHelper implements Serializable {
             stm = _connection.prepareStatement("Update PWEB.GROUPS SET NAME=? where id_group=?");
             stm.setString(1, groupName);
             stm.setInt(2, idGroup);
-            
-
-            try {
+               try {
                 stm.executeUpdate();
             } catch (SQLException sqlex) {
-            } 
+            } } catch (Exception ex) {
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException sex) {
+                }
+            }
+        }
+
+    }
+
+    public boolean isGroupOwner(User usr, Group grp) {
+        return doesUserBelongsToGroup(usr, grp.getId());
+    }
+
+    public boolean isGroupOwner(User usr, Integer id_group) {
+        PreparedStatement stm = null;
+        try {
+            if (_connection == null || _connection.isClosed()) {
+                throw new RuntimeException("Connection must be estabilished before a statement");
+            }
+            stm = _connection.prepareStatement("select * from group where id_group=? and id_owner=?");
+            stm.setInt(1, id_group);
+            stm.setInt(2, usr.getId());
+            ResultSet rs = null;
+
+            try {
+                rs = stm.executeQuery();
+                if (rs.next()) {
+                    return true;
+                }
+            } catch (SQLException sqlex) {
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+            }
+
         } catch (Exception ex) {
         } finally {
             if (stm != null) {
@@ -787,6 +823,8 @@ public class DbHelper implements Serializable {
                 }
             }
         }
+        return false;
+
     }
 
 }
