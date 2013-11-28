@@ -160,13 +160,14 @@ public class ServletHelperClass {
 
     public static List<String> convertMatchedStrings(List<String> matches, Group g, DbHelper helper) {
         List<String> parsedStrings = new ArrayList<>();
+        User usr = null;
         if (matches == null) {
             return null;
         }
         for (int i = 0; i < matches.size(); i++) {
             String m = matches.get(i);
             String parsed = "";
-            if (!helper.isAGroupFile(g, m)) //fix this function
+            if ((usr = helper.isAGroupFile(g, m)) == null) 
             {
                 if (isAnUrl(m)) {
                     parsed = "<a href=\"" + m + "\">" + m + "</a>";
@@ -175,7 +176,7 @@ public class ServletHelperClass {
                     parsed = m;
                 }
             } else {
-                String hash = encryptPassword(m + g.getName());
+                String hash = encryptPassword(m + g.getName()+usr.getUsername());
                 parsed = "<a href=\"DownloadServlet?file=" + hash + "&group=" + g.getId() + "\">" + m + "</a>";
 
             }

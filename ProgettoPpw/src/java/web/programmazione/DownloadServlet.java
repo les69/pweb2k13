@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class DownloadServlet extends HttpServlet {
     static final long serialVersionUID = 1L;
-    private static final int BUFSIZE = 4096;
+    private static final int BUFSIZE = 1024*1024*10;
     private String filePath;
     
     private DbHelper helper;
@@ -74,11 +74,12 @@ public class DownloadServlet extends HttpServlet {
         filePath = getServletContext().getRealPath(relativeWebPath)+File.separator+g.getName()+File.separator;
         
         try{
-            PrintWriter out = response.getWriter();
-            ServletHelperClass.printHead(out);
+            //PrintWriter out = response.getWriter();
+            //ServletHelperClass.printHead(out);
             File tmpFile = new File(filePath+file_hash);
             if(!tmpFile.exists())
-                out.println("The request file was not found!");
+                printError(response, "File not found", g.getId());
+                //out.println("The request file was not found!");
             
             FileDB file = helper.getFile(g, file_hash);
             
@@ -104,7 +105,21 @@ public class DownloadServlet extends HttpServlet {
         {}
 
     }
-
+    private void printError(HttpServletResponse response, String message, int id_group)
+    {
+       try
+       {
+           PrintWriter out = response.getWriter();
+           ServletHelperClass.printHead(out);
+           out.println("<h1>"+message+"</h1>");
+           out.println("<a href=\"PostServlet?group="+id_group+"\">Come back to post list</a>");
+           ServletHelperClass.printHead(out);
+       
+           
+       }
+       catch(Exception ex)
+       {}
+    }
     /**
      * Handles the HTTP <code>POST</code> method.
      *
