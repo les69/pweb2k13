@@ -107,6 +107,8 @@ public class NewPostServlet extends HttpServlet {
             
             User usr = helper.getUser(ServletHelperClass.getUsername(request,false));
             String relativeWebPath = "/WEB-INF/uploads";
+            
+            checkPath(relativeWebPath);
             String absoluteFilePath = getServletContext().getRealPath(relativeWebPath)+File.separator;
             
             //Use temporary multi to retrieve group name
@@ -119,9 +121,7 @@ public class NewPostServlet extends HttpServlet {
             if(g == null)
                 throw new ServerException("Bad Error: group is null");
             absoluteFilePath+=g.getName();
-            File dir = new File(absoluteFilePath);
-            if(!dir.exists())
-                dir.mkdir();
+            checkPath(absoluteFilePath);
 
             Enumeration file_list = multi.getFileNames();
 
@@ -135,7 +135,14 @@ public class NewPostServlet extends HttpServlet {
                 
                 if(f == null)
                     continue;
-                String hash = ServletHelperClass.encryptPassword(originalname+g.getName());
+                if(helper.isAGroupFile(g, originalname) != null)
+                {
+                    out.println("<h1>This file already exists</h1><br/><h6>Your post was not submitted.</h6>");
+                    out.println("<a href=\"PostServlet?group="+g.getId()+"\">Come back to post list</a>");
+                    f.delete();
+                    return;
+                }
+                String hash = ServletHelperClass.encryptPassword(originalname+g.getName()+usr.getUsername());
                 File renameFile = new File(absoluteFilePath+"/"+hash);
                 if(!renameFile.exists())
                     f.renameTo(renameFile);
@@ -184,5 +191,12 @@ public class NewPostServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    private void checkPath(String path)
+    {
+        File dir = new File(path);
+        
+        if(!dir.exists())
+            dir.mkdir();
+    }
 
 }

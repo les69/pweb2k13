@@ -498,8 +498,9 @@ public class DbHelper implements Serializable {
         }
     }
 
-    public boolean isAGroupFile(Group g, String original_name) {
+    public User isAGroupFile(Group g, String original_name) {
         PreparedStatement stm = null;
+        User usr = null;
 
         try {
             if (_connection == null || _connection.isClosed()) {
@@ -513,7 +514,7 @@ public class DbHelper implements Serializable {
             try {
                 rs = stm.executeQuery();
                 if (rs.next()) {
-                    return true;
+                    return getUser(rs.getInt("id_user"));
                 }
             } catch (SQLException sqlex) {
             } finally {
@@ -531,7 +532,7 @@ public class DbHelper implements Serializable {
             }
         }
 
-        return false;
+        return null;
     }
 
     public void addPost(Post p) {
