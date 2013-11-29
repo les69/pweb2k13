@@ -748,7 +748,7 @@ public class DbHelper implements Serializable {
             if (_connection == null || _connection.isClosed()) {
                 throw new RuntimeException("Connection must be estabilished before a statement");
             }
-            stm = _connection.prepareStatement("INSERT INTO PWEB.INVITE (ID_GROUP, ID_USER, INVITE_DATE) VALUES (?, ?, CURRENT_DATE)");
+            stm = _connection.prepareStatement("INSERT INTO PWEB.INVITE (ID_GROUP, ID_USER, INVITE_DATE, VISIBLE) VALUES (?, ?, CURRENT_DATE,true)");
             stm.setInt(1, g.getId());
             stm.setInt(2, usr.getId());
 
@@ -798,7 +798,7 @@ public class DbHelper implements Serializable {
             if (_connection == null || _connection.isClosed()) {
                 throw new RuntimeException("Connection must be estabilished before a statement");
             }
-            stm = _connection.prepareStatement("select * from group where id_group=? and id_owner=?");
+            stm = _connection.prepareStatement("select * from groups where id_group=? and id_owner=?");
             stm.setInt(1, id_group);
             stm.setInt(2, usr.getId());
             ResultSet rs = null;

@@ -107,12 +107,13 @@ public class NewPostServlet extends HttpServlet {
             
             User usr = helper.getUser(ServletHelperClass.getUsername(request,false));
             String relativeWebPath = "/WEB-INF/uploads";
+            Integer maxSize = Integer.parseInt((String)getServletConfig().getInitParameter("maxLengthSize"));
             
             checkPath(relativeWebPath);
             String absoluteFilePath = getServletContext().getRealPath(relativeWebPath)+File.separator;
             
-            //Use temporary multi to retrieve group name
-            MultipartRequest multi = new MultipartRequest(request, absoluteFilePath,10*1024*1024,"utf-8", new DefaultFileRenamePolicy());
+           try{
+            MultipartRequest multi = new MultipartRequest(request, absoluteFilePath,maxSize,"utf-8", new DefaultFileRenamePolicy());
                   
             String group = (String) multi.getParameter("group");
              
@@ -174,11 +175,17 @@ public class NewPostServlet extends HttpServlet {
             
 
 
-            
+           }
+           catch(IOException ioex)
+           {
+               out.println(ioex.getMessage());
+           }
             
         }
                     catch(Exception ex){
                         String e = ex.getMessage();
+                        
+                        
                     }
     }
 

@@ -120,7 +120,7 @@ public class LoginFilter implements Filter {
         try {
 
             if (!isUserLogged(((HttpServletRequest) request))) {
-                request.getRequestDispatcher("LoginServlet").forward(request, response);
+                request.getRequestDispatcher("/ProgettoPpw/LoginServlet").forward(request, response);
             }
             
             if(((HttpServletRequest)request).getRequestURI().contains("LoginServlet"))

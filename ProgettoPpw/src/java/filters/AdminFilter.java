@@ -121,16 +121,19 @@ public class AdminFilter implements Filter {
             helper = (DbHelper) getFilterConfig().getServletContext().getAttribute("dbmanager");
             String uri = ((HttpServletRequest)request).getRequestURI();
 
-            if(!(!(isPathExcluded(uri)  && ((HttpServletRequest)request).getMethod().toLowerCase().equals("post"))))
+            if(!isPathExcluded(uri)  && !((HttpServletRequest)request).getMethod().toLowerCase().equals("post"))
             {
                 Integer group_id;
 
                 if(request.getParameter("group") == null)
-                    throw new RuntimeException("Bad Error: Group not set in request");
+                {
+                    //throw new RuntimeException("Bad Error: Group not set in request"); log this
+                    ((HttpServletResponse)response).sendRedirect("/ProgettoPpw/HomeServlet");
+                }
                  group_id = Integer.parseInt(request.getParameter("group"));
                 
                 if(!helper.isGroupOwner(helper.getUser(ServletHelperClass.getUsername((HttpServletRequest)request, false)),group_id))
-                    ((HttpServletResponse)response).sendRedirect("ProgettoPpw/HomeServlet");
+                    request.getRequestDispatcher("MyGroupServlet").forward(request, response);
                 //chain.doFilter(request, response);
             }
             chain.doFilter(request, response);

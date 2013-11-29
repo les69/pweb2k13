@@ -46,7 +46,7 @@ public class AcceptInviteServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             User usr = helper.getUser(ServletHelperClass.getUsername(request, false));
             acceptInvites(request.getParameterMap(), usr);
-            
+            request.getRequestDispatcher("InviteServlet").forward(request, response);
         }
     }
     private void acceptInvites(Map params, User usr)

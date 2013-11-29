@@ -51,7 +51,7 @@ public class MyGroupServlet extends HttpServlet {
         out.println("<a href=\"\\ProgettoPpw\\Admin\\InviteServlet?group=" + group.getId() + "\">Invite user</a>");
         out.println("</td>");
         out.println("<td>");
-        out.println("<a href=\"\\ProgettoPpw\\User\\ReportServlet?group=" + group.getId() + "\">Generate report</a>");
+        out.println("<a href=\"\\ProgettoPpw\\Admin\\ReportServlet?group=" + group.getId() + "\">Generate report</a>");
         out.println("</td>");
     }
     /**
@@ -79,7 +79,7 @@ public class MyGroupServlet extends HttpServlet {
                     printGroupTable(out, group);
                 }
             }
-            out.println("<tr><td colspan=\"4\"><a href=\"\\ProgettoPpw\\User\\NewGroupServlet\" >New group</a></td></tr>");
+            out.println("<tr><td colspan=\"4\"><a href=\"\\ProgettoPpw\\Admin\\NewGroupServlet\" >New group</a></td></tr>");
             ServletHelperClass.printTableClose(out);
             /* TODO output your page here. You may use following sample code. */
 
