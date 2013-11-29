@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -26,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginFilter implements Filter {
 
     private static final boolean debug = true;
+    private List<String> exclusions;
 
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
@@ -33,6 +37,18 @@ public class LoginFilter implements Filter {
     private FilterConfig filterConfig = null;
 
     public LoginFilter() {
+        exclusions = new ArrayList<>(Arrays.asList("bootstrap"));
+
+    }
+
+    public boolean isPathExcluded(String path) {
+        for (int i = 0; i < exclusions.size(); i++) {
+            if (path.contains(exclusions.get(i))) {
+                return true;
+            }
+
+        }
+        return false;
     }
     /*
      This function checks whenever the user is logged by simply checking if there exist 
@@ -41,17 +57,17 @@ public class LoginFilter implements Filter {
      */
 
     private boolean isUserLogged(HttpServletRequest request) {
-        
-         
-        if(request.getSession().getAttribute("username") == null)
+
+        if (request.getSession().getAttribute("username") == null) {
             return false;
+        }
         return true;
     }
 
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
 
-	// Write code here to process the request and/or response before
+        // Write code here to process the request and/or response before
         // the rest of the filter chain is invoked.
         // For example, a logging filter might log items on the request object,
         // such as the parameters.
@@ -119,17 +135,20 @@ public class LoginFilter implements Filter {
 
         Throwable problem = null;
         try {
-
-            if (!isUserLogged((HttpServletRequest) request) ) {
-                //change if adding control to login servlet
-                if(!((HttpServletRequest)request).getRequestURI().contains("LoginServlet"))
-                    ((HttpServletResponse)response).sendRedirect("/ProgettoPpw/LoginServlet");
+            String uri = ((HttpServletRequest) request).getRequestURI();
+            if (!isPathExcluded(uri)) {
+                if (!isUserLogged((HttpServletRequest) request)) {
+                    //change if adding control to login servlet
+                    if (!((HttpServletRequest) request).getRequestURI().contains("LoginServlet")) {
+                        ((HttpServletResponse) response).sendRedirect("/ProgettoPpw/LoginServlet");
+                    }
+                } else {
+                    if (((HttpServletRequest) request).getRequestURI().contains("LoginServlet")) {
+                        ((HttpServletResponse) response).sendRedirect("/ProgettoPpw/User/HomeServlet");
+                    }
+                }
             }
-            else{
-            if(((HttpServletRequest)request).getRequestURI().contains("LoginServlet"))
-                ((HttpServletResponse)response).sendRedirect("/ProgettoPpw/HomeServlet");
-            }
-           chain.doFilter(request, response);
+            chain.doFilter(request, response);
         } catch (Throwable t) {
             // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then

@@ -56,7 +56,7 @@ private DbHelper helper;
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-        ServletHelperClass.printHead(out);
+        ServletHelperClass.printHead(out,"New Group","MyGroupServlet","MyGroup List");
             
             out.println("<form action=\"NewGroupServlet\" method=\"post\">");
             out.println("Group name:<br/>");

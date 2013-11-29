@@ -110,10 +110,10 @@ public class DownloadServlet extends HttpServlet {
        try
        {
            PrintWriter out = response.getWriter();
-           ServletHelperClass.printHead(out);
+           ServletHelperClass.printHead(out, "Download","PostServlet?group="+id_group,"Post List");
            out.println("<h1>"+message+"</h1>");
            out.println("<a href=\"PostServlet?group="+id_group+"\">Come back to post list</a>");
-           ServletHelperClass.printHead(out);
+           ServletHelperClass.printFoot(out);
        
            
        }

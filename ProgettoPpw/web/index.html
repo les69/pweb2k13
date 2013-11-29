@@ -6,19 +6,37 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>Hello dear, take a login</title>
+        <link href="css/bootstrap.css" type="text/css" rel="stylesheet" />
+        <link href="css/bootstrap-responsive.css" type="text/css" rel="stylesheet" />
+        <title>Login</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
     </head>
-    <body>
-        <h1>Login page</h1>
-        <div>
-            <form action="LoginServlet" method="post">
-                Username: <input type="text" name="username"/><br/>
-                Password: <input type="password" name="password" /><br/>
-                <input type="submit" value="Login" />
-            </form>
+    <body style="padding-top: 60px;">
+       "<div class="navbar navbar-inverse navbar-fixed-top">
+     <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="/ProgettoPpw/User/HomeServlet">Web Programming Project</a>
+          <div class="nav-collapse collapse">
+          </div><!--/.nav-collapse -->
         </div>
+      </div>
+    </div>
+        <div class="container"><h1>Login page</h1>
+       <div class="navbar">
+             <div class="navbar-inner">
+            <form class="navbar-form pull-down" action="LoginServlet" method="post">
+            Username<br/> 
+            <input type="text" class="span2" name="username"/><br/>
+            Password<br/> <input type="password"  class="span2" name="password" /><br/>
+            <input type="submit" class="btn" value="Login" />
+            </form>
+    </div></div></div>
     </body>
 </html>
 

@@ -42,7 +42,7 @@ private DbHelper helper;
         int idGroup = Integer.parseInt(request.getParameter("group"));
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            ServletHelperClass.printHead(out);
+            ServletHelperClass.printHead(out,"Edit","MyGroupServlet","MyGroup List");
             
             out.println("<form action=\"EditGroupServlet\" method=\"post\">");
             out.println("Group name:<br/>");

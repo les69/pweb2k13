@@ -51,7 +51,7 @@ public class InviteServlet extends HttpServlet {
             
             if(username ==  null)
                 throw new ServletException("Bad Error: Username not set");
-            ServletHelperClass.printHead(out);
+            ServletHelperClass.printHead(out, "Invite","MyGroupServlet","MyGroup List");
             
             User usr = helper.getUser(username);
             out.println("<h1>Hello "+ usr.getUsername() + ". These are your pending invites!</h1>");

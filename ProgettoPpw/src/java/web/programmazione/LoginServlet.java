@@ -60,7 +60,7 @@ public class LoginServlet extends HttpServlet {
                     Cookie usernameCookie = new Cookie("username", user.getUsername());
                     request.getSession().setAttribute("username", username);
                     response.addCookie(usernameCookie);
-                    request.getRequestDispatcher("HomeServlet").forward(request, response);
+                    response.sendRedirect("/ProgettoPpw/User/HomeServlet");
                 }
             }
 
@@ -73,10 +73,32 @@ public class LoginServlet extends HttpServlet {
         //Questa è la easy soluzione, ristampo la pagina di login(tanto è poco codice comunque)
         // se più avanti avremo idee migliori fixeremo
         out.println("<!DOCTYPE html>");
-        out.println("<html><head><title>Hello dear, take a login</title><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width>");
-        out.println("</head><body><h1>Login page</h1><div><h3 style=\"color:red;\">" + message + "</h3>");
-        out.println("<form action=\"LoginServlet\" method=\"post\">Username: <input type=\"text\" name=\"username\"/><br/>Password: <input type=\"password\" name=\"password\" /><br/><input type=\"submit\" value=\"Login\" /></form>");
-        out.println("</div></body></html>");
+        out.println("<html><head><meta charset=\"UTF-8\">\n" +
+"        <meta name=\"viewport\" content=\"width=device-width\">\n" +
+"<link href=\"css/bootstrap.css\" type=\"text/css\" rel=\"stylesheet\" /><link href=\"css/bootstrap-responsive.css\" type=\"text/css\" rel=\"stylesheet\" /><title>Login</title>");
+        out.println("</head><body style=\"padding-top: 60px;\">");
+        out.println("<div class=\"navbar navbar-inverse navbar-fixed-top\">\n" +
+"      <div class=\"navbar-inner\">\n" +
+"        <div class=\"container\">\n" +
+"          <button type=\"button\" class=\"btn btn-navbar\" data-toggle=\"collapse\" data-target=\".nav-collapse\">\n" +
+"            <span class=\"icon-bar\"></span>\n" +
+"            <span class=\"icon-bar\"></span>\n" +
+"            <span class=\"icon-bar\"></span>\n" +
+"          </button>\n" +
+"          <a class=\"brand\" href=\"/ProgettoPpw/User/HomeServlet\">Web Programming Project</a>\n" +
+"          <div class=\"nav-collapse collapse\">\n" +
+"          </div><!--/.nav-collapse -->\n" +
+"        </div>\n" +
+"      </div>\n" +
+"    </div>");
+        out.println("<div class=\"container\"><h1>Login page</h1><div class=\"alert alert-error\">\n" +
+"  <button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>\n" +
+"  <strong>Error! </strong>"+message+
+"</div><div class=\"navbar\">\n" +
+"              <div class=\"navbar-inner\">\n" +
+"     ");
+        out.println("<form class=\"navbar-form pull-down\" action=\"LoginServlet\" method=\"post\">Username<br/> <input type=\"text\" class=\"span2\" name=\"username\"/><br/>Password<br/> <input type=\"password\"  class=\"span2\"name=\"password\" /><br/><input type=\"submit\" class=\"btn\" value=\"Login\" /></form>");
+        out.println("</div></div></div></body></html>");
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

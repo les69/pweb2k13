@@ -41,7 +41,7 @@ public class AdminFilter implements Filter {
     private FilterConfig filterConfig = null;
     
     public AdminFilter() {
-        exclusions = new ArrayList<>(Arrays.asList("MyGroupServlet","NewGroupServlet"));
+        exclusions = new ArrayList<>(Arrays.asList("MyGroupServlet","NewGroupServlet","bootstrap"));
     }    
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
@@ -128,7 +128,7 @@ public class AdminFilter implements Filter {
                 if(request.getParameter("group") == null)
                 {
                     //throw new RuntimeException("Bad Error: Group not set in request"); log this
-                    ((HttpServletResponse)response).sendRedirect("/ProgettoPpw/HomeServlet");
+                    ((HttpServletResponse)response).sendRedirect("/ProgettoPpw/User/HomeServlet");
                 }
                  group_id = Integer.parseInt(request.getParameter("group"));
                 

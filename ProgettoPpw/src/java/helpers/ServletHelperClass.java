@@ -59,16 +59,37 @@ public class ServletHelperClass {
         return (String)session.getAttribute("username");
     }
 
-    public static void printHead(PrintWriter out) {
+    public static void printHead(PrintWriter out, String title,String returnToServlet, String titleBack) {
         out.println("<!DOCTYPE html>");
         out.println("<html>");
         out.println("<head>");
-        out.println("<title>Servlet HomeServlet</title>");
+        out.println("<link href=\"../css/bootstrap.css\" type=\"text/css\" rel=\"stylesheet\" />");
+        out.println("<link href=\"../css/bootstrap-responsive.css\" type=\"text/css\" rel=\"stylesheet\" />");
+        out.println("<title>"+title+"</title>");
         out.println("</head>");
-        out.println("<body>");
+        out.println("<body style=\"padding-top: 60px;\">");
+        out.println("<div class=\"navbar navbar-inverse navbar-fixed-top\">\n" +
+"      <div class=\"navbar-inner\">\n" +
+"        <div class=\"container\">\n" +
+"          <button type=\"button\" class=\"btn btn-navbar\" data-toggle=\"collapse\" data-target=\".nav-collapse\">\n" +
+"            <span class=\"icon-bar\"></span>\n" +
+"            <span class=\"icon-bar\"></span>\n" +
+"            <span class=\"icon-bar\"></span>\n" +
+"          </button>\n" +
+"          <a class=\"brand\" href=\"/ProgettoPpw/User/HomeServlet\">Web Programming Project</a>\n" +
+"          <div class=\"nav-collapse collapse\">\n" +
+"            <ul class=\"nav\">\n" +
+"              <li class=\"active\"><a href=\""+returnToServlet+"\">"+titleBack+"</a></li>\n" +
+"            </ul>\n" +
+"          </div><!--/.nav-collapse -->\n" +
+"        </div>\n" +
+"      </div>\n" +
+"    </div>");
+      out.println("<div class=\"container\">");
     }
 
     public static void printFoot(PrintWriter out) {
+        out.println("</div> <!-- container -->");
         out.println("</body>");
         out.println("</html>");
     }

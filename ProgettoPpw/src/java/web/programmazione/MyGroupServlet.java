@@ -71,7 +71,7 @@ public class MyGroupServlet extends HttpServlet {
             groups = helper.getGroupsByOwner(helper.getUser(ServletHelperClass.getUsername(request, false)));
        
         try (PrintWriter out = response.getWriter()) {
-            ServletHelperClass.printHead(out);
+            ServletHelperClass.printHead(out,"My Groups","/ProgettoPpw/User/HomeServlet","Home");
 
             ServletHelperClass.printTableHead(out, "Group ID", "Group name", "Is active","Edit", "Invite", "Report");
             if (groups != null) {

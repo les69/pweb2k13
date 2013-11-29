@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package filters;
 
 import database.DbHelper;
@@ -29,23 +28,21 @@ import javax.servlet.http.HttpServletResponse;
  * @author les
  */
 public class GroupFilter implements Filter {
-    
+
     private static final boolean debug = true;
     private DbHelper helper;
     private List<String> exclusions;
-
-    
 
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
     // configured. 
     private FilterConfig filterConfig = null;
-    
+
     public GroupFilter() {
         //Add exceptions here
-        exclusions = new ArrayList<>(Arrays.asList("GroupListServlet","MyGroupServlet"));
-    }    
-    
+        exclusions = new ArrayList<>(Arrays.asList("GroupListServlet", "MyGroupServlet", "bootstrap"));
+    }
+
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
@@ -54,7 +51,7 @@ public class GroupFilter implements Filter {
 
 	// Write code here to process the request and/or response before
         // the rest of the filter chain is invoked.
-	// For example, a logging filter might log items on the request object,
+        // For example, a logging filter might log items on the request object,
         // such as the parameters.
 	/*
          for (Enumeration en = request.getParameterNames(); en.hasMoreElements(); ) {
@@ -72,8 +69,8 @@ public class GroupFilter implements Filter {
          log(buf.toString());
          }
          */
-    }    
-    
+    }
+
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
@@ -82,7 +79,7 @@ public class GroupFilter implements Filter {
 
 	// Write code here to process the request and/or response after
         // the rest of the filter chain is invoked.
-	// For example, a logging filter might log the attributes on the
+        // For example, a logging filter might log the attributes on the
         // request object after the request has been processed. 
 	/*
          for (Enumeration en = request.getAttributeNames(); en.hasMoreElements(); ) {
@@ -92,7 +89,7 @@ public class GroupFilter implements Filter {
 
          }
          */
-	// For example, a filter might append something to the response.
+        // For example, a filter might append something to the response.
 	/*
          PrintWriter respOut = new PrintWriter(response.getWriter());
          respOut.println("<P><B>This has been appended by an intrusive filter.</B>");
@@ -111,44 +108,47 @@ public class GroupFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-        
+
         if (debug) {
             log("GroupFilter:doFilter()");
         }
-        
-            
+
         doBeforeProcessing(request, response);
-        
+
         Throwable problem = null;
         try {
             helper = (DbHelper) getFilterConfig().getServletContext().getAttribute("dbmanager");
-            String uri = ((HttpServletRequest)request).getRequestURI();
+            String uri = ((HttpServletRequest) request).getRequestURI();
 
-            if(!(!(isPathExcluded(uri) && uri.contains("NewPostServlet") && ((HttpServletRequest)request).getMethod().toLowerCase().equals("post"))))
-            {
-                Integer group_id;
+            if (!isPathExcluded(uri)) {
+                if (!(uri.contains("NewPostServlet") && ((HttpServletRequest) request).getMethod().toLowerCase().equals("post"))) {
+                    Integer group_id;
 
-                if(request.getParameter("group") == null)
-                    throw new RuntimeException("Bad Error: Group not set in request");
-                 group_id = Integer.parseInt(request.getParameter("group"));
-                
-                if(!helper.doesUserBelongsToGroup(helper.getUser(ServletHelperClass.getUsername((HttpServletRequest)request, false)),group_id))
-                    request.getRequestDispatcher("/HomeServlet").forward(request, response);
-                //chain.doFilter(request, response);
+                    if (request.getParameter("group") == null) {
+                        //throw new RuntimeException("Bad Error: Group not set in request");
+                        ((HttpServletResponse)response).sendRedirect("/ProgettoPpw/User/HomeServlet");
+                    }
+                    group_id = Integer.parseInt(request.getParameter("group"));
+
+                    if (!helper.doesUserBelongsToGroup(helper.getUser(ServletHelperClass.getUsername((HttpServletRequest) request, false)), group_id)) {
+                        ((HttpServletResponse)response).sendRedirect("/ProgettoPpw/User/HomeServlet");
+                    }
+                    //chain.doFilter(request, response);
+                }
             }
             chain.doFilter(request, response);
-            
+
         } catch (Throwable t) {
-	    // If an exception is thrown somewhere down the filter chain,
+            // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then
             // rethrow the problem after that.
             problem = t;
             t.printStackTrace();
         }
-        
+
         doAfterProcessing(request, response);
 
-	// If there was a problem, we want to rethrow it if it is
+        // If there was a problem, we want to rethrow it if it is
         // a known type, otherwise log it.
         if (problem != null) {
             if (problem instanceof ServletException) {
@@ -167,12 +167,13 @@ public class GroupFilter implements Filter {
     public FilterConfig getFilterConfig() {
         return (this.filterConfig);
     }
-    public boolean isPathExcluded(String path)
-    {
+
+    public boolean isPathExcluded(String path) {
         for (int i = 0; i < exclusions.size(); i++) {
-            if(path.contains(exclusions.get(i)))
+            if (path.contains(exclusions.get(i))) {
                 return true;
-            
+            }
+
         }
         return false;
     }
@@ -189,16 +190,16 @@ public class GroupFilter implements Filter {
     /**
      * Destroy method for this filter
      */
-    public void destroy() {        
+    public void destroy() {
     }
 
     /**
      * Init method for this filter
      */
-    public void init(FilterConfig filterConfig) {        
+    public void init(FilterConfig filterConfig) {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
-            if (debug) {                
+            if (debug) {
                 log("GroupFilter:Initializing filter");
             }
         }
@@ -217,20 +218,20 @@ public class GroupFilter implements Filter {
         sb.append(")");
         return (sb.toString());
     }
-    
+
     private void sendProcessingError(Throwable t, ServletResponse response) {
-        String stackTrace = getStackTrace(t);        
-        
+        String stackTrace = getStackTrace(t);
+
         if (stackTrace != null && !stackTrace.equals("")) {
             try {
                 response.setContentType("text/html");
                 PrintStream ps = new PrintStream(response.getOutputStream());
-                PrintWriter pw = new PrintWriter(ps);                
+                PrintWriter pw = new PrintWriter(ps);
                 pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
 
                 // PENDING! Localize this for next official release
-                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");                
-                pw.print(stackTrace);                
+                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");
+                pw.print(stackTrace);
                 pw.print("</pre></body>\n</html>"); //NOI18N
                 pw.close();
                 ps.close();
@@ -247,7 +248,7 @@ public class GroupFilter implements Filter {
             }
         }
     }
-    
+
     public static String getStackTrace(Throwable t) {
         String stackTrace = null;
         try {
@@ -261,9 +262,9 @@ public class GroupFilter implements Filter {
         }
         return stackTrace;
     }
-    
+
     public void log(String msg) {
-        filterConfig.getServletContext().log(msg);        
+        filterConfig.getServletContext().log(msg);
     }
-    
+
 }

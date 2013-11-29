@@ -40,7 +40,7 @@ public class HomeServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             String username = ServletHelperClass.getUsername(request, false);
-            ServletHelperClass.printHead(out);
+            ServletHelperClass.printHead(out, "Home", "","");
             out.println("<h3>Welcome " + username + ". This is your Home!</h3>");
             printLastLogin(request.getCookies(), out, response, username);
             out.println("<br/>");

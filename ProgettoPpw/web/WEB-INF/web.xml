@@ -93,10 +93,6 @@
         <url-pattern>/User/InviteServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>HomeServlet</servlet-name>
-        <url-pattern>/HomeServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>AcceptInviteServlet</servlet-name>
         <url-pattern>/User/AcceptInvite</url-pattern>
     </servlet-mapping>
@@ -135,6 +131,10 @@
     <servlet-mapping>
         <servlet-name>ReportServlet</servlet-name>
         <url-pattern>/Admin/ReportServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HomeServlet</servlet-name>
+        <url-pattern>/User/HomeServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

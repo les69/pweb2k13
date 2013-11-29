@@ -64,7 +64,7 @@ public class PostServlet extends HttpServlet {
             ptss = helper.getPostFromGroup(p);
             try (PrintWriter out = response.getWriter()) {
                 /* TODO output your page here. You may use following sample code. */
-                ServletHelperClass.printHead(out);
+                ServletHelperClass.printHead(out, "Post List","/ProgettoPpw/User/HomeServlet", "Home");
 
                 Group gr = null;
                 gr = helper.getGroup(p);

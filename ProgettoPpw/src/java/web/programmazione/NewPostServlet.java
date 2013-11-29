@@ -76,7 +76,7 @@ public class NewPostServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            ServletHelperClass.printHead(out);
+            ServletHelperClass.printHead(out, "Add Post","PostServlet?group="+request.getParameter("group"),"Post List");
             
             out.println("<form action=\"NewPostServlet\" enctype=\"multipart/form-data\" method=\"post\">");
             out.println("Message text<br/>");

@@ -69,7 +69,7 @@ public class CreateInviteServlet extends HttpServlet {
         try
         {
             PrintWriter out = response.getWriter();
-            ServletHelperClass.printHead(out);
+            ServletHelperClass.printHead(out, "Create", "InviteServlet","Invite List");
             
             out.println("<form action=\"InviteServlet\" method=\"post\">");
             out.println("Username: <input type=\"text\" name=\"username\" /><br/>");
@@ -106,7 +106,7 @@ public class CreateInviteServlet extends HttpServlet {
         try
         {
             PrintWriter out = response.getWriter();
-            ServletHelperClass.printHead(out);
+            ServletHelperClass.printHead(out,"Create","InviteServlet", "Invite List");
             if (usr == null || usr.getUsername().equals(ServletHelperClass.getUsername(request, false)))
                 out.println("<h1>Invite failed</h1>");
             else

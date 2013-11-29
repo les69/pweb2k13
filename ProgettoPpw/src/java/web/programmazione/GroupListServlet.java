@@ -57,7 +57,7 @@ public class GroupListServlet extends HttpServlet {
 
             User usr = helper.getUser(username);
             List<Group> groups = helper.getUserGroups(usr);
-            ServletHelperClass.printHead(out);
+            ServletHelperClass.printHead(out,"Group List","/ProgettoPpw/User/HomeServlet","Home");
             out.println("This are the groups that you are following");
             out.println("<table border=\"1\">");
             out.println("<tr><th><b>Group name</b></th><th><b>Group founder</b></th><th><b>Link to group</b></th></tr>");
