@@ -17,6 +17,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -119,13 +120,16 @@ public class LoginFilter implements Filter {
         Throwable problem = null;
         try {
 
-            if (!isUserLogged(((HttpServletRequest) request))) {
-                request.getRequestDispatcher("/ProgettoPpw/LoginServlet").forward(request, response);
+            if (!isUserLogged((HttpServletRequest) request) ) {
+                //change if adding control to login servlet
+                if(!((HttpServletRequest)request).getRequestURI().contains("LoginServlet"))
+                    ((HttpServletResponse)response).sendRedirect("/ProgettoPpw/LoginServlet");
             }
-            
+            else{
             if(((HttpServletRequest)request).getRequestURI().contains("LoginServlet"))
-                request.getRequestDispatcher("HomeServlet").forward(request, response);
-            chain.doFilter(request, response);
+                ((HttpServletResponse)response).sendRedirect("/ProgettoPpw/HomeServlet");
+            }
+           chain.doFilter(request, response);
         } catch (Throwable t) {
             // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then
