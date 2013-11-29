@@ -69,7 +69,7 @@ public class CreateInviteServlet extends HttpServlet {
         try
         {
             PrintWriter out = response.getWriter();
-            ServletHelperClass.printHead(out, "Create", "InviteServlet","Invite List");
+            ServletHelperClass.printHead(out, "Create", "MyGroupServlet","MyGroup List");
             
             out.println("<form action=\"InviteServlet\" method=\"post\">");
             out.println("Username: <input type=\"text\" name=\"username\" /><br/>");
