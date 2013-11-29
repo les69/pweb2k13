@@ -45,7 +45,7 @@ public class MyGroupServlet extends HttpServlet {
         out.println(group.isActive());
         out.println("</td>");
         out.println("<td>");
-        out.println("<a href=\"\\ProgettoPpw\\Group\\EditGroupServlet?group=" + group.getId() + "\">Edit group</a>");
+        out.println("<a href=\"\\ProgettoPpw\\Admin\\EditGroupServlet?group=" + group.getId() + "\">Edit group</a>");
         out.println("</td>");
         out.println("<td>");
         out.println("<a href=\"\\ProgettoPpw\\Admin\\InviteServlet?group=" + group.getId() + "\">Invite user</a>");

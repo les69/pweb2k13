@@ -125,12 +125,12 @@
         <url-pattern>/Admin/InviteServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>EditGroupServlet</servlet-name>
-        <url-pattern>/Group/EditGroupServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>NewGroupServlet</servlet-name>
         <url-pattern>/Admin/NewGroupServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditGroupServlet</servlet-name>
+        <url-pattern>/Admin/EditGroupServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

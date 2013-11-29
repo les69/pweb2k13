@@ -22,6 +22,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -129,7 +130,7 @@ public class AdminFilter implements Filter {
                  group_id = Integer.parseInt(request.getParameter("group"));
                 
                 if(!helper.isGroupOwner(helper.getUser(ServletHelperClass.getUsername((HttpServletRequest)request, false)),group_id))
-                    request.getRequestDispatcher("/HomeServlet").forward(request, response);
+                    ((HttpServletResponse)response).sendRedirect("ProgettoPpw/HomeServlet");
                 //chain.doFilter(request, response);
             }
             chain.doFilter(request, response);
