@@ -26,6 +26,11 @@ public class DbHelper implements Serializable {
 
     private transient Connection _connection;
 
+    /**
+     * Retrieves connection to a database from a given connection string
+     *
+     * @param url the Database connection string
+     */
     public DbHelper(String url) {
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver", true,
@@ -37,6 +42,10 @@ public class DbHelper implements Serializable {
         }
     }
 
+    /**
+     *
+     * Closes the connection to the database
+     */
     public static void close() {
         try {
             DriverManager.getConnection("jdbc:derby:;shutdown=true");
@@ -44,6 +53,14 @@ public class DbHelper implements Serializable {
         }
     }
 
+    /**
+     * Search for a user with the given credentials
+     *
+     * @param username user credential
+     * @param password user password
+     * @return null if there is no User with that credentials or a User object
+     * with the user credentials
+     */
     public User authenticate(String username, String password) {
         PreparedStatement stm = null;
         User usr = null;
@@ -82,10 +99,22 @@ public class DbHelper implements Serializable {
         return usr;
     }
 
+    /**
+     * Gets a List of Groups in which the user is subscribed.
+     *
+     * @param User
+     * @return A list with all the groups that the user follows
+     */
     public List<Group> getUserGroups(User usr) {
         return getUserGroups(usr.getId());
     }
 
+    /**
+     * Gets a List of Groups in which the user is subscribed.
+     *
+     * @param id_user id of the user
+     * @return A list with all the groups that the user follows
+     */
     public List<Group> getUserGroups(int id_user) {
         PreparedStatement stm = null;
         List<Group> groupList = new ArrayList<Group>();
@@ -124,6 +153,12 @@ public class DbHelper implements Serializable {
         return groupList;
     }
 
+    /**
+     * Gets a List of Groups in which the user is owner.
+     *
+     * @param owner_id
+     * @return A list with all the groups that the user admins
+     */
     public List<Group> getGroupsByOwner(int owner_id) {
         PreparedStatement stm = null;
         List<Group> groupList = new ArrayList<Group>();
@@ -166,6 +201,12 @@ public class DbHelper implements Serializable {
         return groupList;
     }
 
+    /**
+     * Gets a List of Groups in which the user is owner.
+     *
+     * @param owner
+     * @return A list with all the groups that the user admins
+     */
     public List<Group> getGroupsByOwner(User owner) {
 
         return getGroupsByOwner(owner.getId());
@@ -173,6 +214,12 @@ public class DbHelper implements Serializable {
         //    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, null, ex);
     }
 
+    /**
+     * Gets the List of Posts in a Group.
+     *
+     * @param id_group
+     * @return A list with all the post from a group
+     */
     public List<PostToShow> getPostFromGroup(int id_group) {
         PreparedStatement stm = null;
         List<PostToShow> postList = new ArrayList<PostToShow>();
@@ -210,6 +257,12 @@ public class DbHelper implements Serializable {
         return postList;
     }
 
+    /**
+     * Gets the List of Posts in a Group.
+     *
+     * @param g
+     * @return A list with all the post from a group
+     */
     public List<PostToShow> getPostFromGroup(Group g) {
         return getPostFromGroup(g.getId());
     }
@@ -252,6 +305,12 @@ public class DbHelper implements Serializable {
         return usr;
     }
 
+    /**
+     * Gets a User from the username
+     *
+     * @param username
+     * @return A User object corresponding to the selected username
+     */
     public User getUser(String username) {
         PreparedStatement stm = null;
         User usr = null;
@@ -290,6 +349,12 @@ public class DbHelper implements Serializable {
         return usr;
     }
 
+    /**
+     * Gets the Group associated with the id
+     *
+     * @param idGroup
+     * @return A Group Object with that id
+     */
     public Group getGroup(int idGroup) {
         PreparedStatement stm = null;
         Group grp = null;
@@ -329,6 +394,12 @@ public class DbHelper implements Serializable {
         return grp;
     }
 
+    /**
+     * Gets the Group with that name
+     *
+     * @param groupName
+     * @return A Group object if exists else null
+     */
     public Group getGroup(String groupName) {
         PreparedStatement stm = null;
         Group grp = null;
@@ -368,6 +439,12 @@ public class DbHelper implements Serializable {
         return grp;
     }
 
+    /**
+     * Gets the List of Invites for a User
+     *
+     * @param id_user
+     * @return All the pending invites for that user
+     */
     public List<Invite> getUserInvites(Integer id_user) {
         PreparedStatement stm = null;
         List<Invite> invites = new ArrayList<Invite>();
@@ -407,10 +484,22 @@ public class DbHelper implements Serializable {
         return invites;
     }
 
+    /**
+     * Gets the List of Invites for a User
+     *
+     * @param usr
+     * @return All the pending invites for that user
+     */
     public List<Invite> getUserInvites(User usr) {
         return getUserInvites(usr.getId());
     }
 
+    /**
+     * Accept an invite from a group to a user
+     *
+     * @param g
+     * @param user
+     */
     public void acceptInvite(Group g, User usr) {
         try {
 
@@ -422,6 +511,12 @@ public class DbHelper implements Serializable {
 
     }
 
+    /**
+     * Decline an invite from a group to a user
+     *
+     * @param g
+     * @param user
+     */
     public void removeInvite(Group g, User usr) {
 
         PreparedStatement stm = null;
@@ -447,6 +542,12 @@ public class DbHelper implements Serializable {
 
     }
 
+    /**
+     * Adds a user to a group after accepting an invite
+     *
+     * @param g
+     * @param user
+     */
     public void addUserToGroup(Group g, User usr) {
         PreparedStatement stm = null;
         try {
@@ -471,6 +572,11 @@ public class DbHelper implements Serializable {
         }
     }
 
+    /**
+     * Adds the files informations to the database
+     *
+     * @param file
+     */
     public void addFile(FileDB file) {
         PreparedStatement stm = null;
         try {
@@ -498,6 +604,13 @@ public class DbHelper implements Serializable {
         }
     }
 
+    /**
+     * Checks if a given file belongs to a group
+     *
+     * @param g
+     * @param original_name the original name of the file
+     * @return A User object owner if the file belongs to that group else null
+     */
     public User isAGroupFile(Group g, String original_name) {
         PreparedStatement stm = null;
         User usr = null;
@@ -535,6 +648,11 @@ public class DbHelper implements Serializable {
         return null;
     }
 
+    /**
+     * Adds a new post in the database
+     *
+     * @param p
+     */
     public void addPost(Post p) {
         PreparedStatement stm = null;
         try {
@@ -560,6 +678,13 @@ public class DbHelper implements Serializable {
         }
     }
 
+    /**
+     * Retrieves a file from an hash
+     *
+     * @param g
+     * @param hash the hash of the file
+     * @return The correspondenting file it it exists or null
+     */
     public FileDB getFile(Group g, String hash) {
         PreparedStatement stm = null;
         FileDB file = null;
@@ -601,10 +726,24 @@ public class DbHelper implements Serializable {
         return file;
     }
 
+    /**
+     * Check if a user belongs to a Group
+     *
+     * @param usr
+     * @param grp
+     * @return true if the user is in the given group else false
+     */
     public boolean doesUserBelongsToGroup(User usr, Group grp) {
         return doesUserBelongsToGroup(usr, grp.getId());
     }
 
+    /**
+     * Check if a user belongs to a Group
+     *
+     * @param usr
+     * @param id_group
+     * @return true if the user is in the given group else false
+     */
     public boolean doesUserBelongsToGroup(User usr, Integer id_group) {
         PreparedStatement stm = null;
         try {
@@ -640,6 +779,11 @@ public class DbHelper implements Serializable {
         return false;
     }
 
+    /**
+     * Adds a new group to the database
+     *
+     * @param grp
+     */
     public void addGroup(Group grp) {
         PreparedStatement stm = null;
         try {
@@ -662,6 +806,13 @@ public class DbHelper implements Serializable {
         }
     }
 
+    /**
+     * Gets the date of the last post made by an User in a Group
+     *
+     * @param idUser
+     * @param idGroup
+     * @return the date of the post or null
+     */
     private Date getLastPostForUserInGroup(int idUser, int idGroup) {
         PreparedStatement stm = null;
         Date d = null;
@@ -697,6 +848,12 @@ public class DbHelper implements Serializable {
         return d;
     }
 
+    /**
+     * Create a list of reports for a Group
+     *
+     * @param idGroup
+     * @return The list of reports
+     */
     public List<UserReport> getGroupReport(int idGroup) {
         PreparedStatement stm = null;
         ArrayList<UserReport> userList = new ArrayList<>();
@@ -741,6 +898,12 @@ public class DbHelper implements Serializable {
         return userList;
     }
 
+    /**
+     * Adds an invite for a User from a Group
+     *
+     * @param usr
+     * @param g
+     */
     public void addInvite(Group g, User usr) {
 
         PreparedStatement stm = null;
@@ -764,7 +927,13 @@ public class DbHelper implements Serializable {
 
         }
     }
-        public void updateGroup(int idGroup, String groupName) {
+    /**
+     * Updates group informations
+     *
+     * @param idGroup  
+     * @param groupName 
+     */
+    public void updateGroup(int idGroup, String groupName) {
         PreparedStatement stm = null;
         try {
             if (_connection == null || _connection.isClosed()) {
@@ -773,10 +942,11 @@ public class DbHelper implements Serializable {
             stm = _connection.prepareStatement("Update PWEB.GROUPS SET NAME=? where id_group=?");
             stm.setString(1, groupName);
             stm.setInt(2, idGroup);
-               try {
+            try {
                 stm.executeUpdate();
             } catch (SQLException sqlex) {
-            } } catch (Exception ex) {
+            }
+        } catch (Exception ex) {
         } finally {
             if (stm != null) {
                 try {
@@ -787,11 +957,23 @@ public class DbHelper implements Serializable {
         }
 
     }
-
+    /**
+     * Check if a User owns the given Group
+     *
+     * @param usr 
+     * @param grp
+     * @return true if the user is the owner of the given group else false
+     */
     public boolean isGroupOwner(User usr, Group grp) {
         return doesUserBelongsToGroup(usr, grp.getId());
     }
-
+    /**
+     * Check if a User owns the given Group
+     *
+     * @param usr 
+     * @param id_group 
+     * @return true if the user is the owner of the given group else false
+     */
     public boolean isGroupOwner(User usr, Integer id_group) {
         PreparedStatement stm = null;
         try {

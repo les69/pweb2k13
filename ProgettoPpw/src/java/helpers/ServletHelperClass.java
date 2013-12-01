@@ -43,7 +43,13 @@ public class ServletHelperClass {
         }
         return null;
     }
-
+    /**
+     * Gets username of the current user from Session or Cookies.From cookies is a deprecated version
+     *
+     * @param request 
+     * @param useCookies 
+     * @return the username of the user logged or null if there's none.
+     */
     public static String getUsername(HttpServletRequest request, boolean useCookies) {
         
         if(request == null)
@@ -54,11 +60,26 @@ public class ServletHelperClass {
             return getUsernameFromSession(request.getSession());
             
     }
+        /**
+     * Retrieve username from sessione
+     *
+     * @param session  
+     * 
+     * @return the username of the user logged or null if there's none.
+     */
     public static String getUsernameFromSession(HttpSession session)
     {
         return (String)session.getAttribute("username");
     }
-
+        /**
+     * Prints the html page header
+     *
+     * @param out the writer
+     * @param title the title of the page
+     * @param returnToServlet the url to go in the previous page
+     * @param titleBack the name associated to returnToServlet
+     * 
+     */
     public static void printHead(PrintWriter out, String title,String returnToServlet, String titleBack) {
         out.println("<!DOCTYPE html>");
         out.println("<html>");
@@ -87,17 +108,35 @@ public class ServletHelperClass {
 "    </div>");
       out.println("<div class=\"container\">");
     }
-
+        /**
+     * Prints the html page footer
+     *
+     * @param out the writer
+     * 
+     */
     public static void printFoot(PrintWriter out) {
         out.println("</div> <!-- container -->");
         out.println("</body>");
         out.println("</html>");
     }
-
+        /**
+     * Prints the html for a table head
+     *
+     * @param out the writer
+     * @param tableCols the columns for the table
+     * 
+     */
     public static void printTableHead(PrintWriter out, String... tableCols) {
         printTableHead(out, true, tableCols);
     }
-
+        /**
+     * Prints the html for a table head with border
+     *
+     * @param out the writer
+     * @param border if there's the need for borders
+     * @param tableCols the columns for the table
+     * 
+     */
     public static void printTableHead(PrintWriter out, boolean border, String... tableCols) {
         if (!border) {
             out.println("<table>");
@@ -110,12 +149,26 @@ public class ServletHelperClass {
         }
         out.println("</tr>");
     }
-
+        /**
+     * Prints the html for a table close tag
+     *
+     * @param out the writer
+     * 
+     */
     public static void printTableClose(PrintWriter out) {
         out.println("</table>");
 
     }
-
+        /**
+     * Main method for parsing text.Given a file with $$filename$$ or $$url$$ it returns a parsed text with html references to the elements
+     *
+     * @param grp
+     * @param text the original text
+     * @param helper tha database interface
+     * 
+     * @return a string with the parsed text
+     * 
+     */
     public static String parseText(Group grp, String text, DbHelper helper) {
         List<List<String>> listsOfMatch = getMatches(text);
 
@@ -132,7 +185,13 @@ public class ServletHelperClass {
         return parsedText;
 
     }
-
+        /**
+     * Finds the matches for words between $$ and $$
+     *
+     * @param text the original text
+     * @return A list of Lists of strings. The first list contains the strings between the dollars and the second contains the matched strings in the form $$word$$ 
+     * 
+     */
     public static List<List<String>> getMatches(String text) {
         List<String> matchedStrings = new ArrayList<>();
         List<String> stringsToReplace = new ArrayList<>();
@@ -154,7 +213,13 @@ public class ServletHelperClass {
 
         return toRet;
     }
-
+            /**
+     * Check if the given string is an url
+     *
+     * @param url
+     * @return true if matched else false
+     * 
+     */
     public static boolean isAnUrl(String url) {
         Pattern pattern = Pattern.compile("((mailto\\:|(news|(ht|f)tp(s?))\\://){1}\\S+)");
         boolean matched = false;
@@ -166,7 +231,16 @@ public class ServletHelperClass {
         return matched;
 
     }
-
+        /**
+     * Replaces all the matched strings in the parsed version
+     *
+     * @param text the original text
+     * @param toReplace the list of strings to replace
+     * @param replacements 
+     * 
+     * @return a string with the parsed text
+     * 
+     */
     public static String replaceStringsInText(String text, List<String> toReplace, List<String> replacements) {
         if (toReplace.size() != replacements.size()) {
             throw new RuntimeException("Error: Different size between original strings and replacements");
@@ -178,7 +252,16 @@ public class ServletHelperClass {
         return text;
 
     }
-
+        /**
+     * Puts html in the post to link the items
+     *
+     * @param matches the list of matched strings
+     * @param g
+     * @param helper the database interface
+     * 
+     * @return a string with the linked text
+     * 
+     */
     public static List<String> convertMatchedStrings(List<String> matches, Group g, DbHelper helper) {
         List<String> parsedStrings = new ArrayList<>();
         User usr = null;
@@ -206,7 +289,15 @@ public class ServletHelperClass {
         }
         return parsedStrings;
     }
+        /**
+     * Hash a string with SHA1 algorithm
+     *
+     * @param password text to hash
 
+     * 
+     * @return an hashed string
+     * 
+     */
     public static String encryptPassword(String password) {
         String sha1 = "";
         try {
@@ -221,7 +312,15 @@ public class ServletHelperClass {
         }
         return sha1;
     }
+        /**
+     * Converts an array of bytes to hexadecimal
+     *
+     * @param hash 
 
+     * 
+     * @return a formatted string
+     * 
+     */
     private static String byteToHex(final byte[] hash) {
         Formatter formatter = new Formatter();
         for (byte b : hash) {
