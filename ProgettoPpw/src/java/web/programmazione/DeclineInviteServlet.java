@@ -46,6 +46,7 @@ public class DeclineInviteServlet extends HttpServlet {
             User usr = helper.getUser(ServletHelperClass.getUsername(request, false));
             Group grp = helper.getGroup(Integer.parseInt(request.getParameter("group")));
             DeleteInvite(grp, usr);
+            request.getRequestDispatcher("InviteServlet").forward(request, response);
         }
     }
     
