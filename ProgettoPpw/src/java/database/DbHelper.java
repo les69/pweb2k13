@@ -110,7 +110,7 @@ public class DbHelper implements Serializable
                 }
             }
         }
-        catch (Exception ex)
+        catch (SQLException | RuntimeException ex)
         {         
             Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
                     "Error while creating query or establishing database connection", ex);
@@ -136,6 +136,7 @@ public class DbHelper implements Serializable
     /**
      * Gets a List of Groups in which the user is subscribed.
      *
+     * @param usr
      * @param User
      * @return A list with all the groups that the user follows
      */
@@ -153,7 +154,7 @@ public class DbHelper implements Serializable
     public List<Group> getUserGroups(int id_user)
     {
         PreparedStatement stm = null;
-        List<Group> groupList = new ArrayList<Group>();
+        List<Group> groupList = new ArrayList<>();
         try
         {
             if (_connection == null || _connection.isClosed())
@@ -187,7 +188,7 @@ public class DbHelper implements Serializable
                 }
             }
         }
-        catch (Exception ex)
+        catch (SQLException | RuntimeException ex)
         {
             Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
                     "Error while creating query or establishing database connection", ex);
@@ -256,7 +257,7 @@ public class DbHelper implements Serializable
                 }
             }
         }
-        catch (Exception ex)
+        catch (SQLException | RuntimeException ex)
         {
             Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
                     "Error while creating query or establishing database connection", ex);
@@ -331,7 +332,7 @@ public class DbHelper implements Serializable
                 }
             }
         }
-        catch (Exception ex)
+        catch (SQLException | RuntimeException ex)
         {
             Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
                     "Error while creating query or establishing database connection", ex);
@@ -401,7 +402,7 @@ public class DbHelper implements Serializable
                 }
             }
         }
-        catch (Exception ex)
+        catch (SQLException | RuntimeException ex)
         {
             Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
                     "Error while creating query or establishing database connection", ex);
@@ -466,7 +467,7 @@ public class DbHelper implements Serializable
                 }
             }
         }
-        catch (Exception ex)
+        catch (SQLException | RuntimeException ex)
         {
             Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
                     "Error while creating query or establishing database connection", ex);
@@ -532,7 +533,7 @@ public class DbHelper implements Serializable
                 }
             }
         }
-        catch (Exception ex)
+        catch (SQLException | RuntimeException ex)
         {
             Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
                     "Error while creating query or establishing database connection", ex);
@@ -598,7 +599,7 @@ public class DbHelper implements Serializable
                 }
             }
         }
-        catch (Exception ex)
+        catch (SQLException | RuntimeException ex)
         {
             Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
                     "Error while creating query or establishing database connection", ex);
@@ -664,7 +665,7 @@ public class DbHelper implements Serializable
                 }
             }
         }
-        catch (Exception ex)
+        catch (SQLException | RuntimeException ex)
         {
             Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
                     "Error while creating query or establishing database connection", ex);
@@ -739,7 +740,7 @@ public class DbHelper implements Serializable
 
             int res = stm.executeUpdate();
         }
-        catch (Exception ex)
+        catch (SQLException | RuntimeException ex)
         {
             Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
                     "Error while creating query or establishing database connection", ex);
@@ -783,7 +784,7 @@ public class DbHelper implements Serializable
             int res = stm.executeUpdate();
 
         }
-        catch (Exception ex)
+        catch (SQLException | RuntimeException ex)
         {
             Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
                     "Error while creating query or establishing database connection", ex);
@@ -829,7 +830,7 @@ public class DbHelper implements Serializable
             int res = stm.executeUpdate();
 
         }
-        catch (Exception ex)
+        catch (SQLException | RuntimeException ex)
         {
             Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
                     "Error while creating query or establishing database connection", ex);
@@ -893,7 +894,7 @@ public class DbHelper implements Serializable
                 }
             }
         }
-        catch (Exception ex)
+        catch (SQLException | RuntimeException ex)
         {
             Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
                     "Error while creating query or establishing database connection", ex);
@@ -938,7 +939,7 @@ public class DbHelper implements Serializable
             int res = stm.executeUpdate();
 
         }
-        catch (Exception ex)
+        catch (RuntimeException | SQLException ex)
         {
             Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
                     "Error while creating query or establishing database connection", ex);
@@ -1006,7 +1007,7 @@ public class DbHelper implements Serializable
                 }
             }
         }
-        catch (Exception ex)
+        catch (SQLException | RuntimeException ex)
         {
             Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
                     "Error while creating query or establishing database connection", ex);
@@ -1081,7 +1082,7 @@ public class DbHelper implements Serializable
                 }
             }
         }
-        catch (Exception ex)
+        catch (SQLException | RuntimeException ex)
         {
             Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
                     "Error while creating query or establishing database connection", ex);
@@ -1123,7 +1124,7 @@ public class DbHelper implements Serializable
             stm.setInt(3, grp.getOwner());
             int res = stm.executeUpdate();
         }
-        catch (Exception ex)
+        catch (SQLException | RuntimeException ex)
         {
             Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
                     "Error while creating query or establishing database connection", ex);
@@ -1186,7 +1187,7 @@ public class DbHelper implements Serializable
                 }
             }
         }
-        catch (Exception ex)
+        catch (SQLException | RuntimeException ex)
         {
             Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
                     "Error while creating query or establishing database connection", ex);
@@ -1251,7 +1252,7 @@ public class DbHelper implements Serializable
                 }
             }
         }
-        catch (Exception ex)
+        catch (SQLException | RuntimeException ex)
         {
             Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
                     "Error while creating query or establishing database connection", ex);
@@ -1301,7 +1302,7 @@ public class DbHelper implements Serializable
 
             int res = stm.executeUpdate();
         }
-        catch (Exception ex)
+        catch (SQLException | RuntimeException ex)
         {
             Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
                     "Error while creating query or establishing database connection", ex);
@@ -1349,7 +1350,7 @@ public class DbHelper implements Serializable
                 Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while executing update query", sqlex);
             }
         }
-        catch (Exception ex)
+        catch (SQLException | RuntimeException ex)
         {
             Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
                     "Error while creating query or establishing database connection", ex);
@@ -1423,7 +1424,7 @@ public class DbHelper implements Serializable
                 }
             }
         }
-        catch (Exception ex)
+        catch (SQLException | RuntimeException ex)
         {
             Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
                     "Error while creating query or establishing database connection", ex);
