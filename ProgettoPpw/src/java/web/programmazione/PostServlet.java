@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import database.PostToShow;
 import helpers.ServletHelperClass;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  *
@@ -78,7 +79,10 @@ public class PostServlet extends HttpServlet {
                 out.println("<a href=\"NewPostServlet?group="+gr.getId()+"\">New Post</a>");
                 ServletHelperClass.printFoot(out);
             }
-            catch(Exception ex){}
+            catch(Exception ex){
+                            Logger.getLogger(getClass().getName()).severe(ex.toString());
+
+            }
 
         } 
 

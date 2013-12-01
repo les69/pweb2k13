@@ -9,7 +9,6 @@ package web.programmazione;
 import database.DbHelper;
 import database.FileDB;
 import database.Group;
-import database.User;
 import helpers.ServletHelperClass;
 import java.io.DataInputStream;
 import java.io.File;
@@ -17,6 +16,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
@@ -101,8 +102,11 @@ public class DownloadServlet extends HttpServlet {
             outStream.close();
             
         }
-        catch(Exception ex)
-        {}
+        catch(IOException ex)
+        {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, 
+                    "Error while retrieving file for download", ex);
+        }
 
     }
     private void printError(HttpServletResponse response, String message, int id_group)
@@ -117,8 +121,11 @@ public class DownloadServlet extends HttpServlet {
        
            
        }
-       catch(Exception ex)
-       {}
+       catch(IOException ex)
+       {
+           Logger.getLogger(getClass().getName()).log(Level.SEVERE, 
+                    "Error while printing error", ex);
+       }
     }
     /**
      * Handles the HTTP <code>POST</code> method.

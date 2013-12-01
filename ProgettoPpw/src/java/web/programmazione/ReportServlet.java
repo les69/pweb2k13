@@ -8,18 +8,16 @@ package web.programmazione;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import database.DbHelper;
 import database.UserReport;
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -103,7 +101,9 @@ public class ReportServlet extends HttpServlet {
             MakePDF(report, lur, groupName);
             report.close();
 
-        } catch (Exception ex) {
+        } catch (DocumentException | IOException ex) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, 
+                    "Error while generating PDF report", ex);
         }
 
     }

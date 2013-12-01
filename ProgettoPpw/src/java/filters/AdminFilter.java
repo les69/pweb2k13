@@ -7,6 +7,7 @@
 package filters;
 
 import database.DbHelper;
+import java.util.logging.Level;
 import helpers.ServletHelperClass;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -15,6 +16,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -138,7 +140,9 @@ public class AdminFilter implements Filter {
             }
             chain.doFilter(request, response);
 
-        } catch (Throwable t) {
+        } catch (IOException | NumberFormatException | ServletException t) {
+                      Logger.getLogger(AdminFilter.class.getName()).log(Level.SEVERE, 
+                        "Error while processing URLs in filter", t);
 	    // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then
             // rethrow the problem after that.
@@ -228,7 +232,9 @@ public class AdminFilter implements Filter {
                 pw.close();
                 ps.close();
                 response.getOutputStream().close();
-            } catch (Exception ex) {
+            } catch (IOException ex) {
+                Logger.getLogger(AdminFilter.class.getName()).log(Level.SEVERE, 
+                        "Error while printing error page", ex);
             }
         } else {
             try {
@@ -236,7 +242,9 @@ public class AdminFilter implements Filter {
                 t.printStackTrace(ps);
                 ps.close();
                 response.getOutputStream().close();
-            } catch (Exception ex) {
+            } catch (IOException ex) {
+                Logger.getLogger(AdminFilter.class.getName()).log(Level.SEVERE, 
+                        "Error while printing error", ex);
             }
         }
     }
@@ -250,7 +258,9 @@ public class AdminFilter implements Filter {
             pw.close();
             sw.close();
             stackTrace = sw.getBuffer().toString();
-        } catch (Exception ex) {
+        } catch (IOException ex) {
+            Logger.getLogger(AdminFilter.class.getName()).log(Level.SEVERE, 
+                        "Error while retrieving stacktrace", ex);
         }
         return stackTrace;
     }
@@ -258,6 +268,7 @@ public class AdminFilter implements Filter {
     public void log(String msg) {
         filterConfig.getServletContext().log(msg);        
     }
+    
     public boolean isPathExcluded(String path)
     {
         for (int i = 0; i < exclusions.size(); i++) {
@@ -266,6 +277,5 @@ public class AdminFilter implements Filter {
             
         }
         return false;
-    }
-    
+    }    
 }

@@ -5,11 +5,9 @@
  */
 package web.programmazione;
 
-import database.DbHelper;
 import helpers.ServletHelperClass;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.rmi.ServerException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;

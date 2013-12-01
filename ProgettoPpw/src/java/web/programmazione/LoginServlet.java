@@ -11,10 +11,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import database.DbHelper;
 import database.User;
-import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.Cookie;
 
 /**
@@ -64,7 +64,9 @@ public class LoginServlet extends HttpServlet {
                 }
             }
 
-        } catch (Exception ex) {
+        } catch (Exception ex) { 
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, 
+                    "Error while printing login page", ex);
         }
     }
 

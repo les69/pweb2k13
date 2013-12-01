@@ -43,7 +43,8 @@ public class DbHelper implements Serializable
         }
         catch (ClassNotFoundException | SQLException e)
         {
-            Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while creating DBHelper object", e);
+            Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                    "Error while creating DBHelper object", e);
             throw new RuntimeException(e.toString(), e);
         }
     }
@@ -100,7 +101,8 @@ public class DbHelper implements Serializable
             }
             catch (SQLException sqlex)
             {
-                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while executing query or parsing result data", sqlex);
+                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                        "Error while executing query or parsing result data", sqlex);
             }
             finally
             {
@@ -125,7 +127,8 @@ public class DbHelper implements Serializable
                 }
                 catch (SQLException sex)
                 {
-                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while closing connection", sex);
+                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                            "Error while closing connection", sex);
 
                 }
             }
@@ -178,7 +181,8 @@ public class DbHelper implements Serializable
             }
             catch (SQLException sqlex)
             {
-                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while executing query or parsing result data", sqlex);
+                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                        "Error while executing query or parsing result data", sqlex);
             }
             finally
             {
@@ -203,7 +207,8 @@ public class DbHelper implements Serializable
                 }
                 catch (SQLException sex)
                 {
-                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while closing connection", sex);
+                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                            "Error while closing connection", sex);
                 }
             }
         }
@@ -247,7 +252,8 @@ public class DbHelper implements Serializable
             }
             catch (SQLException sqlex)
             {
-                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while executing query or parsing result data", sqlex);
+                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                        "Error while executing query or parsing result data", sqlex);
             }
             finally
             {
@@ -272,7 +278,8 @@ public class DbHelper implements Serializable
                 }
                 catch (SQLException sex)
                 {
-                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while closing connection", sex);
+                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                            "Error while closing connection", sex);
                 }
             }
         }
@@ -322,7 +329,8 @@ public class DbHelper implements Serializable
             }
             catch (SQLException sqlex)
             {
-                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while executing query or parsing result data", sqlex);
+                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                        "Error while executing query or parsing result data", sqlex);
             }
             finally
             {
@@ -347,7 +355,8 @@ public class DbHelper implements Serializable
                 }
                 catch (SQLException sex)
                 {
-                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while closing connection", sex);
+                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                            "Error while closing connection", sex);
                 }
             }
         }
@@ -392,7 +401,8 @@ public class DbHelper implements Serializable
             }
             catch (SQLException sqlex)
             {
-                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while executing query or parsing result data", sqlex);
+                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                        "Error while executing query or parsing result data", sqlex);
             }
             finally
             {
@@ -417,7 +427,8 @@ public class DbHelper implements Serializable
                 }
                 catch (SQLException sex)
                 {
-                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while closing connection", sex);
+                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                            "Error while closing connection", sex);
                 }
             }
         }
@@ -457,7 +468,8 @@ public class DbHelper implements Serializable
             }
             catch (SQLException sqlex)
             {
-                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while executing query or parsing result data", sqlex);
+                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                        "Error while executing query or parsing result data", sqlex);
             }
             finally
             {
@@ -482,7 +494,8 @@ public class DbHelper implements Serializable
                 }
                 catch (SQLException sex)
                 {
-                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while closing connection", sex);
+                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                            "Error while closing connection", sex);
                 }
             }
         }
@@ -523,7 +536,8 @@ public class DbHelper implements Serializable
             }
             catch (SQLException sqlex)
             {
-                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while executing query or parsing result data", sqlex);
+                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                        "Error while executing query or parsing result data", sqlex);
             }
             finally
             {
@@ -548,7 +562,8 @@ public class DbHelper implements Serializable
                 }
                 catch (SQLException sex)
                 {
-                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while closing connection", sex);
+                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                            "Error while closing connection", sex);
                 }
             }
         }
@@ -589,7 +604,8 @@ public class DbHelper implements Serializable
             }
             catch (SQLException sqlex)
             {
-                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while executing query or parsing result data", sqlex);
+                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                        "Error while executing query or parsing result data", sqlex);
             }
             finally
             {
@@ -614,7 +630,8 @@ public class DbHelper implements Serializable
                 }
                 catch (SQLException sex)
                 {
-                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while closing connection", sex);
+                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                            "Error while closing connection", sex);
                 }
             }
         }
@@ -655,7 +672,8 @@ public class DbHelper implements Serializable
             }
             catch (SQLException sqlex)
             {
-                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while executing query or parsing result data", sqlex);
+                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                        "Error while executing query or parsing result data", sqlex);
             }
             finally
             {
@@ -680,7 +698,8 @@ public class DbHelper implements Serializable
                 }
                 catch (SQLException sex)
                 {
-                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while closing connection", sex);
+                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                            "Error while closing connection", sex);
                 }
             }
         }
@@ -755,7 +774,8 @@ public class DbHelper implements Serializable
                 }
                 catch (SQLException sex)
                 {
-                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while closing connection", sex);
+                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                            "Error while closing connection", sex);
                 }
             }
         }
@@ -799,7 +819,8 @@ public class DbHelper implements Serializable
                 }
                 catch (SQLException sex)
                 {
-                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while closing connection", sex);
+                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                            "Error while closing connection", sex);
                 }
             }
         }
@@ -845,7 +866,8 @@ public class DbHelper implements Serializable
                 }
                 catch (SQLException sex)
                 {
-                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while closing connection", sex);
+                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                            "Error while closing connection", sex);
                 }
             }
         }
@@ -884,7 +906,8 @@ public class DbHelper implements Serializable
             }
             catch (SQLException sqlex)
             {
-                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while executing query or parsing result data", sqlex);
+                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                        "Error while executing query or parsing result data", sqlex);
             }
             finally
             {
@@ -909,7 +932,8 @@ public class DbHelper implements Serializable
                 }
                 catch (SQLException sex)
                 {
-                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while closing connection", sex);
+                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                            "Error while closing connection", sex);
                 }
             }
         }
@@ -954,7 +978,8 @@ public class DbHelper implements Serializable
                 }
                 catch (SQLException sex)
                 {
-                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while closing connection", sex);
+                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                            "Error while closing connection", sex);
                 }
             }
         }
@@ -997,7 +1022,8 @@ public class DbHelper implements Serializable
             }
             catch (SQLException sqlex)
             {
-                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while executing query or parsing result data", sqlex);
+                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                        "Error while executing query or parsing result data", sqlex);
             }
             finally
             {
@@ -1022,7 +1048,8 @@ public class DbHelper implements Serializable
                 }
                 catch (SQLException sex)
                 {
-                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while closing connection", sex);
+                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                            "Error while closing connection", sex);
                 }
             }
         }
@@ -1072,7 +1099,8 @@ public class DbHelper implements Serializable
             }
             catch (SQLException sqlex)
             {
-                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while executing query or parsing result data", sqlex);
+                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                        "Error while executing query or parsing result data", sqlex);
             }
             finally
             {
@@ -1097,7 +1125,8 @@ public class DbHelper implements Serializable
                 }
                 catch (SQLException sex)
                 {
-                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while closing connection", sex);
+                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                            "Error while closing connection", sex);
                 }
             }
         }
@@ -1139,7 +1168,8 @@ public class DbHelper implements Serializable
                 }
                 catch (SQLException sex)
                 {
-                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while closing connection", sex);
+                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                            "Error while closing connection", sex);
                 }
             }
         }
@@ -1177,7 +1207,8 @@ public class DbHelper implements Serializable
             }
             catch (SQLException sqlex)
             {
-                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while executing query or parsing result data", sqlex);
+                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                        "Error while executing query or parsing result data", sqlex);
             }
             finally
             {
@@ -1202,7 +1233,8 @@ public class DbHelper implements Serializable
                 }
                 catch (SQLException sex)
                 {
-                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while closing connection", sex);
+                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                            "Error while closing connection", sex);
                 }
             }
         }
@@ -1242,7 +1274,8 @@ public class DbHelper implements Serializable
             }
             catch (SQLException sqlex)
             {
-                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while executing query or parsing result data", sqlex);
+                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                        "Error while executing query or parsing result data", sqlex);
             }
             finally
             {
@@ -1267,7 +1300,8 @@ public class DbHelper implements Serializable
                 }
                 catch (SQLException sex)
                 {
-                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while closing connection", sex);
+                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                            "Error while closing connection", sex);
                 }
             }
         }
@@ -1317,7 +1351,8 @@ public class DbHelper implements Serializable
                 }
                 catch (SQLException sex)
                 {
-                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while closing connection", sex);
+                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                            "Error while closing connection", sex);
                 }
             }
         }
@@ -1347,7 +1382,8 @@ public class DbHelper implements Serializable
             }
             catch (SQLException sqlex)
             {
-                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while executing update query", sqlex);
+                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                        "Error while executing update query", sqlex);
             }
         }
         catch (SQLException | RuntimeException ex)
@@ -1365,7 +1401,8 @@ public class DbHelper implements Serializable
                 }
                 catch (SQLException sex)
                 {
-                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while closing connection", sex);
+                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                            "Error while closing connection", sex);
                 }
             }
         }
@@ -1414,7 +1451,8 @@ public class DbHelper implements Serializable
             }
             catch (SQLException sqlex)
             {
-                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while executing query or parsing result data", sqlex);
+                Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                        "Error while executing query or parsing result data", sqlex);
             }
             finally
             {
@@ -1439,7 +1477,8 @@ public class DbHelper implements Serializable
                 }
                 catch (SQLException sex)
                 {
-                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, "Error while closing connection", sex);
+                    Logger.getLogger(DbHelper.class.getName()).log(Level.SEVERE, 
+                            "Error while closing connection", sex);
                 }
             }
         }

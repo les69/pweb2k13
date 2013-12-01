@@ -8,7 +8,6 @@ package helpers;
 import database.DbHelper;
 import database.Group;
 import database.User;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -16,6 +15,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.http.Cookie;
@@ -209,6 +210,8 @@ public class ServletHelperClass {
             toRet.add(stringsToReplace);
             toRet.add(matchedStrings);
         } catch (Exception ex) {
+            Logger.getLogger(ServletHelperClass.class.getName()).log(Level.SEVERE, 
+                        "Error while matching patterns in message", ex);
         }
 
         return toRet;
@@ -227,6 +230,8 @@ public class ServletHelperClass {
             Matcher matcher = pattern.matcher(url);
             matched = matcher.matches();
         } catch (Exception ex) {
+            Logger.getLogger(ServletHelperClass.class.getName()).log(Level.SEVERE, 
+                        "Error while matching link pattern in message", ex);
         }
         return matched;
 
@@ -305,10 +310,9 @@ public class ServletHelperClass {
             crypt.reset();
             crypt.update(password.getBytes("UTF-8"));
             sha1 = byteToHex(crypt.digest());
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            Logger.getLogger(ServletHelperClass.class.getName()).log(Level.SEVERE, 
+                        "Error while encrpiting password", e);
         }
         return sha1;
     }

@@ -14,9 +14,6 @@ package listeners;
  * All rights reserved
  */
 import database.DbHelper;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.logging.Logger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -42,6 +39,7 @@ public class WebContextListener implements ServletContextListener {
         }
     }
 
+    @Override
     public void contextDestroyed(ServletContextEvent sce)
     {
         // Il database Derby deve essere "spento" tentando di
@@ -50,8 +48,8 @@ public class WebContextListener implements ServletContextListener {
             DbHelper.close();
         }
         catch(Exception ex)
-        { }
+        {
+            Logger.getLogger(WebContextListener.class.getName()).severe(ex.toString());
+        }
     }
-    
-
 }

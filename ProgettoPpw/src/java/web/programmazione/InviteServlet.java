@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -64,8 +65,11 @@ public class InviteServlet extends HttpServlet {
             out.println("</form>");
             ServletHelperClass.printFoot(out);
         }
-        catch(Exception ex)
-        {}
+        catch(IOException | SQLException | ServletException ex)
+        {
+            Logger.getLogger(getClass().getName()).severe(ex.toString());
+
+        }
     }
     private void printTable(List<Invite> invites, PrintWriter out)
             throws SQLException
