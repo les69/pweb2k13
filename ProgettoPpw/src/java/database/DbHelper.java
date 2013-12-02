@@ -729,6 +729,8 @@ public class DbHelper implements Serializable
         {
             this.removeInvite(g, usr);
             this.addUserToGroup(g, usr);
+            Logger.getLogger(DbHelper.class.getName()).log(Level.INFO, 
+                    "User {0} accepted an invitation", usr.getUsername());
         }
         catch (Exception ex)
         {
@@ -758,6 +760,10 @@ public class DbHelper implements Serializable
             stm.setInt(2, g.getId());
 
             int res = stm.executeUpdate();
+            
+            Logger.getLogger(DbHelper.class.getName()).log(Level.INFO, 
+                    "User {0} declined an invitation", usr.getUsername());
+            
         }
         catch (SQLException | RuntimeException ex)
         {
@@ -802,6 +808,9 @@ public class DbHelper implements Serializable
             stm.setInt(2, usr.getId());
 
             int res = stm.executeUpdate();
+            
+            Logger.getLogger(DbHelper.class.getName()).log(Level.INFO, 
+                    "User {0} was added to a group", usr.getUsername());
 
         }
         catch (SQLException | RuntimeException ex)
@@ -849,6 +858,8 @@ public class DbHelper implements Serializable
             stm.setString(5, file.getType());
 
             int res = stm.executeUpdate();
+            Logger.getLogger(DbHelper.class.getName()).log(Level.INFO, 
+                    "A new file has been successfully uploaded");
 
         }
         catch (SQLException | RuntimeException ex)
@@ -962,6 +973,8 @@ public class DbHelper implements Serializable
 
             int res = stm.executeUpdate();
 
+            Logger.getLogger(DbHelper.class.getName()).log(Level.INFO, 
+                    "A new post has been added in group with ID {0}", p.getIdGroup());
         }
         catch (RuntimeException | SQLException ex)
         {
@@ -1152,6 +1165,8 @@ public class DbHelper implements Serializable
             stm.setBoolean(2, true);
             stm.setInt(3, grp.getOwner());
             int res = stm.executeUpdate();
+            Logger.getLogger(DbHelper.class.getName()).log(Level.INFO, 
+                    "New group created successfully");
         }
         catch (SQLException | RuntimeException ex)
         {
@@ -1335,6 +1350,9 @@ public class DbHelper implements Serializable
             stm.setInt(2, usr.getId());
 
             int res = stm.executeUpdate();
+            
+            Logger.getLogger(DbHelper.class.getName()).log(Level.INFO, 
+                    "A new invitation has been sent");
         }
         catch (SQLException | RuntimeException ex)
         {
@@ -1379,6 +1397,8 @@ public class DbHelper implements Serializable
             try
             {
                 stm.executeUpdate();
+                Logger.getLogger(DbHelper.class.getName()).log(Level.INFO, 
+                    "Group renaming successful");
             }
             catch (SQLException sqlex)
             {
