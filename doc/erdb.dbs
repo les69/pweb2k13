@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<project name="db_script.sql" id="Project8600851" database="Derby" >
+<project name="Derby" id="Project8745401" database="Derby" >
 	<schema name="APP" schemaname="APP" defo="y" >
 		<table name="FILEDB" >
 			<column name="HASHED_NAME" type="varchar" length="255" jt="12" mandatory="y" />
@@ -7,21 +7,21 @@
 			<column name="ID_USER" type="integer" length="10" jt="4" mandatory="y" />
 			<column name="ORIGINAL_NAME" type="varchar" length="255" jt="12" mandatory="y" />
 			<column name="TYPE" type="varchar" length="255" jt="12" mandatory="y" />
-			<index name="SQL131128153115930" unique="PRIMARY_KEY" >
+			<index name="SQL131202110855790" unique="PRIMARY_KEY" >
 				<column name="HASHED_NAME" />
 				<column name="ID_GROUP" />
 				<column name="ID_USER" />
 			</index>
-			<index name="SQL131128153115931" unique="NORMAL" >
+			<index name="SQL131202110855791" unique="NORMAL" >
 				<column name="ID_GROUP" />
 			</index>
-			<index name="SQL131128153115932" unique="NORMAL" >
+			<index name="SQL131202110855810" unique="NORMAL" >
 				<column name="ID_USER" />
 			</index>
-			<fk name="SQL131128153115931" to_schema="APP" to_table="GROUPS" >
+			<fk name="SQL131202110855791" to_schema="APP" to_table="GROUPS" >
 				<fk_column name="ID_GROUP" pk="ID_GROUP" />
 			</fk>
-			<fk name="SQL131128153115932" to_schema="APP" to_table="USERS" >
+			<fk name="SQL131202110855810" to_schema="APP" to_table="USERS" >
 				<fk_column name="ID_USER" pk="ID_USER" />
 			</fk>
 		</table>
@@ -32,13 +32,16 @@
 				<defo>true</defo>
 			</column>
 			<column name="ID_OWNER" type="integer" length="10" jt="4" mandatory="y" />
-			<index name="SQL131128152941330" unique="PRIMARY_KEY" >
+			<index name="SQL131202110708710" unique="PRIMARY_KEY" >
 				<column name="ID_GROUP" />
 			</index>
-			<index name="SQL131128152941331" unique="NORMAL" >
+			<index name="SQL131202110708711" unique="UNIQUE" >
+				<column name="NAME" />
+			</index>
+			<index name="SQL131202110708712" unique="NORMAL" >
 				<column name="ID_OWNER" />
 			</index>
-			<fk name="SQL131128152941331" to_schema="APP" to_table="USERS" >
+			<fk name="SQL131202110708712" to_schema="APP" to_table="USERS" >
 				<fk_column name="ID_OWNER" pk="ID_USER" />
 			</fk>
 		</table>
@@ -48,20 +51,20 @@
 			<column name="ACTIVE" type="boolean" length="1" jt="16" mandatory="y" >
 				<defo>true</defo>
 			</column>
-			<index name="SQL131128152941720" unique="PRIMARY_KEY" >
+			<index name="SQL131202110856510" unique="PRIMARY_KEY" >
 				<column name="ID_GROUP" />
 				<column name="ID_USER" />
 			</index>
-			<index name="SQL131128152941721" unique="NORMAL" >
+			<index name="SQL131202110856511" unique="NORMAL" >
 				<column name="ID_GROUP" />
 			</index>
-			<index name="SQL131128152941722" unique="NORMAL" >
+			<index name="SQL131202110856512" unique="NORMAL" >
 				<column name="ID_USER" />
 			</index>
-			<fk name="SQL131128152941721" to_schema="APP" to_table="GROUPS" >
+			<fk name="SQL131202110856511" to_schema="APP" to_table="GROUPS" >
 				<fk_column name="ID_GROUP" pk="ID_GROUP" />
 			</fk>
-			<fk name="SQL131128152941722" to_schema="APP" to_table="USERS" >
+			<fk name="SQL131202110856512" to_schema="APP" to_table="USERS" >
 				<fk_column name="ID_USER" pk="ID_USER" />
 			</fk>
 		</table>
@@ -70,20 +73,20 @@
 			<column name="ID_USER" type="integer" length="10" jt="4" mandatory="y" />
 			<column name="INVITE_DATE" type="date" length="10" jt="91" mandatory="y" />
 			<column name="VISIBLE" type="boolean" length="1" jt="16" mandatory="y" />
-			<index name="SQL131128152942760" unique="PRIMARY_KEY" >
+			<index name="SQL131202111009270" unique="PRIMARY_KEY" >
 				<column name="ID_GROUP" />
 				<column name="ID_USER" />
 			</index>
-			<index name="SQL131128152942761" unique="NORMAL" >
+			<index name="SQL131202111009271" unique="NORMAL" >
 				<column name="ID_GROUP" />
 			</index>
-			<index name="SQL131128152942762" unique="NORMAL" >
+			<index name="SQL131202111009272" unique="NORMAL" >
 				<column name="ID_USER" />
 			</index>
-			<fk name="SQL131128152942761" to_schema="APP" to_table="GROUPS" >
+			<fk name="SQL131202111009271" to_schema="APP" to_table="GROUPS" >
 				<fk_column name="ID_GROUP" pk="ID_GROUP" />
 			</fk>
-			<fk name="SQL131128152942762" to_schema="APP" to_table="USERS" >
+			<fk name="SQL131202111009272" to_schema="APP" to_table="USERS" >
 				<fk_column name="ID_USER" pk="ID_USER" />
 			</fk>
 		</table>
@@ -96,19 +99,19 @@
 			<column name="MESSAGE" type="long varchar" length="32700" jt="-1" />
 			<column name="ID_GROUP" type="integer" length="10" jt="4" mandatory="y" />
 			<column name="ID_USER" type="integer" length="10" jt="4" mandatory="y" />
-			<index name="SQL131128152942300" unique="PRIMARY_KEY" >
+			<index name="SQL131202110856860" unique="PRIMARY_KEY" >
 				<column name="ID_POST" />
 			</index>
-			<index name="SQL131128152942301" unique="NORMAL" >
+			<index name="SQL131202110856861" unique="NORMAL" >
 				<column name="ID_GROUP" />
 			</index>
-			<index name="SQL131128152942310" unique="NORMAL" >
+			<index name="SQL131202110856862" unique="NORMAL" >
 				<column name="ID_USER" />
 			</index>
-			<fk name="SQL131128152942301" to_schema="APP" to_table="GROUPS" >
+			<fk name="SQL131202110856861" to_schema="APP" to_table="GROUPS" >
 				<fk_column name="ID_GROUP" pk="ID_GROUP" />
 			</fk>
-			<fk name="SQL131128152942310" to_schema="APP" to_table="USERS" >
+			<fk name="SQL131202110856862" to_schema="APP" to_table="USERS" >
 				<fk_column name="ID_USER" pk="ID_USER" />
 			</fk>
 		</table>
@@ -116,21 +119,21 @@
 			<column name="ID_USER" type="integer" length="10" jt="4" mandatory="y" autoincrement="y" />
 			<column name="USERNAME" type="varchar" length="255" jt="12" mandatory="y" />
 			<column name="PASSWORD" type="varchar" length="255" jt="12" mandatory="y" />
-			<index name="SQL131128152940970" unique="PRIMARY_KEY" >
+			<index name="SQL131202110708430" unique="PRIMARY_KEY" >
 				<column name="ID_USER" />
 			</index>
-			<index name="SQL131128152940971" unique="UNIQUE" >
+			<index name="SQL131202110708431" unique="UNIQUE" >
 				<column name="USERNAME" />
 			</index>
 		</table>
 	</schema>
-	<connector name="Derby" database="Derby" driver_class="org.apache.derby.jdbc.EmbeddedDriver" driver_jar="derby.jar" host="localhost" port="1527" instance="C:/Users/Lorenzo/Desktop/ciao" schema_mapping="" />
-	<layout id="Layout8601459" name="Layout" joined_routing="y" show_column_type="y" show_relation_columns="y" >
-		<entity schema="APP" name="USERS" color="a8c4ef" x="45" y="45" />
-		<entity schema="APP" name="GROUPS" color="a8c4ef" x="465" y="375" />
+	<connector name="Derby" database="Derby" driver_class="org.apache.derby.jdbc.EmbeddedDriver" driver_jar="derby.jar" host="localhost" port="1527" instance="C:/Users/Lorenzo/Desktop/Vario" schema_mapping="" />
+	<layout id="Layout8788080" name="Default" joined_routing="y" show_column_type="y" show_relation_columns="y" >
+		<entity schema="APP" name="USERS" color="a8c4ef" x="45" y="60" />
 		<entity schema="APP" name="GROUPUSER" color="a8c4ef" x="465" y="45" />
-		<entity schema="APP" name="POST" color="a8c4ef" x="45" y="360" />
-		<entity schema="APP" name="FILEDB" color="a8c4ef" x="270" y="210" />
-		<entity schema="APP" name="INVITE" color="a8c4ef" x="720" y="180" />
+		<entity schema="APP" name="INVITE" color="a8c4ef" x="795" y="165" />
+		<entity schema="APP" name="FILEDB" color="a8c4ef" x="330" y="210" />
+		<entity schema="APP" name="GROUPS" color="a8c4ef" x="555" y="390" />
+		<entity schema="APP" name="POST" color="a8c4ef" x="45" y="345" />
 	</layout>
 </project>
