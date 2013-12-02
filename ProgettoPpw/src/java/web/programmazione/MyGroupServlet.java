@@ -36,9 +36,6 @@ public class MyGroupServlet extends HttpServlet {
         out.println(group.getName());
         out.println("</td>");
         out.println("<td>");
-        out.println(group.isActive());
-        out.println("</td>");
-        out.println("<td>");
         out.println("<a href=\"\\ProgettoPpw\\Admin\\EditGroupServlet?group=" + group.getId() + "\">Edit group</a>");
         out.println("</td>");
         out.println("<td>");
@@ -67,7 +64,7 @@ public class MyGroupServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             ServletHelperClass.printHead(out,"My Groups","/ProgettoPpw/User/HomeServlet","Home");
 
-            ServletHelperClass.printTableHead(out, "Group ID", "Group name", "Is active","Edit", "Invite", "Report");
+            ServletHelperClass.printTableHead(out, "Group ID", "Group name","Edit", "Invite", "Report");
             if (groups != null) {
                 for (Group group : groups) {
                     printGroupTable(out, group);
