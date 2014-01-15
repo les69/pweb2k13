@@ -40,7 +40,7 @@ public class HomeServlet extends HttpServlet {
             String username = ServletHelperClass.getUsername(request, false);
             ServletHelperClass.printHead(out, "Home", "","");
             out.println("<h3>Welcome " + username + ". This is your Home!</h3>");
-            printLastLogin(request.getCookies(), out, response, username);
+            printLastLogin(request.getCookies(), out, username);
             out.println("<br/>");
             out.println("<a href=\"\\ProgettoPpw\\Admin\\MyGroupServlet\">My Groups</a><br/>");
             out.println("<a href=\"\\ProgettoPpw\\Group\\GroupListServlet\">Groups</a><br/>");
@@ -51,26 +51,17 @@ public class HomeServlet extends HttpServlet {
         }
     }
 
-    private void printLastLogin(Cookie[] cookies, PrintWriter out, HttpServletResponse response, String username) {
-        boolean found = false;
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        Date date = new Date();
+    private void printLastLogin(Cookie[] cookies, PrintWriter out, String username) {
+
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals(username)) {
                     out.println("<h6 style=\"font-style:italic\">Last login at " + cookie.getValue() + "</h6>");
-                    cookie.setValue(dateFormat.format(date));
-                    response.addCookie(cookie);
-                    found = true;
                     break;  //[LOTTO] added because multiple cookies, maybe bug only in my browser
                 }
             }
         }
-        if (!found) {
-            Cookie loginCookie = new Cookie(username, "");
-            loginCookie.setValue(dateFormat.format(date));
-            response.addCookie(loginCookie);
-        }
+
 
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

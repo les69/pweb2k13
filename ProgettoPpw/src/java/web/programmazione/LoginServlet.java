@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import database.DbHelper;
 import database.User;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.Cookie;
@@ -60,45 +63,71 @@ public class LoginServlet extends HttpServlet {
                     Cookie usernameCookie = new Cookie("username", user.getUsername());
                     request.getSession().setAttribute("username", username);
                     response.addCookie(usernameCookie);
+                    setLastLogin(request.getCookies(), response, username);
                     response.sendRedirect("/ProgettoPpw/User/HomeServlet");
                 }
             }
 
-        } catch (Exception ex) { 
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, 
+        } catch (Exception ex) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE,
                     "Error while printing login page", ex);
         }
     }
+
+    private void setLastLogin(Cookie[] cookies, HttpServletResponse response, String username) {
+        boolean found = false;
+        String lastLoginDate = "";
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(username)) {
+                    //out.println("<h6 style=\"font-style:italic\">Last login at " + cookie.getValue() + "</h6>");
+                    lastLoginDate = cookie.getValue();
+                    cookie.setValue(dateFormat.format(date));
+                    response.addCookie(cookie);
+                    found = true;
+                    break;  //[LOTTO] added because multiple cookies, maybe bug only in my browser
+                }
+            }
+        }
+        if (!found) {
+            Cookie loginCookie = new Cookie(username, "");
+            loginCookie.setValue(dateFormat.format(date));
+            lastLoginDate = dateFormat.format(date);
+            response.addCookie(loginCookie);
+        }
+      }
 
     private void printErrorPage(PrintWriter out, String message)
             throws IOException {
         //Questa è la easy soluzione, ristampo la pagina di login(tanto è poco codice comunque)
         // se più avanti avremo idee migliori fixeremo
         out.println("<!DOCTYPE html>");
-        out.println("<html><head><meta charset=\"UTF-8\">\n" +
-"        <meta name=\"viewport\" content=\"width=device-width\">\n" +
-"<link href=\"css/bootstrap.css\" type=\"text/css\" rel=\"stylesheet\" /><link href=\"css/bootstrap-responsive.css\" type=\"text/css\" rel=\"stylesheet\" /><title>Login</title>");
+        out.println("<html><head><meta charset=\"UTF-8\">\n"
+                + "        <meta name=\"viewport\" content=\"width=device-width\">\n"
+                + "<link href=\"css/bootstrap.css\" type=\"text/css\" rel=\"stylesheet\" /><link href=\"css/bootstrap-responsive.css\" type=\"text/css\" rel=\"stylesheet\" /><title>Login</title>");
         out.println("</head><body style=\"padding-top: 60px;\">");
-        out.println("<div class=\"navbar navbar-inverse navbar-fixed-top\">\n" +
-"      <div class=\"navbar-inner\">\n" +
-"        <div class=\"container\">\n" +
-"          <button type=\"button\" class=\"btn btn-navbar\" data-toggle=\"collapse\" data-target=\".nav-collapse\">\n" +
-"            <span class=\"icon-bar\"></span>\n" +
-"            <span class=\"icon-bar\"></span>\n" +
-"            <span class=\"icon-bar\"></span>\n" +
-"          </button>\n" +
-"          <a class=\"brand\" href=\"/ProgettoPpw/User/HomeServlet\">Web Programming Project</a>\n" +
-"          <div class=\"nav-collapse collapse\">\n" +
-"          </div><!--/.nav-collapse -->\n" +
-"        </div>\n" +
-"      </div>\n" +
-"    </div>");
-        out.println("<div class=\"container\"><h1>Login page</h1><div class=\"alert alert-error\">\n" +
-"  <button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>\n" +
-"  <strong>Error! </strong>"+message+
-"</div><div class=\"navbar\">\n" +
-"              <div class=\"navbar-inner\">\n" +
-"     ");
+        out.println("<div class=\"navbar navbar-inverse navbar-fixed-top\">\n"
+                + "      <div class=\"navbar-inner\">\n"
+                + "        <div class=\"container\">\n"
+                + "          <button type=\"button\" class=\"btn btn-navbar\" data-toggle=\"collapse\" data-target=\".nav-collapse\">\n"
+                + "            <span class=\"icon-bar\"></span>\n"
+                + "            <span class=\"icon-bar\"></span>\n"
+                + "            <span class=\"icon-bar\"></span>\n"
+                + "          </button>\n"
+                + "          <a class=\"brand\" href=\"/ProgettoPpw/User/HomeServlet\">Web Programming Project</a>\n"
+                + "          <div class=\"nav-collapse collapse\">\n"
+                + "          </div><!--/.nav-collapse -->\n"
+                + "        </div>\n"
+                + "      </div>\n"
+                + "    </div>");
+        out.println("<div class=\"container\"><h1>Login page</h1><div class=\"alert alert-error\">\n"
+                + "  <button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>\n"
+                + "  <strong>Error! </strong>" + message
+                + "</div><div class=\"navbar\">\n"
+                + "              <div class=\"navbar-inner\">\n"
+                + "     ");
         out.println("<form class=\"navbar-form pull-down\" action=\"LoginServlet\" method=\"post\">Username<br/> <input type=\"text\" class=\"span2\" name=\"username\"/><br/>Password<br/> <input type=\"password\"  class=\"span2\"name=\"password\" /><br/><input type=\"submit\" class=\"btn\" value=\"Login\" /></form>");
         out.println("</div></div></div></body></html>");
     }

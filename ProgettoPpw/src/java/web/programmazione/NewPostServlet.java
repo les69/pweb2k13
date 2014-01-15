@@ -165,7 +165,6 @@ public class NewPostServlet extends HttpServlet
 
                 String text = (String) multi.getParameter("text");
 
-             //file linking needed
                 String message = ServletHelperClass.parseText(g, text, helper);
                 Post p = new Post();
                 p.setIdGroup(g.getId());
