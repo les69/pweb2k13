@@ -63,7 +63,9 @@ public class LoginServlet extends HttpServlet {
                     Cookie usernameCookie = new Cookie("username", user.getUsername());
                     request.getSession().setAttribute("username", username);
                     response.addCookie(usernameCookie);
-                    setLastLogin(request.getCookies(), response, username);
+                    String date = setLastLogin(request.getCookies(), response, username);
+                    
+                    request.getSession().setAttribute("last-login", date);
                     response.sendRedirect("/ProgettoPpw/User/HomeServlet");
                 }
             }
@@ -74,7 +76,7 @@ public class LoginServlet extends HttpServlet {
         }
     }
 
-    private void setLastLogin(Cookie[] cookies, HttpServletResponse response, String username) {
+    private String setLastLogin(Cookie[] cookies, HttpServletResponse response, String username) {
         boolean found = false;
         String lastLoginDate = "";
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -84,6 +86,7 @@ public class LoginServlet extends HttpServlet {
                 if (cookie.getName().equals(username)) {
                     //out.println("<h6 style=\"font-style:italic\">Last login at " + cookie.getValue() + "</h6>");
                     lastLoginDate = cookie.getValue();
+                    
                     cookie.setValue(dateFormat.format(date));
                     response.addCookie(cookie);
                     found = true;
@@ -94,9 +97,9 @@ public class LoginServlet extends HttpServlet {
         if (!found) {
             Cookie loginCookie = new Cookie(username, "");
             loginCookie.setValue(dateFormat.format(date));
-            lastLoginDate = dateFormat.format(date);
             response.addCookie(loginCookie);
         }
+        return lastLoginDate;
       }
 
     private void printErrorPage(PrintWriter out, String message)

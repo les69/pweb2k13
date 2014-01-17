@@ -40,7 +40,9 @@ public class HomeServlet extends HttpServlet {
             String username = ServletHelperClass.getUsername(request, false);
             ServletHelperClass.printHead(out, "Home", "","");
             out.println("<h3>Welcome " + username + ". This is your Home!</h3>");
-            printLastLogin(request.getCookies(), out, username);
+            //printLastLogin(request.getCookies(), out, username);
+
+            out.println("<h6 style=\"font-style:italic\">Last login at " + (String)request.getSession().getAttribute("last-login") + "</h6>");
             out.println("<br/>");
             out.println("<a href=\"\\ProgettoPpw\\Admin\\MyGroupServlet\">My Groups</a><br/>");
             out.println("<a href=\"\\ProgettoPpw\\Group\\GroupListServlet\">Groups</a><br/>");
@@ -50,7 +52,7 @@ public class HomeServlet extends HttpServlet {
 
         }
     }
-
+    //deprecated
     private void printLastLogin(Cookie[] cookies, PrintWriter out, String username) {
 
         if (cookies != null) {
