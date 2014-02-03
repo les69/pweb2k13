@@ -795,6 +795,10 @@ public class DbHelper implements Serializable
      */
     public void addUserToGroup(Group g, User usr)
     {
+         addUserToGroup(g, usr.getId());
+    }
+    public void addUserToGroup(Group g, int usr_id)
+    {
         PreparedStatement stm = null;
         try
         {
@@ -805,12 +809,12 @@ public class DbHelper implements Serializable
 
             stm = _connection.prepareStatement("INSERT INTO GROUPUSER (ID_GROUP, ID_USER, ACTIVE) VALUES (?, ?, true)");
             stm.setInt(1, g.getId());
-            stm.setInt(2, usr.getId());
+            stm.setInt(2, usr_id);
 
             int res = stm.executeUpdate();
             
             Logger.getLogger(DbHelper.class.getName()).log(Level.INFO, 
-                    "User {0} was added to a group", usr.getUsername());
+                    "User {0} was added to a group", usr_id);
 
         }
         catch (SQLException | RuntimeException ex)
@@ -1165,6 +1169,8 @@ public class DbHelper implements Serializable
             stm.setBoolean(2, true);
             stm.setInt(3, grp.getOwner());
             int res = stm.executeUpdate();
+            
+            addUserToGroup(this.getGroup(grp.getName()), grp.getOwner());
             Logger.getLogger(DbHelper.class.getName()).log(Level.INFO, 
                     "New group created successfully");
         }
